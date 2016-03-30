@@ -11,6 +11,6 @@ class Analyzer: IAnalyzer
 {
 public:
 	Analyzer();
-	score getScore(Board& board);
+	Score getScore(Board& board);
 	~Analyzer();
 };

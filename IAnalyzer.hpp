@@ -8,14 +8,14 @@
 #include "Board.hpp"
 #include <limits>
 
-using score=int;
-const int pinfinity = std::numeric_limits<score>::max();
-const int ninfinity = std::numeric_limits<score>::max();
+using Score=int;
+const int pinfinity = std::numeric_limits<Score>::max();
+const int ninfinity = std::numeric_limits<Score>::max();
 
 class IAnalyzer
 {
 public:
-	virtual score getScore(Board& board) = 0;
+	virtual Score getScore(Board& board) = 0;
 };
 
 

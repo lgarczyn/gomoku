@@ -11,7 +11,7 @@ class AnalyzerBrainDead:IAnalyzer
 {
 public:
 	AnalyzerBrainDead();
-	score getScore(Board& board);
+	Score getScore(Board& board);
 };
 
 

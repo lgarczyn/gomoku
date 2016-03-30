@@ -5,22 +5,38 @@
 
 #pragma once
 
-#include "Board.hpp"
 #include "IAnalyzer.hpp"
+#include "Board.hpp"
+#include "BoardPos.hpp"
 
 class Game
 {
 private:
-	Board state;
+
+	struct MoveScore
+	{
+		Score score;
+		BoardPos pos;
+
+		MoveScore(Score _score, BoardPos _pos):score(_score), pos(_pos){}
+		MoveScore(Score _score):pos(),score(_score){}
+		MoveScore():pos(),score(){}
+	};
+
+	Board *state;
 	IAnalyzer* analyzer;
-	Board::BoardSquare turn;
+	int turn;
+	int depth;
+	MoveScore negamax(Board* node, int depth, Score alpha, Score beta, int player);
+
 public:
 	Game(bool isBrainDead);
 	~Game();
-	Board::BoardPos getNextMove();
-	void play(Board::BoardPos pos);
+	void play(BoardPos pos);
 	void play();
-	Board getState();
+
+	Board *getState();
+	BoardPos getNextMove();
 };
 
 

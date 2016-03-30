@@ -8,7 +8,7 @@
 
 Game::Game(bool isBrainDead)
 {
-	state = Board();
+	state = new Board();
 #ifdef ANALYZER_AVAILABLE
 	analyzer = isBrainDead ?
 			   (IAnalyzer*)new AnalyzerBrainDead() :
@@ -16,8 +16,7 @@ Game::Game(bool isBrainDead)
 #else
 	analyzer = new AnalyzerBrainDead();
 #endif
-	turn = Board::white;
-
+	turn = 1;
 }
 
 Game::~Game()
@@ -25,40 +24,60 @@ Game::~Game()
 
 }
 
-score negamax(Board node, int depth, score alpha, score beta, int color)
+Game::MoveScore Game::negamax(Board* node, int depth, Score alpha, Score beta, int player)
 {
-	if (node.isTerminal())
-		return pinfinity;
-	if (depth == 0)
-		return color *
+	auto children = node->getChildren();
+	//sort moves
 
-	childNodes := GenerateMoves(node)
-	childNodes := OrderMoves(childNodes)
-	bestValue := −∞
-	foreach child in childNodes
-	v := −negamax(child, depth − 1, −β, −α, −color)
-	bestValue := max( bestValue, v )
-	α := max( α, v )
-	if α ≥ β
-	break
-	return bestValue
+	MoveScore bestMove(ninfinity);
+
+	for (Board* child:children)
+	{
+		MoveScore move;
+
+		if (child->isTerminal())
+		{
+			move = MoveScore(pinfinity, child->getMove());
+		}
+		else if (depth <= 1)
+		{
+			move = MoveScore(player * analyzer->getScore(*child), child->getMove());
+		}
+		else
+		{
+			move = negamax(child, depth - 1, -beta, -alpha, -player);
+			move.score = -move.score;
+		}
+
+		if (move.score > bestMove.score)
+		{
+			bestMove = move;
+		}
+
+		alpha = std::max( alpha, move.score);
+		if (alpha > beta)
+			break;
+	}
+
+	return bestMove;
 }
 
-Board::BoardPos Game::getNextMove(int depth)
+BoardPos Game::getNextMove()
 {
+	return negamax(state, depth, ninfinity, pinfinity, turn).pos;
 }
 
-void Game::play(Board::BoardPos pos)
+void Game::play(BoardPos pos)
 {
 
 }
 
 void Game::play()
 {
-
+	play(getNextMove());
 }
 
-Board Game::getState()
+Board *Game::getState()
 {
 	return (state);
 }

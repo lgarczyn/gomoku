@@ -4,32 +4,32 @@
 
 #pragma once
 
+#include "BoardSquare.hpp"
+
+#include <vector>
+
+#include "BoardPos.hpp"
+
+using BoardData = BoardSquare[19][19];
 
 class Board
 {
 public:
-	enum BoardSquare
-	{
-		empty = 0,
-		white = 1,
-		black = 2,
-		taboo = 3
-	};
-
-	class BoardPos
-	{
-	public:
-		int x;
-		int y;
-		BoardPos(int _x, int _y): x(_x), y(_y) {};
-		BoardPos(): x(0), y(0) {};
-	};
 
 	bool isTerminal();
-	Board():_captured(){};
+	std::vector<Board*> getChildren();
+	Board();
+	Board(Board& board);
+
+	BoardData* getData();
+	BoardPos getMove();
+	int getCaptured();
+
 private:
-	BoardSquare _data[19][19]();
+	BoardData _data;
+	BoardPos _move;
 	int _captured;
+
 };
 
 

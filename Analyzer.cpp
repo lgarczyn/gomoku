@@ -10,7 +10,7 @@ Analyzer::Analyzer()
 	//read brain file
 }
 
-score Analyzer::getScore(Board& board)
+Score Analyzer::getScore(Board& board)
 {
 	return (0);
 	//apply brain file

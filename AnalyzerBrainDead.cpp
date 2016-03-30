@@ -4,7 +4,7 @@
 
 #include "AnalyzerBrainDead.hpp"
 
-score AnalyzerBrainDead::getScore(Board& board)
+Score AnalyzerBrainDead::getScore(Board& board)
 {
 	return (0);
 }
