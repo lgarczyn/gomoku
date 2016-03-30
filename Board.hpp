@@ -29,7 +29,6 @@ private:
 	BoardData _data;
 	BoardPos _move;
 	int _captured;
-
 };
 
 
