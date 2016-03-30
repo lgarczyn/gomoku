@@ -7,7 +7,7 @@
 #define ANALYZER_AVAILABLE
 #include "IAnalyzer.hpp"
 
-class Analyzer: IAnalyzer
+class Analyzer : public IAnalyzer
 {
 public:
 	Analyzer();

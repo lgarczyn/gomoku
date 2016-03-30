@@ -21,12 +21,12 @@ public:
 	public:
 		int x;
 		int y;
-		BoardPos(int _x, int _y): x(_x), y(_y) {};
-		BoardPos(): x(0), y(0) {};
+		BoardPos(int _x, int _y);
+		BoardPos();
 	};
 
 	bool isTerminal();
-	Board():_captured(){};
+	Board(void);
 private:
 	BoardSquare _data[19][19];
 	int _captured;

@@ -7,7 +7,7 @@
 
 #include "IAnalyzer.hpp"
 
-class AnalyzerBrainDead:IAnalyzer
+class AnalyzerBrainDead : public IAnalyzer
 {
 public:
 	AnalyzerBrainDead();
