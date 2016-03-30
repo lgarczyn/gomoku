@@ -28,7 +28,7 @@ public:
 	bool isTerminal();
 	Board():_captured(){};
 private:
-	BoardSquare _data[19][19]();
+	BoardSquare _data[19][19];
 	int _captured;
 };
 
