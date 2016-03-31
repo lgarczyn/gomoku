@@ -3,17 +3,19 @@
 #include "GuiManager.hpp"
 #include "Board.hpp"
 
+#include "Game.hpp"
 
 #include <unistd.h>
 using namespace std;
 
 int main() {
-    Board   b;
     GuiManager          win(1200, 900, "Gomoku");
+    Game                g(false);
+    Board*              b = g.getState();
 
     while (1)
     {
-        if (b.isTerminal())
+        if (b->isTerminal())
             std::cout << "Win !!!" << std::endl;
         win.clear();
         sf::Event   event;
@@ -33,15 +35,12 @@ int main() {
                     int     x = event.mouseButton.x / cell_width;
                     int     y = event.mouseButton.y / cell_width;
 
-                    if (event.mouseButton.button == sf::Mouse::Left)
-                        (*b.getData())[y][x] = BoardSquare::white;
-                    if (event.mouseButton.button == sf::Mouse::Right)
-                        (*b.getData())[y][x] = BoardSquare::black;
+                    g.play(BoardPos(x, y));
                 }
                     break ;
             }
         }
-        win.drawBoard(b);
+        win.drawBoard(*b);
 
         win.display();
         usleep(200);

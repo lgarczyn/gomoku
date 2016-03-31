@@ -37,6 +37,9 @@ public:
 
 	Board *getState();
 	BoardPos getNextMove();
+
+	bool 	playCapture(int x, int y);
+	bool 	playCaptureDir(int x, int y, int dirX, int dirY, BoardSquare type);
 };
 
 
