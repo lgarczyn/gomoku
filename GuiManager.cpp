@@ -16,9 +16,11 @@ GuiManager::GuiManager(int width, int height, const char* title)
 
 GuiManager::~GuiManager() { this->close(); }
 
-void	GuiManager::draw_board(const Board &b) {
+int 	GuiManager::getCellWidth() const { return (_h / BOARD_HEIGHT); }
+
+void	GuiManager::drawBoard(const Board &b) {
 	BoardSquare 	c;
-	int 			cell_width = _h / BOARD_HEIGHT;
+	int 			cell_width = getCellWidth();
 
 	sf::RectangleShape rect(sf::Vector2f(0, 0));
 	rect.setSize(sf::Vector2f(cell_width, cell_width));

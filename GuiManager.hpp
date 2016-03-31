@@ -16,7 +16,8 @@ public:
 	GuiManager(int width, int height, const char* title);
 	~GuiManager();
 
-	void 	draw_board(const Board& b);
+	void 	drawBoard(const Board& b);
+	int 	getCellWidth() const;
 };
 
 
