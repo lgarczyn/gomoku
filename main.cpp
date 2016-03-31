@@ -22,13 +22,15 @@ int main() {
                     exit(0);
                     break ;
                 case sf::Event::MouseButtonPressed:
-                    if (event.mouseButton.button == sf::Mouse::Left)
                     {
                         int     cell_width = win.getCellWidth();
                         int     x = event.mouseButton.x / cell_width;
                         int     y = event.mouseButton.y / cell_width;
 
-                        (*b.getData())[y][x] = BoardSquare::white;
+                        if (event.mouseButton.button == sf::Mouse::Left)
+                            (*b.getData())[y][x] = BoardSquare::white;
+                        if (event.mouseButton.button == sf::Mouse::Right)
+                            (*b.getData())[y][x] = BoardSquare::black;
                     }
                     break ;
             }
@@ -36,7 +38,7 @@ int main() {
         win.drawBoard(b);
 
         win.display();
-        sleep(1);
+        usleep(200);
     }
     return 0;
 }
