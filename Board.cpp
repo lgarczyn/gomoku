@@ -27,3 +27,5 @@ Board::Board(Board& board):_captured(), _move()
 BoardData* Board::getData() { return &_data; }
 BoardPos Board::getMove() { return _move; }
 int Board::getCaptured() { return _captured; }
+
+BoardSquare	Board::getCase(int x, int y) const { return (_data[y][x]); }

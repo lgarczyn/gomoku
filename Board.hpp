@@ -10,7 +10,10 @@
 
 #include "BoardPos.hpp"
 
-using BoardData = BoardSquare[19][19];
+#define BOARD_WIDTH 19
+#define BOARD_HEIGHT 19
+
+using BoardData = BoardSquare[BOARD_WIDTH][BOARD_HEIGHT];
 
 class Board
 {
@@ -20,6 +23,8 @@ public:
 	std::vector<Board*> getChildren();
 	Board();
 	Board(Board& board);
+
+	BoardSquare	getCase(int x, int y) const;
 
 	BoardData* getData();
 	BoardPos getMove();
