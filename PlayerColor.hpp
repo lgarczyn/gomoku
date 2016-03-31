@@ -5,16 +5,12 @@
 
 #pragma once
 
-
 enum PlayerColor
 {
 	blackPlayer = -1,
-	whitePlayer = 1
+	whitePlayer = 1,
 };
 
-PlayerColor operator-(PlayerColor& rhs)
-{
-	return (-rhs);
-}
+PlayerColor operator-(PlayerColor& rhs);
 
 

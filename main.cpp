@@ -8,11 +8,10 @@ using namespace std;
 int main() {
     GuiManager          win(1200, 900, "Gomoku");
     Game                g(false);
-    Board*              b = g.getState();
 
     while (1)
     {
-        if (b->isTerminal())
+        if (g.getState()->isTerminal())
             std::cout << "Win !!!" << std::endl;
         win.clear();
         sf::Event   event;
@@ -32,12 +31,13 @@ int main() {
                     int     x = event.mouseButton.x / cell_width;
                     int     y = event.mouseButton.y / cell_width;
 
-                    g.play(BoardPos(x, y));
+                    if (g.play(BoardPos(x, y)))
+                        g.play();
                 }
                     break ;
             }
         }
-        win.drawBoard(*b);
+        win.drawBoard(*g.getState());
 
         win.display();
         usleep(200);

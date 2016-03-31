@@ -30,8 +30,8 @@ private:
 public:
 	Game(bool isBrainDead);
 	~Game();
-	void play(BoardPos pos);
-	void play();
+	bool play(BoardPos pos);
+	bool play();
 
 	Board *getState();
 	BoardPos getNextMove();

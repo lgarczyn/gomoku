@@ -106,7 +106,7 @@ std::vector<Board*> Board::getChildren(PlayerColor player)
 
 	for (int y = 0; y < BOARD_HEIGHT; y++)
 	{
-		for (int x = 0; x < BOARD_WIDTH; y++)
+		for (int x = 0; x < BOARD_WIDTH; x++)
 		{
 			BoardSquare square = (_data[y][x]);
 			if (square == BoardSquare::empty)
@@ -143,8 +143,8 @@ bool Board::playCapture(int x, int y) {
 	for (int dirX = -1 ; dirX <= 1; ++dirX)
 		for (int dirY = -1 ; dirY <= 1; ++dirY)
 			if (playCaptureDir(x, y, dirX, dirY, c)) {
-				_data[y + dirY*1][x + dirX*1] = c;
-				_data[y + dirY*2][x + dirX*2] = c;
+				_data[y + dirY*1][x + dirX*1] = BoardSquare::empty;
+				_data[y + dirY*2][x + dirX*2] = BoardSquare::empty;
 				return (true);
 			}
 	return false;
@@ -171,9 +171,10 @@ Board::Board(Board& board, BoardPos move, PlayerColor player):Board(board)
 		else
 			_capturedWhites += 2;
 	}
+	_move = move;
 }
 
 BoardData* Board::getData() { return &_data; }
 BoardPos Board::getMove() const { return _move; }
-
 BoardSquare	Board::getCase(int x, int y) const { return (_data[y][x]); }
+BoardSquare	Board::getCase(BoardPos pos) const { return (_data[pos.y][pos.x]); }

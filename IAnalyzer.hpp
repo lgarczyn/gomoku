@@ -2,17 +2,16 @@
 // Created by Louis GARCZYNSKI on 3/30/16.
 //
 
-
-#include <limits>
-
 class IAnalyzer;
 using Score=int;
-const int pinfinity = std::numeric_limits<Score>::max();
-const int ninfinity = std::numeric_limits<Score>::max();
 
 #pragma once
 
+#include <limits>
 #include "Board.hpp"
+
+const int pinfinity = std::numeric_limits<Score>::max();
+const int ninfinity = std::numeric_limits<Score>::min();
 
 class IAnalyzer
 {

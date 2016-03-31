@@ -2,8 +2,7 @@
 // Created by Eric DELANGHE on 3/31/16.
 //
 
-#ifndef GOMOKU_GUIMANAGER_HPP
-#define GOMOKU_GUIMANAGER_HPP
+#pragma once
 
 #include <SFML/Graphics.hpp>
 #include "Board.hpp"
@@ -19,6 +18,3 @@ public:
 	void 	drawBoard(const Board& b);
 	int 	getCellWidth() const;
 };
-
-
-#endif //GOMOKU_GUIMANAGER_HPP

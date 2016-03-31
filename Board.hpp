@@ -31,6 +31,7 @@ public:
 
 	BoardData* getData();
 	BoardSquare	getCase(int x, int y) const;
+	BoardSquare	getCase(BoardPos pos) const;
 	BoardPos getMove() const;
 
 private:
