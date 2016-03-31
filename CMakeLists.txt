@@ -10,5 +10,5 @@ link_libraries("sfml-window")
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
-set(SOURCE_FILES main.cpp Board.cpp Board.hpp Analyzer.cpp Analyzer.hpp IAnalyzer.hpp AnalyzerBrainDead.cpp AnalyzerBrainDead.hpp Game.cpp Game.hpp MTDF.cpp MTDF.hpp BoardPos.cpp BoardPos.hpp BoardSquare.hpp GuiManager.cpp GuiManager.hpp)
+set(SOURCE_FILES main.cpp Board.cpp Board.hpp Analyzer.cpp Analyzer.hpp IAnalyzer.hpp AnalyzerBrainDead.cpp AnalyzerBrainDead.hpp Game.cpp Game.hpp MTDF.cpp MTDF.hpp BoardPos.cpp BoardPos.hpp BoardSquare.hpp GuiManager.cpp GuiManager.hpp PlayerColor.hpp PlayerColor.hpp)
 add_executable(gomoku ${SOURCE_FILES})

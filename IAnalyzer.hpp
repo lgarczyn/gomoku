@@ -3,14 +3,16 @@
 //
 
 
-#pragma once
-
-#include "Board.hpp"
 #include <limits>
 
+class IAnalyzer;
 using Score=int;
 const int pinfinity = std::numeric_limits<Score>::max();
 const int ninfinity = std::numeric_limits<Score>::max();
+
+#pragma once
+
+#include "Board.hpp"
 
 class IAnalyzer
 {

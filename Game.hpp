@@ -6,8 +6,6 @@
 #pragma once
 
 #include "IAnalyzer.hpp"
-#include "Board.hpp"
-#include "BoardPos.hpp"
 
 class Game
 {
@@ -25,9 +23,9 @@ private:
 
 	Board *state;
 	IAnalyzer* analyzer;
-	int turn;
+	PlayerColor turn;
 	int depth;
-	MoveScore negamax(Board* node, int depth, Score alpha, Score beta, int player);
+	MoveScore negamax(Board* node, int depth, Score alpha, Score beta, PlayerColor player);
 
 public:
 	Game(bool isBrainDead);
@@ -37,9 +35,6 @@ public:
 
 	Board *getState();
 	BoardPos getNextMove();
-
-	bool 	playCapture(int x, int y);
-	bool 	playCaptureDir(int x, int y, int dirX, int dirY, BoardSquare type);
 };
 
 

@@ -8,8 +8,8 @@
 enum BoardSquare
 {
 	empty = 0,
-	white = 1,
-	black = 2,
+	black = 1,
+	white = 2,
 	taboo = 3
 };
 

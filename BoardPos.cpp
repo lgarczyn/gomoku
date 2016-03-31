@@ -3,3 +3,4 @@
 //
 
 #include "BoardPos.hpp"
+#include "Board.hpp"
