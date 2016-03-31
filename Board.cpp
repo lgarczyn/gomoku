@@ -174,6 +174,6 @@ Board::Board(Board& board, BoardPos move, PlayerColor player):Board(board)
 }
 
 BoardData* Board::getData() { return &_data; }
-BoardPos Board::getMove() { return _move; }
+BoardPos Board::getMove() const { return _move; }
 
 BoardSquare	Board::getCase(int x, int y) const { return (_data[y][x]); }

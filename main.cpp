@@ -1,11 +1,8 @@
 
 #include <iostream>
 #include "GuiManager.hpp"
-#include "Board.hpp"
-
-#include "Game.hpp"
-
 #include <unistd.h>
+
 using namespace std;
 
 int main() {

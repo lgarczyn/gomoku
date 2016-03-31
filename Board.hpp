@@ -30,7 +30,8 @@ public:
 	Board(Board& board, BoardPos move, PlayerColor player);
 
 	BoardData* getData();
-	BoardPos getMove();
+	BoardSquare	getCase(int x, int y) const;
+	BoardPos getMove() const;
 
 private:
 	BoardData	_data;
@@ -45,7 +46,6 @@ private:
 	bool		checkDiagUp(int x, int y, int size) const;
 	bool		checkDiagDown(int x, int y, int size) const;
 	bool		isAlignedStone(int size) const;
-	BoardSquare	getCase(int x, int y) const;
 };
 
 
