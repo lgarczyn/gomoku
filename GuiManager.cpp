@@ -10,8 +10,6 @@ GuiManager::GuiManager(int width, int height, const char* title)
 		_w(width),
 		_h(height)
 {
-
-
 }
 
 GuiManager::~GuiManager() { this->close(); }
@@ -28,9 +26,9 @@ void	GuiManager::drawBoard(const Board &b) {
 	sf::CircleShape		circle(cell_width / 2 - cell_width * cell_ratio);
 	sf::RectangleShape	rect(sf::Vector2f(cell_width, cell_width));
 
-	for (int x = 0 ; x < BOARD_WIDTH; ++x)
+	for (int y = 0 ; y < BOARD_HEIGHT; ++y)
 	{
-		for (int y = 0 ; y < BOARD_HEIGHT; ++y)
+		for (int x = 0 ; x < BOARD_WIDTH; ++x)
 		{
 			c = b.getCase(x, y);
 			switch (c)

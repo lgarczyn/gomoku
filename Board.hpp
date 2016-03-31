@@ -24,6 +24,11 @@ public:
 	Board();
 	Board(Board& board);
 
+	bool		checkRow(int x, int y, int size) const;
+	bool		checkCol(int x, int y, int size) const;
+	bool		checkDiagUp(int x, int y, int size) const;
+	bool		checkDiagDown(int x, int y, int size) const;
+	bool		isAlignedStone(int size) const;
 	BoardSquare	getCase(int x, int y) const;
 
 	BoardData* getData();
