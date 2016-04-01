@@ -5,27 +5,31 @@
 #pragma once
 
 #include <vector>
+#include <tuple>
 
 #include "Constants.hpp"
 #include "BoardPos.hpp"
 #include "PlayerColor.hpp"
 #include "BoardSquare.hpp"
 
+class Board;
+
 using BoardData = BoardSquare[BOARD_WIDTH][BOARD_HEIGHT];
+using ChildBoard = std::tuple<Board*, BoardPos>;
 
 class Board
 {
 public:
 	bool isTerminal();
-	std::vector<Board*> getChildren(PlayerColor player);
+	bool isPosInterest(int x, int y, PlayerColor player) const;
+	std::vector<ChildBoard> getChildren(PlayerColor player) const;
 	Board();
-	Board(Board& board);
-	Board(Board& board, BoardPos move, PlayerColor player);
+	Board(const Board& board);
+	Board(const Board& board, BoardPos move, PlayerColor player);
 
 	BoardData* getData();
 	BoardSquare	getCase(int x, int y) const;
 	BoardSquare	getCase(BoardPos pos) const;
-	BoardPos getMove() const;
 
 	bool 		playCapture(int x, int y);
 	bool 		playCaptureDir(int x, int y, int dirX, int dirY, BoardSquare type);
@@ -33,7 +37,6 @@ public:
 	bool		isAlignedStone(int size) const;
 private:
 	BoardData	_data;
-	BoardPos	_move;
 	int			_capturedWhites;
 	int			_capturedBlacks;
 
