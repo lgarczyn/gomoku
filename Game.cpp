@@ -52,7 +52,6 @@ Game::MoveScore Game::negamax(Board* node, int negaDepth, Score alpha, Score bet
 		if (move.score > bestMove.score)
 		{
 			bestMove = move;
-
 		}
 
 		alpha = std::max( alpha, move.score);

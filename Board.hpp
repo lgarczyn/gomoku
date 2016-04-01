@@ -22,7 +22,6 @@ using BoardData = BoardSquare[BOARD_WIDTH][BOARD_HEIGHT];
 class Board
 {
 public:
-
 	bool isTerminal();
 	std::vector<Board*> getChildren(PlayerColor player);
 	Board();
@@ -34,19 +33,16 @@ public:
 	BoardSquare	getCase(BoardPos pos) const;
 	BoardPos getMove() const;
 
+	bool 		playCapture(int x, int y);
+	bool 		playCaptureDir(int x, int y, int dirX, int dirY, BoardSquare type);
+	bool 		isAlignedStoneDir(int x, int y, int dirX, int dirY, BoardSquare good, int size) const;
+	bool		isAlignedStone(int size) const;
 private:
 	BoardData	_data;
 	BoardPos	_move;
 	int			_capturedWhites;
 	int			_capturedBlacks;
 
-	bool 		playCapture(int x, int y);
-	bool 		playCaptureDir(int x, int y, int dirX, int dirY, BoardSquare type);
-	bool		checkRow(int x, int y, int size) const;
-	bool		checkCol(int x, int y, int size) const;
-	bool		checkDiagUp(int x, int y, int size) const;
-	bool		checkDiagDown(int x, int y, int size) const;
-	bool		isAlignedStone(int size) const;
 };
 
 

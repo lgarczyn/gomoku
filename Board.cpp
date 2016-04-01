@@ -4,89 +4,29 @@
 
 #include "Board.hpp"
 
-bool Board::checkRow(int x, int y, int size) const
+
+bool Board::isAlignedStoneDir(int x, int y, int dirX, int dirY, BoardSquare good, int size) const
 {
-	BoardSquare c = _data[y][x];
 
-	if (c == BoardSquare::black || c == BoardSquare::white)
-	{
-		while (--size)
-		{
-			++x;
-			if (x >= BOARD_WIDTH || _data[y][x] != c)
-				return false;
-		}
-		return (true);
+	for (int i = 0 ; i < size ; ++i) {
+		if (x + 3 * dirX < 0 || x + 3 * dirX >= BOARD_WIDTH
+			|| y + 3 * dirY < 0 || y + 3 * dirY >= BOARD_HEIGHT)
+			return (false);
+		if (_data[y + dirY*i][x + dirX*i] != good)
+			return (false);
 	}
-	return false;
-}
-
-bool Board::checkCol(int x, int y, int size) const
-{
-	BoardSquare c = _data[y][x];
-
-	if (c == BoardSquare::black || c == BoardSquare::white)
-	{
-		while (--size)
-		{
-			++y;
-			if (y >= BOARD_HEIGHT || _data[y][x] != c)
-				return false;
-		}
-		return (true);
-	}
-	return false;
-}
-
-bool Board::checkDiagDown(int x, int y, int size) const
-{
-	BoardSquare c = _data[y][x];
-
-	if (c == BoardSquare::black || c == BoardSquare::white)
-	{
-		while (--size)
-		{
-			++x;
-			++y;
-			if (x >= BOARD_WIDTH || y >= BOARD_HEIGHT || _data[y][x] != c)
-				return false;
-		}
-		return (true);
-	}
-	return false;
-}
-
-bool Board::checkDiagUp(int x, int y, int size) const
-{
-	BoardSquare c = _data[y][x];
-
-	if (c == BoardSquare::black || c == BoardSquare::white)
-	{
-		while (--size)
-		{
-			++x;
-			--y;
-			if (x >= BOARD_WIDTH || y < 0 || _data[y][x] != c)
-				return false;
-		}
-		return (true);
-	}
-	return false;
+	return (true);
 }
 
 bool Board::isAlignedStone(int size) const
 {
-	for (int y = 0; y < BOARD_HEIGHT; ++y)
-	{
-		for (int x = 0; x < BOARD_WIDTH; ++x)
-		{
-			if (checkRow(x, y, size)
-					|| checkCol(x, y, size)
-					|| checkDiagDown(x, y, size)
-					|| checkDiagUp(x, y, size))
-				return (true);
-		}
-	}
+	for (int y = 0 ; y < BOARD_HEIGHT; ++y)
+		for (int x = 0 ; x < BOARD_WIDTH; ++x)
+			for (int dirX = -1 ; dirX <= 1; ++dirX)
+				for (int dirY = -1 ; dirY <= 1; ++dirY)
+					if (isAlignedStoneDir(x, y, dirX, dirY, _data[y][x], size)) {
+						return (true);
+					}
 	return false;
 }
 
