@@ -4,89 +4,31 @@
 
 #include "Board.hpp"
 
-bool Board::checkRow(int x, int y, int size) const
+bool Board::isAlignedStoneDir(int x, int y, int dirX, int dirY, BoardSquare good, int size) const
 {
-	BoardSquare c = _data[y][x];
-
-	if (c == BoardSquare::black || c == BoardSquare::white)
-	{
-		while (--size)
-		{
-			++x;
-			if (x >= BOARD_WIDTH || _data[y][x] != c)
-				return false;
-		}
-		return (true);
+	for (int i = 0 ; i < size ; ++i) {
+		if (x + i * dirX < 0 || x + i * dirX >= BOARD_WIDTH
+			|| y + i * dirY < 0 || y + i * dirY >= BOARD_HEIGHT)
+			return (false);
+		if (_data[y + dirY*i][x + dirX*i] != good)
+			return (false);
 	}
-	return false;
-}
-
-bool Board::checkCol(int x, int y, int size) const
-{
-	BoardSquare c = _data[y][x];
-
-	if (c == BoardSquare::black || c == BoardSquare::white)
-	{
-		while (--size)
-		{
-			++y;
-			if (y >= BOARD_HEIGHT || _data[y][x] != c)
-				return false;
-		}
-		return (true);
-	}
-	return false;
-}
-
-bool Board::checkDiagDown(int x, int y, int size) const
-{
-	BoardSquare c = _data[y][x];
-
-	if (c == BoardSquare::black || c == BoardSquare::white)
-	{
-		while (--size)
-		{
-			++x;
-			++y;
-			if (x >= BOARD_WIDTH || y >= BOARD_HEIGHT || _data[y][x] != c)
-				return false;
-		}
-		return (true);
-	}
-	return false;
-}
-
-bool Board::checkDiagUp(int x, int y, int size) const
-{
-	BoardSquare c = _data[y][x];
-
-	if (c == BoardSquare::black || c == BoardSquare::white)
-	{
-		while (--size)
-		{
-			++x;
-			--y;
-			if (x >= BOARD_WIDTH || y < 0 || _data[y][x] != c)
-				return false;
-		}
-		return (true);
-	}
-	return false;
+	return (true);
 }
 
 bool Board::isAlignedStone(int size) const
 {
-	for (int y = 0; y < BOARD_HEIGHT; ++y)
-	{
-		for (int x = 0; x < BOARD_WIDTH; ++x)
-		{
-			if (checkRow(x, y, size)
-					|| checkCol(x, y, size)
-					|| checkDiagDown(x, y, size)
-					|| checkDiagUp(x, y, size))
-				return (true);
-		}
-	}
+	for (int y = 0 ; y < BOARD_HEIGHT; ++y)
+		for (int x = 0 ; x < BOARD_WIDTH; ++x)
+			for (int dirX = -1 ; dirX <= 1; ++dirX)
+				for (int dirY = -1 ; dirY <= 1; ++dirY)
+					if (dirX || dirY) {
+						auto c = _data[y][x];
+						if (c == BoardSquare::white || c == BoardSquare::black)
+						if (isAlignedStoneDir(x, y, dirX, dirY, c, size)) {
+							return (true);
+						}
+					}
 	return false;
 }
 
@@ -99,9 +41,24 @@ bool Board::isTerminal()
 	return  false;
 }
 
-std::vector<Board*> Board::getChildren(PlayerColor player)
+bool Board::isPosInterest(int x, int y, PlayerColor player) const
 {
-	auto children = std::vector<Board*>(BOARD_HEIGHT * BOARD_WIDTH);
+	int half_zone_size = 4;
+
+	for (int dirY = -half_zone_size ; dirY <= half_zone_size; ++dirY)
+		for (int dirX = -half_zone_size ; dirX <= half_zone_size; ++dirX) {
+			if (x + dirX < 0 || x + dirX >= BOARD_WIDTH
+				|| y + dirY < 0 || y + dirY >= BOARD_HEIGHT)
+				continue ;
+			if (_data[y + dirY][x + dirX] != BoardSquare::empty)
+				return (true);
+		}
+	return (false);
+}
+
+std::vector<ChildBoard> Board::getChildren(PlayerColor player) const
+{
+	auto children = std::vector<ChildBoard>(BOARD_HEIGHT * BOARD_WIDTH);
 	int index = 0;
 
 	for (int y = 0; y < BOARD_HEIGHT; y++)
@@ -109,13 +66,16 @@ std::vector<Board*> Board::getChildren(PlayerColor player)
 		for (int x = 0; x < BOARD_WIDTH; x++)
 		{
 			BoardSquare square = (_data[y][x]);
+
 			if (square == BoardSquare::empty)
 			{
-				children[index] = new Board(
-						*this,
-						BoardPos(x, y),
-						player);
-				index++;
+				if (this->isPosInterest(x, y, player)) {
+					children[index] = std::make_tuple(
+							new Board(*this, BoardPos(x, y), player),
+							BoardPos(x, y)
+					);
+					index++;
+				}
 			}
 		}
 	}
@@ -142,22 +102,24 @@ bool Board::playCapture(int x, int y) {
 
 	for (int dirX = -1 ; dirX <= 1; ++dirX)
 		for (int dirY = -1 ; dirY <= 1; ++dirY)
-			if (playCaptureDir(x, y, dirX, dirY, c)) {
-				_data[y + dirY*1][x + dirX*1] = BoardSquare::empty;
-				_data[y + dirY*2][x + dirX*2] = BoardSquare::empty;
-				return (true);
+			if (dirX || dirY) {
+				if (playCaptureDir(x, y, dirX, dirY, c)) {
+					_data[y + dirY * 1][x + dirX * 1] = BoardSquare::empty;
+					_data[y + dirY * 2][x + dirX * 2] = BoardSquare::empty;
+					return (true);
+				}
 			}
 	return false;
 }
 
-Board::Board(): _data(), _capturedWhites(), _capturedBlacks(), _move() { }
+Board::Board(): _data(), _capturedWhites(), _capturedBlacks() { }
 
-Board::Board(Board& board):Board()
+Board::Board(const Board& board):Board()
 {
 	*this = board;
 }
 
-Board::Board(Board& board, BoardPos move, PlayerColor player):Board(board)
+Board::Board(const Board& board, BoardPos move, PlayerColor player) : Board(board)
 {
 	if (player == PlayerColor::whitePlayer)
 		_data[move.y][move.x] = BoardSquare::white;
@@ -171,10 +133,8 @@ Board::Board(Board& board, BoardPos move, PlayerColor player):Board(board)
 		else
 			_capturedWhites += 2;
 	}
-	_move = move;
 }
 
 BoardData* Board::getData() { return &_data; }
-BoardPos Board::getMove() const { return _move; }
 BoardSquare	Board::getCase(int x, int y) const { return (_data[y][x]); }
 BoardSquare	Board::getCase(BoardPos pos) const { return (_data[pos.y][pos.x]); }

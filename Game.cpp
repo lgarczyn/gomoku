@@ -32,27 +32,28 @@ Game::MoveScore Game::negamax(Board* node, int negaDepth, Score alpha, Score bet
 
 	MoveScore bestMove(ninfinity);
 
-	for (Board* child:children)
+	for (ChildBoard child : children)
 	{
 		MoveScore move;
+		Board* board = std::get<0>(child);
+		BoardPos pos = std::get<1>(child);
 
-		if (child->isTerminal())
+		if (board->isTerminal())
 		{
-			move = MoveScore(pinfinity, child->getMove());
+			move = MoveScore(pinfinity, pos);
 		}
 		else if (negaDepth <= 1)
 		{
-			move = MoveScore(player * analyzer->getScore(*child), child->getMove());
+			move = MoveScore(player * analyzer->getScore(*board), pos);
 		}
 		else
 		{
-			move = negamax(child, negaDepth - 1, -beta, -alpha, -player);
+			move = negamax(board, negaDepth - 1, -beta, -alpha, -player);
 			move.score = -move.score;
 		}
 		if (move.score > bestMove.score)
 		{
 			bestMove = move;
-
 		}
 
 		alpha = std::max( alpha, move.score);
@@ -62,9 +63,15 @@ Game::MoveScore Game::negamax(Board* node, int negaDepth, Score alpha, Score bet
 	return bestMove;
 }
 
+#include <iostream>
+
+using  namespace std;
+
 BoardPos Game::getNextMove()
 {
-	return negamax(state, depth, ninfinity, pinfinity, turn).pos;
+	auto  pos = negamax(state, depth, ninfinity, pinfinity, -turn).pos;
+	cout << pos.x << " : " << pos.y << endl;
+	return pos;
 }
 
 bool Game::play(BoardPos pos)
