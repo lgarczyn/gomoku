@@ -9,7 +9,7 @@ using namespace std;
 
 void game_page(GuiManager& win, bool isBlackAI, bool isWhiteAI)
 {
-    Game                g(false);
+    Game                g(true);
     bool                hasWon = false;
 
     while (1)
