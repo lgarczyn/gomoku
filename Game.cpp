@@ -2,7 +2,7 @@
 // Created by Louis GARCZYNSKI on 3/30/16.
 //
 
-#include "PlayerColor.hpp"
+#include "Game.hpp"
 #include "Analyzer.hpp"
 #include "AnalyzerBrainDead.hpp"
 

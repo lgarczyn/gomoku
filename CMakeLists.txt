@@ -30,5 +30,5 @@ set(SOURCE_FILES
         BoardSquare.hpp
         GuiManager.cpp
         GuiManager.hpp
-        PlayerColor.hpp PlayerColor.cpp)
+        PlayerColor.hpp PlayerColor.cpp Constants.hpp TextureManager.cpp TextureManager.hpp)
 add_executable(gomoku ${SOURCE_FILES})

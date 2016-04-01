@@ -5,7 +5,9 @@
 
 #pragma once
 
+#include "BoardPos.hpp"
 #include "IAnalyzer.hpp"
+#include "Constants.hpp"
 
 class Game
 {
