@@ -32,8 +32,15 @@ bool Board::isAlignedStone(int size) const
 	return false;
 }
 
-int 		getCapturedBlack() const;
-int 		getCapturedWhite() const;
+int 		Board::getCapturedBlack() const
+{
+	return (_capturedBlacks);
+}
+
+int 		Board::getCapturedWhite() const
+{
+	return (_capturedWhites);
+}
 
 bool Board::isTerminal()
 {

@@ -52,7 +52,7 @@ Score AnalyzerBrainDead::getScore(Board& board) {
 
 	score = 0;
 	score += countAlignedStone(board, 5);
-	score += board.
-	std::cout << score << std::endl;
+	score += board.getCapturedBlack();
+	score -= board.getCapturedWhite();
 	return score;
 }
