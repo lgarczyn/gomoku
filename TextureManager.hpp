@@ -15,6 +15,7 @@ struct SpriteManager
 	sf::Texture 			stone_suggestion;
 	sf::Texture 			stone_preview;
 	sf::Texture 			stone_preview_taboo;
+	sf::Font				font;
 
 	SpriteManager();
 };

@@ -23,10 +23,10 @@ private:
 		MoveScore():pos(),score(){}
 	};
 
-	Board *state;
-	IAnalyzer* analyzer;
-	PlayerColor turn;
-	int depth;
+	Board *_state;
+	IAnalyzer* _analyzer;
+	PlayerColor _turn;
+	int _depth;
 	MoveScore negamax(Board* node, int depth, Score alpha, Score beta, PlayerColor player);
 
 public:
@@ -35,6 +35,7 @@ public:
 	bool play(BoardPos pos);
 	bool play();
 
+	PlayerColor getTurn() const;
 	Board *getState();
 	BoardPos getNextMove();
 };

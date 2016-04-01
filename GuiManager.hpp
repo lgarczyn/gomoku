@@ -31,6 +31,8 @@ public:
 	GuiManager();
 	~GuiManager();
 
-	bool	getMouseBoardPos(BoardPos& pos);
-	void 		drawBoard(const Board& b);
+	bool			getMouseBoardPos(BoardPos& pos);
+	sf::Vector2f	getMouseScreenRatio();
+	void 			drawBoard(const Board& b, bool hasWon = false);
+	void 			drawMenu();
 };

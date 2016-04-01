@@ -8,16 +8,16 @@
 
 Game::Game(bool isBrainDead)
 {
-	state = new Board();
+	_state = new Board();
 #ifdef ANALYZER_AVAILABLE
-	analyzer = isBrainDead ?
+	_analyzer = isBrainDead ?
 			   (IAnalyzer*)new AnalyzerBrainDead() :
 			   (IAnalyzer*)new Analyzer();
 #else
-	analyzer = new AnalyzerBrainDead();
+	_analyzer = new AnalyzerBrainDead();
 #endif
-	turn = PlayerColor::whitePlayer;
-	depth = 2;
+	_turn = PlayerColor::whitePlayer;
+	_depth = 2;
 }
 
 Game::~Game()
@@ -44,7 +44,7 @@ Game::MoveScore Game::negamax(Board* node, int negaDepth, Score alpha, Score bet
 		}
 		else if (negaDepth <= 1)
 		{
-			move = MoveScore(player * analyzer->getScore(*board), pos);
+			move = MoveScore(player * _analyzer->getScore(*board), pos);
 		}
 		else
 		{
@@ -69,18 +69,18 @@ using  namespace std;
 
 BoardPos Game::getNextMove()
 {
-	auto  pos = negamax(state, depth, ninfinity, pinfinity, -turn).pos;
+	auto  pos = negamax(_state, _depth, ninfinity, pinfinity, -_turn).pos;
 	cout << pos.x << " : " << pos.y << endl;
 	return pos;
 }
 
 bool Game::play(BoardPos pos)
 {
-	if (state->getCase(pos) != BoardSquare::empty)
+	if (_state->getCase(pos) != BoardSquare::empty)
 		return false;
 
-	state = new Board(*state, pos, turn);
-	turn = -turn;
+	_state = new Board(*_state, pos, _turn);
+	_turn = -_turn;
 	return true;
 }
 
@@ -91,5 +91,10 @@ bool Game::play()
 
 Board *Game::getState()
 {
-	return (state);
+	return (_state);
+}
+
+PlayerColor Game::getTurn() const
+{
+	return  (_turn);
 }

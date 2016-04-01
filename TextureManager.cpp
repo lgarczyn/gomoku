@@ -31,6 +31,10 @@ SpriteManager::SpriteManager()
 	{
 		throw std::logic_error("Could not load preview taboo stone texture");
 	}
+	if (!font.loadFromFile("./textures/font.otf"))
+	{
+		throw std::logic_error("Could not load preview taboo stone texture");
+	}
 	stone_black.setSmooth(true);
 	stone_white.setSmooth(true);
 	stone_suggestion.setSmooth(true);

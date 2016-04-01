@@ -16,8 +16,17 @@ GuiManager::GuiManager()
 
 }
 
-GuiManager::~GuiManager() { this->close(); }
 
+template<class T>
+void		centerOnPos(T& target, float x, float y)
+{
+	sf::FloatRect textRect = target.getLocalBounds();
+	target.setOrigin(textRect.left + textRect.width/2.0f,
+					 textRect.top  + textRect.height/2.0f);
+	target.setPosition(x, y);
+}
+
+GuiManager::~GuiManager() { this->close(); }
 
 bool	GuiManager::getMouseBoardPos(BoardPos& pos)
 {
@@ -30,7 +39,17 @@ bool	GuiManager::getMouseBoardPos(BoardPos& pos)
 	return false;
 }
 
-void	GuiManager::drawBoard(const Board &b) {
+sf::Vector2f	GuiManager::getMouseScreenRatio()
+{
+	sf::Vector2i valueInt = sf::Mouse::getPosition(*this);
+	sf::Vector2f value = sf::Vector2f(valueInt.x, valueInt.y);
+	value.x /= _w;
+	value.y /= _h;
+	return value;
+}
+
+void	GuiManager::drawBoard(const Board &b, bool hasWon)
+{
 	BoardSquare 		c;
 	sf::Sprite			background(_textures.board);
 	sf::Sprite			sprite_black(_textures.stone_black);
@@ -56,7 +75,7 @@ void	GuiManager::drawBoard(const Board &b) {
 					sprite = &sprite_preview_taboo;
 				break ;
 			case BoardSquare::empty:
-				if (pos == mousePos)
+				if (pos == mousePos && !hasWon)
 					sprite = &sprite_preview;
 				break ;
 			case BoardSquare::white:
@@ -75,4 +94,46 @@ void	GuiManager::drawBoard(const Board &b) {
 			this->draw(*sprite);
 		}
 	}
+	if (hasWon)
+	{
+		sf::RectangleShape			wonPopup(sf::Vector2f(400,200));
+		sf::Text					wonText("Game Over:\nplayer color", _textures.font, 50);
+
+		wonPopup.setFillColor(sf::Color(50, 30, 10, 220));
+		wonPopup.setOutlineColor(sf::Color(50, 30, 10, 255));
+		wonPopup.setOutlineThickness(4);
+		centerOnPos(wonPopup, _w/2, _h/2);
+		centerOnPos(wonText, _w/2, _h/2);
+		draw(wonPopup);
+		draw(wonText);
+	}
+}
+
+
+void 		GuiManager::drawMenu()
+{
+	sf::RectangleShape	lrect(sf::Vector2f(_w, _h / 3));
+	sf::RectangleShape	crect(sf::Vector2f(_w, _h / 3));
+	sf::RectangleShape	rrect(sf::Vector2f(_w, _h / 3));
+	sf::Text			ltext("IA vs IA", _textures.font, 100);
+	sf::Text			ctext("IA vs PC", _textures.font, 100);
+	sf::Text			rtext("PC vs PC", _textures.font, 100);
+
+	lrect.setFillColor(sf::Color(160, 100, 100));
+	crect.setFillColor(sf::Color(100, 160, 100));
+	rrect.setFillColor(sf::Color(100, 100, 160));
+	lrect.setPosition(0, 0);
+	crect.setPosition(0, _h / 3);
+	rrect.setPosition(0, _h / 3 * 2);
+
+	centerOnPos(ltext, _w / 2, _h / 3 * 0.5);
+	centerOnPos(ctext, _w / 2, _h / 3 * 1.5);
+	centerOnPos(rtext, _w / 2, _h / 3 * 2.5);
+
+	this->draw(lrect);
+	this->draw(crect);
+	this->draw(rrect);
+	this->draw(ltext);
+	this->draw(ctext);
+	this->draw(rtext);
 }
