@@ -32,6 +32,9 @@ bool Board::isAlignedStone(int size) const
 	return false;
 }
 
+int 		getCapturedBlack() const;
+int 		getCapturedWhite() const;
+
 bool Board::isTerminal()
 {
 	if (isAlignedStone(5))

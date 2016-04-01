@@ -30,6 +30,8 @@ public:
 	BoardData* getData();
 	BoardSquare	getCase(int x, int y) const;
 	BoardSquare	getCase(BoardPos pos) const;
+	int 		getCapturedBlack() const;
+	int 		getCapturedWhite() const;
 
 	bool 		playCapture(int x, int y);
 	bool 		playCaptureDir(int x, int y, int dirX, int dirY, BoardSquare type);

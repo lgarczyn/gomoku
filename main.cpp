@@ -8,7 +8,7 @@ using namespace std;
 
 int main() {
     GuiManager          win;
-    Game                g(false);
+    Game                g(true);
 
     while (1)
     {
@@ -40,8 +40,8 @@ int main() {
                     break ;
             }
         }
-        g.play();
-        g.play();
+       // g.play();
+       // g.play();
         win.drawBoard(*g.getState());
 
         win.display();
