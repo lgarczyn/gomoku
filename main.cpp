@@ -14,10 +14,6 @@ void game_page(GuiManager& win, bool isBlackAI, bool isWhiteAI)
 
     while (1)
     {
-        if (g.getState()->isTerminal())
-        {
-            hasWon = true;
-        }
         win.clear();
         sf::Event   event;
         while (win.pollEvent(event))
@@ -42,17 +38,25 @@ void game_page(GuiManager& win, bool isBlackAI, bool isWhiteAI)
                     {
                         g.play(pos);
                     }
+
+                    if (g.getState()->isTerminal()) { hasWon = true; }
+
                     break ;
             }
         }
+
         if (g.getTurn() == PlayerColor::whitePlayer && isWhiteAI && !hasWon)
         {
             g.play();
         }
+        if (g.getState()->isTerminal()) { hasWon = true; }
+
         if (g.getTurn() == PlayerColor::blackPlayer && isBlackAI && !hasWon)
         {
             g.play();
         }
+        if (g.getState()->isTerminal()) { hasWon = true; }
+
         win.drawBoard(*g.getState(), hasWon);
 
         win.display();
