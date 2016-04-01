@@ -2,20 +2,14 @@
 // Created by Louis GARCZYNSKI on 3/30/16.
 //
 
-class Board;
-
 #pragma once
-
-#include "BoardSquare.hpp"
 
 #include <vector>
 
-#include "PlayerColor.hpp"
+#include "Constants.hpp"
 #include "BoardPos.hpp"
-#include "Game.hpp"
-
-#define BOARD_WIDTH 19
-#define BOARD_HEIGHT 19
+#include "PlayerColor.hpp"
+#include "BoardSquare.hpp"
 
 using BoardData = BoardSquare[BOARD_WIDTH][BOARD_HEIGHT];
 

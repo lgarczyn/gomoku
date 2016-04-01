@@ -1,12 +1,13 @@
 
 #include <iostream>
 #include "GuiManager.hpp"
+#include "Game.hpp"
 #include <unistd.h>
 
 using namespace std;
 
 int main() {
-    GuiManager          win(1200, 900, "Gomoku");
+    GuiManager          win(900, 900, "Gomoku");
     Game                g(false);
 
     while (1)
