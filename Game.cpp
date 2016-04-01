@@ -48,10 +48,10 @@ Game::MoveScore Game::negamax(Board* node, int negaDepth, Score alpha, Score bet
 		}
 		else
 		{
-			move = negamax(board, negaDepth - 1, -beta, -alpha, -player);
-			move.score = -move.score;
+			move.score = -negamax(board, negaDepth - 1, -beta, -alpha, -player).score;
+			move.pos = pos;
 		}
-		if (move.score > bestMove.score)
+		if (move.score > bestMove.score || (move.score == bestMove.score && player == -1))
 		{
 			bestMove = move;
 		}

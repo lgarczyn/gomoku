@@ -1,9 +1,10 @@
 cmake_minimum_required(VERSION 3.4)
 project(gomoku)
 
-include_directories("/nfs/2014/e/edelangh/.brew/include")
-link_directories("/nfs/2014/e/edelangh/.brew/lib")
-#link_directories("/nfs/2014/l/lgarczyn/.brew/lib")
+#include_directories("/nfs/2014/e/edelangh/.brew/include")
+include_directories("/nfs/2014/l/lgarczyn/.brew/include")
+#link_directories("/nfs/2014/e/edelangh/.brew/lib")
+link_directories("/nfs/2014/l/lgarczyn/.brew/lib")
 link_libraries("sfml-system")
 link_libraries("sfml-graphics")
 link_libraries("sfml-window")

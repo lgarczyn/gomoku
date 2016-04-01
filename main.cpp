@@ -32,12 +32,16 @@ int main() {
                     {
                         if (g.play(pos))
                         {
-                            g.play();
+                            if (!g.play())
+                                std::cout << "FUUUUUUUCK" << std::endl;
                         }
                     }
+
                     break ;
             }
         }
+        g.play();
+        g.play();
         win.drawBoard(*g.getState());
 
         win.display();
