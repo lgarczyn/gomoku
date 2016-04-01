@@ -10,7 +10,7 @@ const BoardPos BoardPos::boardEnd = BoardPos(0, BOARD_HEIGHT);
 
 void BoardPos::operator++()
 {
-	if (x > BOARD_WIDTH - 1)
+	if (x >= BOARD_WIDTH - 1)
 	{
 		x = 0;
 		y++;

@@ -7,6 +7,10 @@
 
 SpriteManager::SpriteManager()
 {
+	if (!board.loadFromFile("./textures/board.png"))
+	{
+		throw std::logic_error("Could not load board texture");
+	}
 	if (!stone_black.loadFromFile("./textures/stone_black.png"))
 	{
 		throw std::logic_error("Could not load black stone texture");

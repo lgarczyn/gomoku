@@ -7,7 +7,7 @@
 using namespace std;
 
 int main() {
-    GuiManager          win(900, 900, "Gomoku");
+    GuiManager          win;
     Game                g(false);
 
     while (1)
@@ -18,23 +18,23 @@ int main() {
         sf::Event   event;
         while (win.pollEvent(event))
         {
-            switch (event.type) {
+            switch (event.type)
+            {
                 case sf::Event::Closed:
                     exit(0);
-                    break ;
                 case sf::Event::KeyPressed:
                     if (event.key.code == sf::Keyboard::Escape)
                         exit(0);
                     break ;
                 case sf::Event::MouseButtonPressed:
-                {
-                    int     cell_width = win.getCellWidth();
-                    int     x = event.mouseButton.x / cell_width;
-                    int     y = event.mouseButton.y / cell_width;
-
-                    if (g.play(BoardPos(x, y)))
-                        g.play();
-                }
+                    BoardPos pos;
+                    if (win.getMouseBoardPos(pos))
+                    {
+                        if (g.play(pos))
+                        {
+                            g.play();
+                        }
+                    }
                     break ;
             }
         }

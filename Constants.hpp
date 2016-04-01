@@ -12,4 +12,3 @@ using Score=int;
 #define BOARD_HEIGHT 19
 const int pinfinity = std::numeric_limits<Score>::max();
 const int ninfinity = std::numeric_limits<Score>::min();
-

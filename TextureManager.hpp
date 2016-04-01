@@ -9,6 +9,7 @@
 
 struct SpriteManager
 {
+	sf::Texture				board;
 	sf::Texture 			stone_black;
 	sf::Texture 			stone_white;
 	sf::Texture 			stone_suggestion;
