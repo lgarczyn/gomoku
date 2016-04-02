@@ -5,6 +5,9 @@
 #include "Game.hpp"
 #include "Analyzer.hpp"
 #include "AnalyzerBrainDead.hpp"
+#include <iostream>
+
+using namespace std;
 
 Game::Game(bool isBrainDead)
 {
@@ -31,6 +34,7 @@ Game::MoveScore Game::negamax(Board* node, int negaDepth, Score alpha, Score bet
 	//TODO sort moves
 
 	MoveScore bestMove(ninfinity);
+	std::vector<MoveScore>	choice(10);
 
 	for (ChildBoard child : children)
 	{
@@ -38,12 +42,10 @@ Game::MoveScore Game::negamax(Board* node, int negaDepth, Score alpha, Score bet
 		Board* board = std::get<0>(child);
 		BoardPos pos = std::get<1>(child);
 
-		if (board->isTerminal())
-		{
+		if (board->isTerminal()) {
 			move = MoveScore(pinfinity, pos);
 		}
-		else if (negaDepth <= 1)
-		{
+		else if (negaDepth <= 1) {
 			move = MoveScore(player * _analyzer->getScore(*board), pos);
 		}
 		else
@@ -51,21 +53,24 @@ Game::MoveScore Game::negamax(Board* node, int negaDepth, Score alpha, Score bet
 			move.score = -negamax(board, negaDepth - 1, -beta, -alpha, -player).score;
 			move.pos = pos;
 		}
-		if (move.score > bestMove.score || (move.score == bestMove.score && player == -1))
+		if (move.score > bestMove.score)
 		{
+			choice.clear();
+			choice.push_back(move);
+			bestMove = move;
+		}
+		else if (move.score == bestMove.score)
+		{
+			choice.push_back(move);
 			bestMove = move;
 		}
 
-		alpha = std::max( alpha, move.score);
+		alpha = std::max(alpha, move.score);
 		if (alpha > beta)
 			break;
 	}
-	return bestMove;
+	return choice[rand() % choice.size()];
 }
-
-#include <iostream>
-
-using  namespace std;
 
 BoardPos Game::getNextMove()
 {
