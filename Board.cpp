@@ -42,13 +42,15 @@ int 		Board::getCapturedWhite() const
 	return (_capturedWhites);
 }
 
-bool Board::isTerminal()
+VictoryState Board::isTerminal()
 {
 	if (isAlignedStone(5))
-		return true;
-	if (_capturedWhites > 10 || _capturedBlacks > 10)
-		return true;
-	return  false;
+		return aligned;
+	if (_capturedWhites > 10)
+		return whitesCaptured;
+	if (_capturedBlacks > 10)
+		return blacksCaptured;
+	return novictory;
 }
 
 bool Board::isPosInterest(int x, int y, PlayerColor player) const

@@ -36,6 +36,8 @@ Game::MoveScore Game::negamax(Board* node, int negaDepth, Score alpha, Score bet
 	MoveScore bestMove(ninfinity);
 	std::vector<MoveScore>	choice(10);
 
+	if (!children.size())
+		return (MoveScore(0, BoardPos(rand() % BOARD_WIDTH, rand() % BOARD_HEIGHT)));
 	for (ChildBoard child : children)
 	{
 		MoveScore move;

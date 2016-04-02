@@ -6,13 +6,31 @@
 
 using namespace std;
 
+std::string getVictoryMessage(VictoryState v)
+{
+    std::string text;
+
+    switch (v)
+    {
+        case aligned:
+            text = "Five stone aligned";
+            break;
+        case whitesCaptured:
+            text = "Enough whites stone captured";
+            break;
+        case blacksCaptured:
+            text = "Enough blacks stone captured";
+            break;
+    }
+    return (text);
+}
 
 void game_page(GuiManager& win, bool isBlackAI, bool isWhiteAI)
 {
     Game                g(true);
-    PlayerColor         winner = none;
     bool                hasWon = false;
     std::string         text("");
+    VictoryState        victory;
 
     while (!hasWon)
     {
@@ -41,7 +59,11 @@ void game_page(GuiManager& win, bool isBlackAI, bool isWhiteAI)
                         g.play(pos);
                     }
 
-                    if (g.getState()->isTerminal() && !hasWon) { hasWon = true; winner = whitePlayer; }
+                    if ((victory = g.getState()->isTerminal()) && !hasWon)
+                    {
+                        hasWon = true;
+                        text = "Victory\n" + getVictoryMessage(victory);
+                    }
 
                     break ;
             }
@@ -51,10 +73,9 @@ void game_page(GuiManager& win, bool isBlackAI, bool isWhiteAI)
         {
             g.play();
         }
-        if (g.getState()->isTerminal() && !hasWon) {
+        if ((victory = g.getState()->isTerminal()) && !hasWon) {
             hasWon = true;
-            winner = whitePlayer;
-            text = "Game Over:\nWhite IA won";
+            text = "White win\n" + getVictoryMessage(victory);
         }
 
         win.drawBoard(*g.getState(), text);
@@ -64,15 +85,13 @@ void game_page(GuiManager& win, bool isBlackAI, bool isWhiteAI)
         {
             g.play();
         }
-        if (g.getState()->isTerminal() && !hasWon) {
+        if ((victory = g.getState()->isTerminal()) && !hasWon) {
             hasWon = true;
-            winner = blackPlayer;
-            text = "Game Over:\nBlack IA won";
+            text = "Black win\n" + getVictoryMessage(victory);
         }
         win.drawBoard(*g.getState(), text);
         win.display();
         usleep(2000);//better framerate system
-        // Yay !!!!
     }
     usleep(5000000);
 }

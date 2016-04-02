@@ -8,6 +8,7 @@
 enum PlayerColor
 {
 	blackPlayer = -1,
+	none        = 0,
 	whitePlayer = 1,
 };
 

@@ -33,6 +33,6 @@ public:
 
 	bool			getMouseBoardPos(BoardPos& pos);
 	sf::Vector2f	getMouseScreenRatio();
-	void 			drawBoard(const Board& b, bool hasWon = false);
+	void 			drawBoard(const Board& b, std::string message);
 	void 			drawMenu();
 };
