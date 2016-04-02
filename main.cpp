@@ -10,9 +10,11 @@ using namespace std;
 void game_page(GuiManager& win, bool isBlackAI, bool isWhiteAI)
 {
     Game                g(true);
+    PlayerColor         winner = none;
     bool                hasWon = false;
+    std::string         text("");
 
-    while (1)
+    while (!hasWon)
     {
         win.clear();
         sf::Event   event;
@@ -39,7 +41,7 @@ void game_page(GuiManager& win, bool isBlackAI, bool isWhiteAI)
                         g.play(pos);
                     }
 
-                    if (g.getState()->isTerminal()) { hasWon = true; }
+                    if (g.getState()->isTerminal() && !hasWon) { hasWon = true; winner = whitePlayer; }
 
                     break ;
             }
@@ -49,19 +51,30 @@ void game_page(GuiManager& win, bool isBlackAI, bool isWhiteAI)
         {
             g.play();
         }
-        if (g.getState()->isTerminal()) { hasWon = true; }
+        if (g.getState()->isTerminal() && !hasWon) {
+            hasWon = true;
+            winner = whitePlayer;
+            text = "Game Over:\nWhite IA won";
+        }
+
+        win.drawBoard(*g.getState(), text);
+        win.display();
 
         if (g.getTurn() == PlayerColor::blackPlayer && isBlackAI && !hasWon)
         {
             g.play();
         }
-        if (g.getState()->isTerminal()) { hasWon = true; }
-
-        win.drawBoard(*g.getState(), hasWon);
-
+        if (g.getState()->isTerminal() && !hasWon) {
+            hasWon = true;
+            winner = blackPlayer;
+            text = "Game Over:\nBlack IA won";
+        }
+        win.drawBoard(*g.getState(), text);
         win.display();
-        usleep(200);//better framerate system
+        usleep(2000);//better framerate system
+        // Yay !!!!
     }
+    usleep(5000000);
 }
 
 int menu_page(GuiManager& win)
@@ -95,15 +108,16 @@ int menu_page(GuiManager& win)
     }
 }
 
-
 int main() {
-
     GuiManager          win;
 
+    srand(time(NULL));
     while (1)
     {
         switch (menu_page(win))
         {
+            case 0:
+                return 0;
             case 1:
                 game_page(win, true, true);
                 break;
