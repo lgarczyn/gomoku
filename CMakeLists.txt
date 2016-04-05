@@ -1,10 +1,10 @@
 cmake_minimum_required(VERSION 3.4)
 project(gomoku)
 
-#include_directories("/nfs/2014/e/edelangh/.brew/include")
-include_directories("/nfs/2014/l/lgarczyn/.brew/include")
-#link_directories("/nfs/2014/e/edelangh/.brew/lib")
-link_directories("/nfs/2014/l/lgarczyn/.brew/lib")
+include_directories("/nfs/2014/e/edelangh/.brew/include")
+#include_directories("/nfs/2014/l/lgarczyn/.brew/include")
+link_directories("/nfs/2014/e/edelangh/.brew/lib")
+#link_directories("/nfs/2014/l/lgarczyn/.brew/lib")
 link_libraries("sfml-system")
 link_libraries("sfml-graphics")
 link_libraries("sfml-window")
@@ -29,5 +29,5 @@ set(SOURCE_FILES
         BoardSquare.hpp
         GuiManager.cpp
         GuiManager.hpp
-        PlayerColor.hpp PlayerColor.cpp Constants.hpp TextureManager.cpp TextureManager.hpp)
+        PlayerColor.hpp PlayerColor.cpp Constants.hpp TextureManager.cpp TextureManager.hpp VictoryState.hpp)
 add_executable(gomoku ${SOURCE_FILES})

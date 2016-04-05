@@ -4,6 +4,8 @@
 
 #include "GuiManager.hpp"
 
+#include <sstream>
+
 GuiManager::GuiManager()
 		:sf::RenderWindow(sf::VideoMode(screen_width, screen_height), "Gomoku"),
 		_w(screen_width),
@@ -58,7 +60,7 @@ sf::Vector2f	GuiManager::getMouseScreenRatio()
 	return value;
 }
 
-void	GuiManager::drawBoard(const Board &b, bool hasWon)
+void	GuiManager::drawBoard(const Board &b, std::string message)
 {
 	BoardSquare 		c;
 	sf::Sprite			background(_textures.board);
@@ -88,7 +90,7 @@ void	GuiManager::drawBoard(const Board &b, bool hasWon)
 					sprite = &sprite_preview_taboo;
 				break ;
 			case BoardSquare::empty:
-				if (pos == mousePos && !hasWon)
+				if (pos == mousePos && !message.size())
 					sprite = &sprite_preview;
 				break ;
 			case BoardSquare::white:
@@ -107,10 +109,10 @@ void	GuiManager::drawBoard(const Board &b, bool hasWon)
 			this->draw(*sprite);
 		}
 	}
-	if (hasWon)
+	if (message.size())
 	{
-		sf::RectangleShape			wonPopup(sf::Vector2f(400,200));
-		sf::Text					wonText("Game Over:\nplayer color", _textures.font, 50);
+		sf::RectangleShape			wonPopup(sf::Vector2f(_w * 0.8,200));
+		sf::Text					wonText(message, _textures.font, 50);
 
 		wonPopup.setFillColor(sf::Color(50, 30, 10, 220));
 		wonPopup.setOutlineColor(sf::Color(50, 30, 10, 255));

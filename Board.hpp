@@ -11,6 +11,7 @@
 #include "BoardPos.hpp"
 #include "PlayerColor.hpp"
 #include "BoardSquare.hpp"
+#include "VictoryState.hpp"
 
 class Board;
 
@@ -20,7 +21,7 @@ using ChildBoard = std::tuple<Board*, BoardPos>;
 class Board
 {
 public:
-	bool isTerminal(bool considerCapture);
+	VictoryState isTerminal(bool considerCapture);
 	bool isPosInterest(int x, int y, PlayerColor player) const;
 	std::vector<ChildBoard> getChildren(PlayerColor player, bool capture) const;
 	Board();

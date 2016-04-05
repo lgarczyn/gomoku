@@ -9,15 +9,26 @@ AnalyzerBrainDead::AnalyzerBrainDead() { }
 int countAlignedStoneDir(Board& data, int x, int y, int dirX, int dirY, BoardSquare good, int size)
 {
 	int i;
+	int bonus = 0;
+
+	if (x - dirX >= 0 && x - dirX < BOARD_WIDTH
+		&& y - dirY >= 0 && y - dirY < BOARD_HEIGHT)
+	{
+		auto c = (*data.getData())[y - dirY][x - dirX];
+		if (c == good)
+			return (0);
+		else if (c == empty)
+			bonus += 1;
+	}
 
 	for (i = 0 ; i < size ; ++i) {
 		if (x + i * dirX < 0 || x + i * dirX >= BOARD_WIDTH
 			|| y + i * dirY < 0 || y + i * dirY >= BOARD_HEIGHT)
-			return (i);
+			return (i + bonus);
 		if ((*data.getData())[y + dirY*i][x + dirX*i] != good)
-			return (i);
+			return (i + bonus);
 	}
-	return (i);
+	return (i + bonus);
 }
 
 Score countAlignedStone(Board& data, int size)

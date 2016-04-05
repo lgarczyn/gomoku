@@ -9,12 +9,33 @@ using namespace std;
 
 Game::Options options;
 
+std::string getVictoryMessage(VictoryState v)
+{
+    std::string text;
+
+    switch (v)
+    {
+        case aligned:
+            text = "Five stone aligned";
+            break;
+        case whitesCaptured:
+            text = "Enough whites stone captured";
+            break;
+        case blacksCaptured:
+            text = "Enough blacks stone captured";
+            break;
+    }
+    return (text);
+}
+
 void game_page(GuiManager& win, bool isBlackAI, bool isWhiteAI)
 {
     Game                g(options);
     bool                hasWon = false;
+    std::string         text("");
+    VictoryState        victory;
 
-    while (1)
+    while (!hasWon)
     {
         win.clear();
         sf::Event   event;
@@ -39,7 +60,10 @@ void game_page(GuiManager& win, bool isBlackAI, bool isWhiteAI)
                     if (win.getMouseBoardPos(pos) && !hasWon)
                     {
                         if (g.play(pos))
+                        {
                             hasWon = true;
+                            text = "Victory\n" + getVictoryMessage(victory);
+                        }
                     }
 
                     break ;
@@ -49,20 +73,28 @@ void game_page(GuiManager& win, bool isBlackAI, bool isWhiteAI)
         if (g.getTurn() == PlayerColor::whitePlayer && isWhiteAI && !hasWon)
         {
             if (g.play())
+            {
                 hasWon = true;
+                text = "White win\n" + getVictoryMessage(victory);
+            }
         }
+        win.drawBoard(*g.getState(), text);
+        win.display();
 
         if (g.getTurn() == PlayerColor::blackPlayer && isBlackAI && !hasWon)
         {
             if (g.play())
+            {
                 hasWon = true;
+                text = "Black win\n" + getVictoryMessage(victory);
+            }
         }
-
-        win.drawBoard(*g.getState(), hasWon);
-
+        win.drawBoard(*g.getState(), text);
         win.display();
+
         usleep(200);//better framerate system
     }
+    usleep(5000000);
 }
 
 GuiManager::MenuButton menu_page(GuiManager& win)
@@ -139,10 +171,11 @@ void option_page(GuiManager& win)
     }
 }
 
-int main() {
-
+int main()
+{
     GuiManager          win;
 
+    srand(time(NULL));
     while (1)
     {
         switch (menu_page(win))

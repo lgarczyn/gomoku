@@ -43,13 +43,18 @@ int 		Board::getCapturedWhite() const
 	return (_capturedWhites);
 }
 
-bool Board::isTerminal(bool considerCapture)
+VictoryState  Board::isTerminal(bool considerCapture)
 {
 	if (isAlignedStone(5))
 		return true;
-	if (considerCapture && (_capturedWhites > 10 || _capturedBlacks > 10))
-		return true;
-	return  false;
+	if (considerCapture)
+	{
+		if (_capturedWhites > 10)
+			return whitesCaptured;
+		if (_capturedBlacks > 10)
+			return blacksCaptured;
+	}
+	return  novictory;
 }
 
 bool Board::isPosInterest(int x, int y, PlayerColor player) const
@@ -238,7 +243,7 @@ Board::Board(): _data(), _capturedWhites(), _capturedBlacks(), _turnNum() { }
 
 Board::Board(const Board& board):Board()
 {
-	*this = board;
+	*this = board;//TODO find better way
 	for (int y = 0; y < BOARD_HEIGHT; y++)
 	{
 		for (int x = 0; x < BOARD_WIDTH; x++)

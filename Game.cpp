@@ -5,6 +5,9 @@
 #include "Game.hpp"
 #include "Analyzer.hpp"
 #include "AnalyzerBrainDead.hpp"
+#include <iostream>
+
+using namespace std;
 
 Game::Game(Options options):_options(options)
 {
@@ -32,7 +35,10 @@ Game::MoveScore Game::negamax(Board* node, int negaDepth, Score alpha, Score bet
 	//TODO sort moves
 
 	MoveScore bestMove(ninfinity);
+	std::vector<MoveScore>	choice(10);
 
+	if (!children.size())
+		return (MoveScore(0, BoardPos(rand() % BOARD_WIDTH, rand() % BOARD_HEIGHT)));
 	for (ChildBoard child : children)
 	{
 		MoveScore move;
@@ -54,16 +60,23 @@ Game::MoveScore Game::negamax(Board* node, int negaDepth, Score alpha, Score bet
 			move.score = -negamax(board, negaDepth - 1, -beta, -alpha, -player).score;
 			move.pos = pos;
 		}
-		if (move.score > bestMove.score || (move.score == bestMove.score && player == -1))
+		if (move.score > bestMove.score)
 		{
+			choice.clear();
+			choice.push_back(move);
+			bestMove = move;
+		}
+		else if (move.score == bestMove.score)
+		{
+			choice.push_back(move);
 			bestMove = move;
 		}
 
-		alpha = std::max( alpha, move.score);
+		alpha = std::max(alpha, move.score);
 		if (alpha > beta)
 			break;
 	}
-	return bestMove;
+	return choice[rand() % choice.size()];//TODO get fucking rid of rand
 }
 
 BoardPos Game::getNextMove()
