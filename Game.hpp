@@ -11,8 +11,26 @@
 
 class Game
 {
-private:
+public:
+	struct Options
+	{
+		bool limitBlack = false;//TODO
+		bool doubleThree = true;//TODO
+		bool capture = true;
+		bool captureWin = true;
+		bool brainDead = true;
+	};
 
+	Game(Options _options);
+	~Game();
+	bool play(BoardPos pos);
+	bool play();
+
+	PlayerColor getTurn() const;
+	Board *getState();
+	BoardPos getNextMove();
+
+private:
 	struct MoveScore
 	{
 		Score score;
@@ -23,21 +41,12 @@ private:
 		MoveScore():pos(),score(){}
 	};
 
+	Options _options;
 	Board *_state;
 	IAnalyzer* _analyzer;
 	PlayerColor _turn;
 	int _depth;
 	MoveScore negamax(Board* node, int depth, Score alpha, Score beta, PlayerColor player);
-
-public:
-	Game(bool isBrainDead);
-	~Game();
-	bool play(BoardPos pos);
-	bool play();
-
-	PlayerColor getTurn() const;
-	Board *getState();
-	BoardPos getNextMove();
 };
 
 

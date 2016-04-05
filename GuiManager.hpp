@@ -9,6 +9,25 @@
 #include "TextureManager.hpp"
 
 class GuiManager : public sf::RenderWindow {
+public:
+
+	enum MenuButton
+	{
+		PlayerVersusAI = 0,
+		PlayerVersusPlayer = 1,
+		AIVersusAI = 2,
+		Options = 3,
+	};
+
+	GuiManager();
+	~GuiManager();
+
+	MenuButton		getMenuButton();
+	bool			getMouseBoardPos(BoardPos& pos);
+	sf::Vector2f	getMouseScreenRatio();
+	void 			drawBoard(const Board& b, bool hasWon = false);
+	void 			drawOptions(std::vector<std::pair<std::string, bool>> options);
+	void 			drawMenu();
 private:
 	static const int screen_width = 1000;
 	static const int screen_height = 1000;
@@ -27,12 +46,4 @@ private:
 	sf::Color				_colorBG;
 	sf::Color				_colorLine;
 	SpriteManager			_textures;
-public:
-	GuiManager();
-	~GuiManager();
-
-	bool			getMouseBoardPos(BoardPos& pos);
-	sf::Vector2f	getMouseScreenRatio();
-	void 			drawBoard(const Board& b, bool hasWon = false);
-	void 			drawMenu();
 };

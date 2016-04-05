@@ -20,12 +20,12 @@ using ChildBoard = std::tuple<Board*, BoardPos>;
 class Board
 {
 public:
-	bool isTerminal();
+	bool isTerminal(bool considerCapture);
 	bool isPosInterest(int x, int y, PlayerColor player) const;
-	std::vector<ChildBoard> getChildren(PlayerColor player) const;
+	std::vector<ChildBoard> getChildren(PlayerColor player, bool capture) const;
 	Board();
 	Board(const Board& board);
-	Board(const Board& board, BoardPos move, PlayerColor player);
+	Board(const Board& board, BoardPos move, PlayerColor player, bool capture);
 
 	BoardData* getData();
 	BoardSquare	getCase(int x, int y) const;
@@ -33,6 +33,8 @@ public:
 	int 		getCapturedBlack() const;
 	int 		getCapturedWhite() const;
 
+	void 		fillTaboo(bool limitBlack, bool doubleThree, PlayerColor player);
+	bool		checkFreeThree(int x, int y, int dirX, int dirY, BoardSquare enemy);
 	bool 		playCapture(int x, int y);
 	bool 		playCaptureDir(int x, int y, int dirX, int dirY, BoardSquare type);
 	bool 		isAlignedStoneDir(int x, int y, int dirX, int dirY, BoardSquare good, int size) const;
@@ -41,6 +43,7 @@ private:
 	BoardData	_data;
 	int			_capturedWhites;
 	int			_capturedBlacks;
+	int 		_turnNum;
 
 };
 

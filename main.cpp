@@ -3,13 +3,15 @@
 #include "GuiManager.hpp"
 #include "Game.hpp"
 #include <unistd.h>
+#include <vector>
 
 using namespace std;
 
+Game::Options options;
 
 void game_page(GuiManager& win, bool isBlackAI, bool isWhiteAI)
 {
-    Game                g(true);
+    Game                g(options);
     bool                hasWon = false;
 
     while (1)
@@ -36,10 +38,9 @@ void game_page(GuiManager& win, bool isBlackAI, bool isWhiteAI)
 
                     if (win.getMouseBoardPos(pos) && !hasWon)
                     {
-                        g.play(pos);
+                        if (g.play(pos))
+                            hasWon = true;
                     }
-
-                    if (g.getState()->isTerminal()) { hasWon = true; }
 
                     break ;
             }
@@ -47,15 +48,15 @@ void game_page(GuiManager& win, bool isBlackAI, bool isWhiteAI)
 
         if (g.getTurn() == PlayerColor::whitePlayer && isWhiteAI && !hasWon)
         {
-            g.play();
+            if (g.play())
+                hasWon = true;
         }
-        if (g.getState()->isTerminal()) { hasWon = true; }
 
         if (g.getTurn() == PlayerColor::blackPlayer && isBlackAI && !hasWon)
         {
-            g.play();
+            if (g.play())
+                hasWon = true;
         }
-        if (g.getState()->isTerminal()) { hasWon = true; }
 
         win.drawBoard(*g.getState(), hasWon);
 
@@ -64,14 +65,10 @@ void game_page(GuiManager& win, bool isBlackAI, bool isWhiteAI)
     }
 }
 
-int menu_page(GuiManager& win)
+GuiManager::MenuButton menu_page(GuiManager& win)
 {
-    Game                g(false);
-
     while (1)
     {
-        if (g.getState()->isTerminal())
-            std::cout << "Win !!!" << std::endl;
         win.clear();
         sf::Event   event;
         while (win.pollEvent(event))
@@ -82,11 +79,10 @@ int menu_page(GuiManager& win)
                     exit(0);
                 case sf::Event::KeyPressed:
                     if (event.key.code == sf::Keyboard::Escape)
-                        return 0;
+                        exit(0);
                     break ;
                 case sf::Event::MouseButtonPressed:
-                    auto mousePos = win.getMouseScreenRatio();
-                    return (mousePos.y * 3 + 1);
+                    return win.getMenuButton();
             }
         }
         win.drawMenu();
@@ -95,6 +91,53 @@ int menu_page(GuiManager& win)
     }
 }
 
+std::vector<std::pair<std::string, bool>> getOptionsData()
+{
+    return std::vector<std::pair<std::string, bool>>({
+                               std::pair<std::string, bool>("Limit black starting moves", options.limitBlack),
+                               std::pair<std::string, bool>("Block double free-threes", options.doubleThree),
+                               std::pair<std::string, bool>("Allow capture", options.capture),
+                               std::pair<std::string, bool>("Allow win by capture", options.captureWin),
+                               std::pair<std::string, bool>("Use neural network", !options.brainDead)
+                       });
+}
+
+void option_page(GuiManager& win)
+{
+    while (1)
+    {
+        win.clear();
+        sf::Event   event;
+        while (win.pollEvent(event))
+        {
+            switch (event.type)
+            {
+                case sf::Event::Closed:
+                    exit(0);
+                case sf::Event::KeyPressed:
+                    if (event.key.code == sf::Keyboard::Escape)
+                        return ;
+                    break ;
+                case sf::Event::MouseButtonPressed:
+                    int pos = win.getMouseScreenRatio().y * 5;
+
+                    switch (pos)
+                    {
+                        case 0: options.limitBlack = !options.limitBlack; break;
+                        case 1: options.doubleThree = !options.doubleThree; break;
+                        case 2: options.capture = !options.capture; break;
+                        case 3: options.captureWin = !options.captureWin; break;
+                        case 4: options.brainDead = !options.brainDead; break;
+                    }
+
+                    break;
+            }
+        }
+        win.drawOptions(getOptionsData());
+        win.display();
+        usleep(200);
+    }
+}
 
 int main() {
 
@@ -104,14 +147,17 @@ int main() {
     {
         switch (menu_page(win))
         {
-            case 1:
+            case GuiManager::AIVersusAI:
                 game_page(win, true, true);
                 break;
-            case 2:
-                game_page(win, true, false);
+            case GuiManager::PlayerVersusAI:
+                game_page(win, false, true);
                 break;
-            case 3:
+            case GuiManager::PlayerVersusPlayer:
                 game_page(win, false, false);
+                break;
+            case GuiManager::Options:
+                option_page(win);
                 break;
         }
     }
