@@ -25,7 +25,7 @@ public:
 	MenuButton		getMenuButton();
 	bool			getMouseBoardPos(BoardPos& pos);
 	sf::Vector2f	getMouseScreenRatio();
-	void 			drawBoard(const Board& b, bool hasWon = false);
+	void 			drawBoard(const Board& b, std::string text);
 	void 			drawOptions(std::vector<std::pair<std::string, bool>> options);
 	void 			drawMenu();
 private:

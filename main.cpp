@@ -24,6 +24,8 @@ std::string getVictoryMessage(VictoryState v)
         case blacksCaptured:
             text = "Enough blacks stone captured";
             break;
+        default:
+            break;
     }
     return (text);
 }
@@ -34,6 +36,7 @@ void game_page(GuiManager& win, bool isBlackAI, bool isWhiteAI)
     bool                hasWon = false;
     std::string         text("");
     VictoryState        victory;
+    BoardPos            pos;
 
     while (!hasWon)
     {
@@ -50,7 +53,6 @@ void game_page(GuiManager& win, bool isBlackAI, bool isWhiteAI)
                         return;
                     break ;
                 case sf::Event::MouseButtonPressed:
-                    BoardPos pos;
 
                     if ((isWhiteAI && isBlackAI) || hasWon)
                     {
@@ -67,6 +69,8 @@ void game_page(GuiManager& win, bool isBlackAI, bool isWhiteAI)
                     }
 
                     break ;
+                default:
+                    break;
             }
         }
 
@@ -115,6 +119,8 @@ GuiManager::MenuButton menu_page(GuiManager& win)
                     break ;
                 case sf::Event::MouseButtonPressed:
                     return win.getMenuButton();
+                default:
+                    break;
             }
         }
         win.drawMenu();
@@ -136,6 +142,7 @@ std::vector<std::pair<std::string, bool>> getOptionsData()
 
 void option_page(GuiManager& win)
 {
+    int pos;
     while (1)
     {
         win.clear();
@@ -151,7 +158,7 @@ void option_page(GuiManager& win)
                         return ;
                     break ;
                 case sf::Event::MouseButtonPressed:
-                    int pos = win.getMouseScreenRatio().y * 5;
+                    pos = win.getMouseScreenRatio().y * 5;
 
                     switch (pos)
                     {
@@ -161,7 +168,8 @@ void option_page(GuiManager& win)
                         case 3: options.captureWin = !options.captureWin; break;
                         case 4: options.brainDead = !options.brainDead; break;
                     }
-
+                    break;
+                default:
                     break;
             }
         }

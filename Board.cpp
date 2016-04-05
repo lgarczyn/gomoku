@@ -46,7 +46,7 @@ int 		Board::getCapturedWhite() const
 VictoryState  Board::isTerminal(bool considerCapture)
 {
 	if (isAlignedStone(5))
-		return true;
+		return aligned;
 	if (considerCapture)
 	{
 		if (_capturedWhites > 10)
@@ -144,16 +144,23 @@ int inline clamp(int value, int min, int max)
 
 bool Board::checkFreeThree(int x, int y, int dirX, int dirY, BoardSquare enemy)
 {
-	int ix = clamp(x + 4 * -dirX, 0, BOARD_WIDTH - 1);
-	int iy = clamp(y + 4 * -dirY, 0, BOARD_HEIGHT - 1);
-	int mx = clamp(x + 4 * dirX, 0, BOARD_WIDTH - 1);
-	int my = clamp(y + 4 * dirY, 0, BOARD_HEIGHT - 1);
+	int ix = x + 4 * -dirX;
+	int iy = y + 4 * -dirY;
+	int mx = x + 4 * dirX;
+	int my = y + 4 * dirY;
+
+	//TODO find better way
+	while (ix < 0 || iy < 0 || ix >= BOARD_WIDTH || iy >= BOARD_HEIGHT)
+		ix += dirX, iy += dirY;
+	while (mx < 0 || my < 0 || mx >= BOARD_WIDTH || my >= BOARD_HEIGHT)
+		mx -= dirX, my -= dirY;
 
 	BoardSquare buffer[6] = {BoardSquare::empty };//TODO remove init
 	int bufferIndex = 0;
 	bool didLoop = false;
 
-	while (ix <= mx && iy <= my)
+	//TODO find better way
+	while (ix * dirX <= mx * dirX && iy * dirY <= my * dirY)
 	{
 		if (bufferIndex == 5)
 			didLoop = true;
