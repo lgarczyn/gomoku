@@ -12,24 +12,23 @@
 #include "PlayerColor.hpp"
 #include "BoardSquare.hpp"
 #include "VictoryState.hpp"
-
-class Board;
+#include "ChildBoard.hpp"
+#include "IAnalyzer.hpp"
 
 using BoardData = BoardSquare[BOARD_WIDTH][BOARD_HEIGHT];
-using ChildBoard = std::tuple<Board*, BoardPos>;
 
 class Board
 {
 public:
+
 	VictoryState isTerminal(bool considerCapture);
 	bool isPosInterest(int x, int y, PlayerColor player) const;
-	std::vector<ChildBoard> getChildren(PlayerColor player, bool capture) const;
+	std::vector<ChildBoard> getChildren(PlayerColor player, bool capture, IAnalyzer* analyzer = nullptr) const;
 	Board();
 	Board(const Board& board);
 	Board(const Board& board, BoardPos move, PlayerColor player, bool capture);
 
 	BoardData* getData();
-	BoardSquare	getCase(int x, int y) const;
 	BoardSquare	getCase(BoardPos pos) const;
 	int 		getCapturedBlack() const;
 	int 		getCapturedWhite() const;
@@ -45,7 +44,6 @@ private:
 	int			_capturedWhites;
 	int			_capturedBlacks;
 	int 		_turnNum;
-
 };
 
 

@@ -2,10 +2,10 @@
 // Created by Louis GARCZYNSKI on 3/30/16.
 //
 
-
+/*
 #pragma once
 
-/*
+
 #include "IAnalyzer.hpp"
 #include "Board.hpp"
 #include <limits.h>
@@ -82,8 +82,8 @@ public:
 	static int MDTF(Board board, int f, int d)
 	{
 		int g = f;
-		int upperbound = std::numeric_limits<score>::max();
-		int lowerbound = std::numeric_limits<score>::min();
+		int upperbound = pinfinity;
+		int lowerbound = ninfinity;
 
 		while (lowerbound < upperbound)
 		{
@@ -109,8 +109,8 @@ public:
 		{
 			firstguess = MDTF(board, firstguess, d);
 
-			if (times_up())//implement no mo time
-				break;
+			//if (times_up())//implement no mo time
+			//	break;
 		}
 		return firstguess;
 	}

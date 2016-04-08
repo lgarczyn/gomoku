@@ -72,11 +72,11 @@ bool Board::isPosInterest(int x, int y, PlayerColor player) const
 	return (false);
 }
 
-std::vector<ChildBoard> Board::getChildren(PlayerColor player, bool capture) const
+std::vector<ChildBoard> Board::getChildren(PlayerColor player, bool capture, IAnalyzer* selecter) const
 {
 	auto children = std::vector<ChildBoard>(BOARD_HEIGHT * BOARD_WIDTH);
-	int index = 0;
 
+	int index = 0;
 	for (int y = 0; y < BOARD_HEIGHT; y++)
 	{
 		for (int x = 0; x < BOARD_WIDTH; x++)
@@ -85,8 +85,8 @@ std::vector<ChildBoard> Board::getChildren(PlayerColor player, bool capture) con
 
 			if (square == BoardSquare::empty)
 			{
-				if (this->isPosInterest(x, y, player)) {
-					children[index] = std::make_tuple(
+				if (isPosInterest(x, y, player)) {
+					children[index] = ChildBoard(
 							new Board(
 									*this,
 									BoardPos(x, y),
@@ -101,6 +101,20 @@ std::vector<ChildBoard> Board::getChildren(PlayerColor player, bool capture) con
 		}
 	}
 	children.resize(index);
+	struct Sorter
+	{
+		IAnalyzer *analyzer;
+		PlayerColor player;
+		Sorter(IAnalyzer* _analyzer, PlayerColor _player):analyzer(_analyzer), player(_player){};
+		bool operator () (const ChildBoard & a, const ChildBoard & b)
+		{
+			return player * analyzer->getScore(*a.board) > player * analyzer->getScore(*b.board);
+		}
+	};
+
+	if (selecter != nullptr)
+		sort(children.begin(), children.end(), Sorter(selecter, player));
+
 	return (children);
 }
 
@@ -243,7 +257,6 @@ void Board::fillTaboo(bool limitBlack, bool doubleThree, PlayerColor player)
 			}
 		}
 	}
-
 }
 
 Board::Board(): _data(), _capturedWhites(), _capturedBlacks(), _turnNum() { }
@@ -282,5 +295,4 @@ Board::Board(const Board& board, BoardPos move, PlayerColor player, bool capture
 }
 
 BoardData* Board::getData() { return &_data; }
-BoardSquare	Board::getCase(int x, int y) const { return (_data[y][x]); }
 BoardSquare	Board::getCase(BoardPos pos) const { return (_data[pos.y][pos.x]); }

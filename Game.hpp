@@ -47,6 +47,7 @@ private:
 	PlayerColor _turn;
 	int _depth;
 	MoveScore negamax(Board* node, int depth, Score alpha, Score beta, PlayerColor player);
+	MoveScore pvs(Board* node, int depth, Score alpha, Score beta, PlayerColor player);
 };
 
 
