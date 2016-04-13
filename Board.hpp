@@ -28,22 +28,23 @@ public:
 	Board(const Board& board);
 	Board(const Board& board, BoardPos move, PlayerColor player, bool capture);
 
-	BoardData* getData();
-	BoardSquare	getCase(BoardPos pos) const;
-	int 		getCapturedBlack() const;
-	int 		getCapturedWhite() const;
+	BoardData*		getData();
+	BoardSquare&	getCase(BoardPos pos);
+	BoardSquare 	getCase(BoardPos pos) const;
+	int 			getCapturedBlack() const;
+	int 			getCapturedWhite() const;
 
-	void 		fillTaboo(bool limitBlack, bool doubleThree, PlayerColor player);
-	bool		checkFreeThree(int x, int y, int dirX, int dirY, BoardSquare enemy);
-	bool 		playCapture(int x, int y);
-	bool 		playCaptureDir(int x, int y, int dirX, int dirY, BoardSquare type);
-	bool 		isAlignedStoneDir(int x, int y, int dirX, int dirY, BoardSquare good, int size) const;
-	bool		isAlignedStone(int size) const;
+	void 			fillTaboo(bool limitBlack, bool doubleThree, PlayerColor player);
+	bool			checkFreeThree(int x, int y, int dirX, int dirY, BoardSquare enemy);
+	bool 			playCapture(int x, int y);
+	bool 			playCaptureDir(int x, int y, int dirX, int dirY, BoardSquare type);
+	bool 			isAlignedStoneDir(int x, int y, int dirX, int dirY, BoardSquare good, int size) const;
+	bool			isAlignedStone(int size) const;
 private:
-	BoardData	_data;
-	int			_capturedWhites;
-	int			_capturedBlacks;
-	int 		_turnNum;
+	BoardData		_data;
+	int				_capturedWhites;
+	int				_capturedBlacks;
+	int 			_turnNum;
 };
 
 

@@ -1,10 +1,15 @@
 cmake_minimum_required(VERSION 3.4)
 project(gomoku)
 
-#include_directories("/nfs/2014/e/edelangh/.brew/include")
-include_directories("/nfs/2014/l/lgarczyn/.brew/include")
-#link_directories("/nfs/2014/e/edelangh/.brew/lib")
-link_directories("/nfs/2014/l/lgarczyn/.brew/lib")
+set(Shark_DIR ~/.brew/Cellar/shark/3.0.0/lib/cmake/Shark)
+
+# Find the Shark libraries and includes
+# set Shark_DIR to the proper location of Shark
+find_package(Shark REQUIRED)
+include(${SHARK_USE_FILE})
+
+include_directories("~/.brew/include")
+link_directories("~/.brew/lib")
 link_libraries("sfml-system")
 link_libraries("sfml-graphics")
 link_libraries("sfml-window")
@@ -15,6 +20,8 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -ofast ")
 
 set(SOURCE_FILES
         main.cpp
+        GUI.cpp
+        GUI.hpp
         Board.cpp
         Board.hpp
         Analyzer.cpp
@@ -29,8 +36,8 @@ set(SOURCE_FILES
         BoardPos.cpp
         BoardPos.hpp
         BoardSquare.hpp
-        GuiManager.cpp
-        GuiManager.hpp
+        GUIManager.cpp
+        GUIManager.hpp
         PlayerColor.hpp
         PlayerColor.cpp
         Constants.hpp
@@ -40,5 +47,6 @@ set(SOURCE_FILES
         ChildBoard.cpp
         ChildBoard.hpp
         BoardStore.cpp
-        BoardStore.hpp)
+        BoardStore.hpp Trainer.cpp Trainer.hpp NetworkManager.cpp NetworkManager.hpp)
 add_executable(gomoku ${SOURCE_FILES})
+target_link_libraries(gomoku ${SHARK_LIBRARIES})

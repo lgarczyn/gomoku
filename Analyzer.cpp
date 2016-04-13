@@ -8,41 +8,29 @@
 #include <iostream>
 #include <fstream>
 
-using namespace boost::archive;
-const int Analyzer::network_depth = 19;
-
 Analyzer::Analyzer()
 {
-	network.setStructure(BOARD_WIDTH * BOARD_HEIGHT, network_depth, 1, shark::FFNetStructures::Normal);
+	inputs = shark::RealMatrix(1, BOARD_HEIGHT * BOARD_WIDTH);
+	outputs = shark::RealMatrix(1, 1);
 
-	try
+	NetworkManager::setup_network(network);
+	if (!NetworkManager::read_network("networks/gomoku.model", network))
 	{
-		std::ifstream ifs("networks/gomoku.model");
-		boost::archive::polymorphic_text_iarchive ia(ifs);
-		network.read(ia);
-		ifs.close();
+		std::cerr << "Could not read neural network";
+		exit(1);
 	}
-	catch (std::exception e)
-	{
-		try
-		{
-			std::ofstream ofs("networks/gomoku.model");
-			boost::archive::polymorphic_text_oarchive oa(ofs);
-			network.write(oa);
-			ofs.close();
 
-		}
-		catch (std::exception e)
-		{
-			std::cerr << e.what() << std::endl;
-		}
-	}
+	state = network.createState();
 }
 
 Score Analyzer::getScore(Board& board)
 {
-	return (0);
-	//apply brain file
+	shark::State test;
+
+	//TODO include captured whites and blacks
+	//TODO actually copy the input in inputs
+	network.eval(inputs, outputs, *state);
+	return (outputs.operator()(0, 0));
 }
 
 Analyzer::~Analyzer()

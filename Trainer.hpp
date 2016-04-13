@@ -1,11 +1,11 @@
 //
-// Created by Louis GARCZYNSKI on 3/30/16.
+// Created by Louis GARCZYNSKI on 4/13/16.
 //
+
 
 #pragma once
 
 #include "IAnalyzer.hpp"
-#include "NetworkManager.hpp"
 
 #define ANALYZER_AVAILABLE
 #include<shark/Models/FFNet.h> //the feed forward neural network
@@ -27,16 +27,16 @@
 #include<shark/Models/Softmax.h> //transforms model output into probabilities
 #include<shark/Models/ConcatenatedModel.h> //provides operator >> for concatenating models
 
-
-class Analyzer : public IAnalyzer
+class Trainer
 {
 private:
-	shark::RealMatrix inputs;
-	shark::RealMatrix outputs;
-	Network network;
-	boost::shared_ptr<shark::State> state;
+	shark::FFNet<
+			shark::FastSigmoidNeuron,
+			shark::LinearNeuron> network;
 public:
-	Analyzer();
-	Score getScore(Board& board);
-	~Analyzer();
+	Trainer();
+	~Trainer();
+	void train();
 };
+
+

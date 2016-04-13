@@ -63,7 +63,7 @@ Score AnalyzerBrainDead::getScore(Board& board) {
 
 	score = 0;
 	score += countAlignedStone(board, 5);
-	score += board.getCapturedBlack();
-	score -= board.getCapturedWhite();
+	//score += board.getCapturedBlack();
+	//score -= board.getCapturedWhite();
 	return score;
 }
