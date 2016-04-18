@@ -30,7 +30,9 @@ public:
 
 	BoardData*		getData();
 	BoardSquare&	getCase(BoardPos pos);
+	BoardSquare&	getCase(int x, int y);
 	BoardSquare 	getCase(BoardPos pos) const;
+	BoardSquare		getCase(int x, int y) const;
 	int 			getCapturedBlack() const;
 	int 			getCapturedWhite() const;
 

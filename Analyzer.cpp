@@ -3,10 +3,6 @@
 //
 
 #include "Analyzer.hpp"
-#include <boost/archive/text_iarchive.hpp>
-#include <boost/archive/text_oarchive.hpp>
-#include <iostream>
-#include <fstream>
 
 Analyzer::Analyzer()
 {
@@ -25,10 +21,17 @@ Analyzer::Analyzer()
 
 Score Analyzer::getScore(Board& board)
 {
-	shark::State test;
+	int k = 0;
+	for (int y = 0; y < BOARD_HEIGHT; y++)
+	{
+		for (int x = 0; x < BOARD_WIDTH; x++)
+		{
+			inputs.operator()(0, k++) = board.getCase(x, y);
+		}
+	}
 
 	//TODO include captured whites and blacks
-	//TODO actually copy the input in inputs
+	//TODO include captured whites and blacks
 	network.eval(inputs, outputs, *state);
 	return (outputs.operator()(0, 0));
 }

@@ -5,74 +5,138 @@
 #include "Trainer.hpp"
 #include "NetworkManager.hpp"
 #include "AnalyzerBrainDead.hpp"
-#include <boost/archive/text_iarchive.hpp>
-#include <boost/archive/text_oarchive.hpp>
-#include <iostream>
-#include <fstream>
-#include <vector>
+#include <shark/ObjectiveFunctions/Loss/SquaredLoss.h>
+
+#include<shark/Algorithms/GradientDescent/Rprop.h> //resilient propagation as optimizer
+#include<shark/ObjectiveFunctions/Loss/CrossEntropy.h> // loss during training
+#include<shark/ObjectiveFunctions/ErrorFunction.h> //error function to connect data model and loss
+#include<shark/ObjectiveFunctions/Loss/ZeroOneLoss.h> //loss for test performance
+
+//evaluating probabilities
+#include<shark/Models/Softmax.h> //transforms model output into probabilities
+#include<shark/Models/ConcatenatedModel.h> //provides operator >> for concatenating models
+#include<random>
 
 Trainer::Trainer()
 {
 	NetworkManager::setup_network(network);
 	if (!NetworkManager::read_network("networks/gomoku.model", network))
 	{
-		std::cerr << "Could not read neural network";
-		exit(1);
+		if (!NetworkManager::write_network("networks/gomoku.model", network))
+		{
+			std::cerr << "Could not read neural network";
+			exit(1);
+		}
 	}
 }
 //http://image.diku.dk/shark/sphinx_pages/build/html/rest_sources/tutorials/algorithms/ffnet.html
 
 
-shark::LabeledData<shark::RealVector,unsigned int> getRandomData()
+shark::LabeledData<shark::RealVector, shark::RealVector> getRandomData(int count = 100)
 {
+	std::default_random_engine engine;
+
+	engine.seed();
+	std::uniform_int_distribution<> distribution(0, 10);
+
+
 	//the 2D xor Problem has 4 patterns, (0,0), (0,1), (1,0), (1,1)
-	std::vector<shark::RealVector> inputs(100, shark::RealVector(BOARD_WIDTH * BOARD_HEIGHT));
+	std::vector<shark::RealVector> inputs(count, shark::RealVector(BOARD_WIDTH * BOARD_HEIGHT));
 	//the result is 1 if both inputs have a different value, and 0 otherwise
-	std::vector<unsigned int> labels(100);
+	std::vector<shark::RealVector> labels(count, shark::RealVector(1));
 	IAnalyzer *analyzer = new AnalyzerBrainDead();
 
-	for(unsigned i=0; i < 100; i++){
+	for(unsigned i=0; i < count; i++){
 
 		Board board;
 		BoardData* data = board.getData();
 
 		for (BoardPos pos; pos != BoardPos::boardEnd; ++pos)
 		{
-			int r = rand() % 10;
-			if (r == 0)
+			int r = distribution(engine);
+			if (r == 11)
 				board.getCase(pos) = BoardSquare::white;
 			else if (r == 1)
 				board.getCase(pos) = BoardSquare::black;
 		}
 		//board.fillTaboo(false, true, PlayerColor::blackPlayer);
 
-		BoardPos pos;
 		for (BoardPos pos; pos != BoardPos::boardEnd; ++pos)
 		{
 			inputs[i](pos.y * BOARD_HEIGHT + pos.x) = board.getCase(pos);
 		}
-		labels[i] = analyzer->getScore(board);
+		labels[i](0) = analyzer->getScore(board) + 1000;
 	}
-	shark::LabeledData<shark::RealVector,unsigned int> dataset = shark::createLabeledDataFromRange(inputs,labels);
+	shark::LabeledData<shark::RealVector,shark::RealVector> dataset = shark::createLabeledDataFromRange(inputs,labels);
 	return dataset;
 }
 
 void Trainer::train()
 {
-	//get problem data
-	shark::LabeledData<shark::RealVector,unsigned int> dataset = getRandomData();
+	//input == RealVector
+	//label == unsigned int
+	//output == RealVector
+
+	//label input label
+	//sqloss output label
+	//model input output
+	//errorfunc input label output
+
 
 //create error function
-	shark::CrossEntropy loss; // surrogate loss for training
-	shark::ErrorFunction error(dataset,&network,&loss);
+	{
+		shark::LabeledData<shark::RealVector, shark::RealVector> dataset = getRandomData(100);
+		shark::SquaredLoss<shark::RealVector, shark::RealVector> loss; // surrogate loss for training
 
-//initialize Rprop and initialize the network randomly
-	initRandomUniform(network,-0.1,0.1);
-	shark::IRpropPlus optimizer;
-	optimizer.init(error);
-	unsigned numberOfSteps = 1000;
-	for(unsigned step = 0; step != numberOfSteps; ++step)
-		optimizer.step(error);
+		shark::AbstractModel<shark::RealVector, shark::RealVector> *model = &network;
+		shark::AbstractLoss<shark::RealVector, shark::RealVector> *aloss = &loss;
+
+		shark::ErrorFunction error(dataset, model, aloss);
+
+		//initialize Rprop and initialize the network randomly
+		//initRandomUniform(network,-0.1,0.1);
+		shark::IRpropPlus optimizer;
+		optimizer.init(error);
+		unsigned numberOfSteps = 1000;
+		for (unsigned step = 0; step != numberOfSteps; ++step)
+		{
+			std::cout << step << std::endl;
+			optimizer.step(error);
+		}
+	}
+	{
+
+		std::cout << "Test" << std::endl;
+
+
+		IAnalyzer* analyzer = new AnalyzerBrainDead();
+
+		for (int i = 0; i < 100; i++)
+		{
+			Board* board = new Board();
+			for (BoardPos pos; pos != BoardPos::boardEnd; ++pos)
+			{
+				int r = rand() % 10;
+				if (r == 0)
+					board->getCase(pos) = BoardSquare::white;
+				else if (r == 1)
+					board->getCase(pos) = BoardSquare::black;
+			}
+
+			shark::RealMatrix input(1, BOARD_HEIGHT * BOARD_WIDTH);
+			shark::RealMatrix output(1, 1);
+
+			for (BoardPos pos; pos != BoardPos::boardEnd; ++pos)
+			{
+				input.operator()(0, pos.y * BOARD_HEIGHT + pos.x) = board->getCase(pos);
+			}
+
+			network.eval(input, output, *network.createState());
+
+			std::cout << "Dataset score: " << analyzer->getScore(*board) << std::endl;
+			std::cout << "Analyzed score: " << output.operator()(0, 0) - 1000 << std::endl;
+		}
+	}
 }
 
 Trainer::~Trainer()
