@@ -61,7 +61,7 @@ Game::MoveScore Game::negamax(Board* node, int negDepth, Score alpha, Score beta
 		}
 		else if (negDepth <= 1)
 		{
-			board->fillTaboo(_options.limitBlack, _options.doubleThree, -player);
+			//board->fillTaboo(_options.limitBlack, _options.doubleThree, -player);
 			score = player * _analyzer->getScore(*board);
 		}
 		else if (i == 0)

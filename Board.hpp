@@ -37,6 +37,7 @@ public:
 	int 			getCapturedWhite() const;
 
 	void 			fillTaboo(bool limitBlack, bool doubleThree, PlayerColor player);
+	bool 			isPosLegal(int x, int y, bool limitBlack, bool doubleThree, PlayerColor player);
 	bool			checkFreeThree(int x, int y, int dirX, int dirY, BoardSquare enemy);
 	bool 			playCapture(int x, int y);
 	bool 			playCaptureDir(int x, int y, int dirX, int dirY, BoardSquare type);

@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.4)
+cmake_minimum_required(VERSION 2.4)
 project(gomoku)
 
 set(Shark_DIR ~/.brew/Cellar/shark/3.0.0/lib/cmake/Shark)
@@ -16,7 +16,7 @@ link_libraries("sfml-window")
 link_libraries("boost_serialization")
 link_libraries("shark")
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -ofast ")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -ofast -pg ")
 
 set(SOURCE_FILES
         main.cpp

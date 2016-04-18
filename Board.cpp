@@ -176,17 +176,18 @@ bool Board::checkFreeThree(int x, int y, int dirX, int dirY, BoardSquare enemy)
 	//TODO find better way
 	while (ix * dirX <= mx * dirX && iy * dirY <= my * dirY)
 	{
-		if (bufferIndex == 5)
-			didLoop = true;
-		if (bufferIndex == 6)
-			bufferIndex = 0;
-
 		BoardSquare tmp = _data[iy][ix];
-		buffer[bufferIndex] = (tmp == taboo) ? empty : tmp;
+		buffer[bufferIndex++] = (tmp == taboo) ? empty : tmp;
+
+		if (bufferIndex == 6)
+		{
+			bufferIndex = 0;
+			didLoop = true;
+		}
 
 		if (didLoop)
 		{
-			if (tmp == empty && buffer[(bufferIndex + 1) % 6] == empty)
+			if (tmp == empty && buffer[bufferIndex] == empty)
 				//TODO check if really need to be empty or just non-enemy
 			{
 				int emptyCount = 0;
@@ -205,8 +206,6 @@ bool Board::checkFreeThree(int x, int y, int dirX, int dirY, BoardSquare enemy)
 					return true;
 			}
 		}
-
-		bufferIndex++;
 		ix += dirX, iy += dirY;
 	}
 	return false;
@@ -257,6 +256,39 @@ void Board::fillTaboo(bool limitBlack, bool doubleThree, PlayerColor player)
 			}
 		}
 	}
+}
+
+bool Board::isPosLegal(int x, int y, bool limitBlack, bool doubleThree, PlayerColor player)
+{
+	BoardSquare enemy = (player == blackPlayer)? white : black;
+
+	if (limitBlack)
+	{
+		if (_turnNum == 0)
+		{
+			if (y != 9 && x != 9)
+				return false;
+			else
+				return true;
+		}
+		else if (_turnNum == 2)
+		{
+			if (y >= 4 && y < 15 && x >= 4 && x < 15)
+				return false;
+			else
+				return true;
+		}
+	}
+	int count = 0;
+	if (checkFreeThree(x, y, 1, 0, enemy)) count++;
+	if (checkFreeThree(x, y, 1, 1, enemy)) count++;
+	if (count >= 2) { return false; }
+	if (checkFreeThree(x, y, 0, 1, enemy)) count++;
+	if (count == 0) { return true; }
+	if (count >= 2) { return false; }
+	if (checkFreeThree(x, y, -1, 1, enemy)) count++;
+	if (count >= 2) { return false; }
+	return true;
 }
 
 Board::Board(): _data(), _capturedWhites(), _capturedBlacks(), _turnNum() { }
