@@ -4,7 +4,7 @@
 
 #include "Game.hpp"
 #include "Analyzer.hpp"
-#include "AnalyzerBrainDead.hpp"
+#include "Board.hpp"
 #include <iostream>
 
 using namespace std;
@@ -20,7 +20,7 @@ Game::Game(Options options):_options(options)
 	_analyzer = new AnalyzerBrainDead();
 #endif
 	_turn = PlayerColor::blackPlayer;
-	_depth = 2;
+	_depth = 4;
 	_state->fillTaboo(_options.limitBlack, _options.doubleThree, _turn);
 }
 
@@ -29,10 +29,10 @@ Game::~Game()
 
 }
 
-Game::MoveScore Game::negamax(Board* node, int negDepth, Score alpha, Score beta, PlayerColor player)
+MoveScore Game::negamax(Board* node, int negDepth, Score alpha, Score beta, PlayerColor player)
 {
 	//auto children = node->getChildren(player, _options.capture, _analyzer);
-	auto children = node->getChildren(player, _options.capture);
+	auto children = node->getChildren(player, _options.capture, 10);
 
 	MoveScore bestMove(ninfinity);
 	std::vector<MoveScore>	choice(10);
@@ -97,14 +97,14 @@ Game::MoveScore Game::negamax(Board* node, int negDepth, Score alpha, Score beta
 	return choice[rand() % choice.size()];//TODO get fucking rid of rand
 }
 
-Game::MoveScore Game::pvs(Board *node, int depth, int alpha, int beta, PlayerColor player)
+MoveScore Game::pvs(Board *node, int depth, int alpha, int beta, PlayerColor player)
 {
 	if (node->isTerminal(_options.capture))
 		return ninfinity;
 	if (depth == 0)
 		return player * _analyzer->getScore(*node);
 
-	auto children = node->getChildren(player, _options.capture);
+	auto children = node->getChildren(player, _options.capture, 10);
 
 	MoveScore bestMove;
 	for (int i = 0; i < children.size(); i++)

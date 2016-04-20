@@ -3,6 +3,7 @@
 //
 
 #include "AnalyzerBrainDead.hpp"
+#include "Board.hpp"
 
 AnalyzerBrainDead::AnalyzerBrainDead() { }
 
@@ -14,7 +15,7 @@ int countAlignedStoneDir(Board& data, int x, int y, int dirX, int dirY, BoardSqu
 	if (x - dirX >= 0 && x - dirX < BOARD_WIDTH
 		&& y - dirY >= 0 && y - dirY < BOARD_HEIGHT)
 	{
-		auto c = (*data.getData())[y - dirY][x - dirX];
+		auto c = data._data[y - dirY][x - dirX];
 		if (c == good)
 			return (0);
 		else if (c == empty)
@@ -25,7 +26,7 @@ int countAlignedStoneDir(Board& data, int x, int y, int dirX, int dirY, BoardSqu
 		if (x + i * dirX < 0 || x + i * dirX >= BOARD_WIDTH
 			|| y + i * dirY < 0 || y + i * dirY >= BOARD_HEIGHT)
 			return (i + bonus);
-		if ((*data.getData())[y + dirY*i][x + dirX*i] != good)
+		if (data._data[y + dirY*i][x + dirX*i] != good)
 			return (i + bonus);
 	}
 	return (i + bonus);
@@ -33,6 +34,7 @@ int countAlignedStoneDir(Board& data, int x, int y, int dirX, int dirY, BoardSqu
 
 Score countAlignedStone(Board& data, int size)
 {
+	static const int score[] = {1, 2, 4, 8, 16, 32, 64};
 	Score	sw = 0;
 	Score   sb = 0;
 
@@ -41,7 +43,7 @@ Score countAlignedStone(Board& data, int size)
 			for (int dirX = -1; dirX <= 1; ++dirX)
 				for (int dirY = -1; dirY <= 1; ++dirY)
 					if (dirX || dirY) {
-						auto c = (*data.getData())[y][x];
+						auto c = data._data[y][x];
 
 						if (c == BoardSquare::white || c == BoardSquare::black) {
 							int dist = countAlignedStoneDir(data, x, y, dirX, dirY, c, size);
@@ -53,6 +55,35 @@ Score countAlignedStone(Board& data, int size)
 						}
 					}
 		}
+
+	for (int y = 0 ; y < BOARD_HEIGHT; ++y)
+		for (int x = 0 ; x < BOARD_WIDTH; ++x) {
+			auto c = data._data[y][x];
+			if (c == BoardSquare::white)
+			{
+				sw += score[countAlignedStoneDir(data, x, y, 1, 1, c, size)];
+				sw += score[countAlignedStoneDir(data, x, y, 1, 0, c, size)];
+				sw += score[countAlignedStoneDir(data, x, y, 1, -1, c, size)];
+				sw += score[countAlignedStoneDir(data, x, y, 0, 1, c, size)];
+				//sw += score[countAlignedStoneDir(data, x, y, 0, 0, c, size)];
+				sw += score[countAlignedStoneDir(data, x, y, 0, -1, c, size)];
+				sw += score[countAlignedStoneDir(data, x, y, -1, 1, c, size)];
+				sw += score[countAlignedStoneDir(data, x, y, -1, 0, c, size)];
+				sw += score[countAlignedStoneDir(data, x, y, -1, -1, c, size)];
+			}
+			else if (c == BoardSquare::black)
+			{
+				sb += score[countAlignedStoneDir(data, x, y, 1, 1, c, size)];
+				sb += score[countAlignedStoneDir(data, x, y, 1, 0, c, size)];
+				sb += score[countAlignedStoneDir(data, x, y, 1, -1, c, size)];
+				sb += score[countAlignedStoneDir(data, x, y, 0, 1, c, size)];
+				//sw += score[countAlignedStoneDir(data, x, y, 0, 0, c, size)];
+				sb += score[countAlignedStoneDir(data, x, y, 0, -1, c, size)];
+				sb += score[countAlignedStoneDir(data, x, y, -1, 1, c, size)];
+				sb += score[countAlignedStoneDir(data, x, y, -1, 0, c, size)];
+				sb += score[countAlignedStoneDir(data, x, y, -1, -1, c, size)];
+			}
+		}
 	return sw;
 }
 
@@ -63,7 +94,7 @@ Score AnalyzerBrainDead::getScore(Board& board) {
 
 	score = 0;
 	score += countAlignedStone(board, 5);
-	//score += board.getCapturedBlack();
-	//score -= board.getCapturedWhite();
+	score += board.getCapturedBlack();
+	score -= board.getCapturedWhite();
 	return score;
 }

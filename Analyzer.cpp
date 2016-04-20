@@ -21,6 +21,9 @@ Analyzer::Analyzer()
 
 Score Analyzer::getScore(Board& board)
 {
+	if (board.hasScore)
+		return board.score;
+
 	int k = 0;
 	for (int y = 0; y < BOARD_HEIGHT; y++)
 	{
@@ -33,7 +36,10 @@ Score Analyzer::getScore(Board& board)
 	//TODO include captured whites and blacks
 	//TODO include captured whites and blacks
 	network.eval(inputs, outputs, *state);
-	return (outputs.operator()(0, 0));
+
+	board.hasScore = true;
+	board.score = outputs.operator()(0, 0);
+	return (board.score);
 }
 
 Analyzer::~Analyzer()

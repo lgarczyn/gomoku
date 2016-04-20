@@ -16,7 +16,8 @@ link_libraries("sfml-window")
 link_libraries("boost_serialization")
 link_libraries("shark")
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -ofast -pg ")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -ofast")
+# -pg --profile")
 
 set(SOURCE_FILES
         main.cpp
@@ -24,8 +25,6 @@ set(SOURCE_FILES
         GUI.hpp
         Board.cpp
         Board.hpp
-        Analyzer.cpp
-        Analyzer.hpp
         IAnalyzer.hpp
         AnalyzerBrainDead.cpp
         AnalyzerBrainDead.hpp
@@ -47,6 +46,12 @@ set(SOURCE_FILES
         ChildBoard.cpp
         ChildBoard.hpp
         BoardStore.cpp
-        BoardStore.hpp Trainer.cpp Trainer.hpp NetworkManager.cpp NetworkManager.hpp)
+        BoardStore.hpp
+        NetworkManager.cpp
+        NetworkManager.hpp
+        Analyzer.cpp
+        Analyzer.hpp
+        Trainer.cpp
+        Trainer.hpp MoveScore.cpp MoveScore.hpp)
 add_executable(gomoku ${SOURCE_FILES})
 target_link_libraries(gomoku ${SHARK_LIBRARIES})

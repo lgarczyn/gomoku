@@ -1,5 +1,4 @@
 #include "GUI.hpp"
-#include "Trainer.hpp"
 
 int main()
 {
@@ -11,7 +10,9 @@ int main()
 }
 
 //trainer
-/*int main()
+/*
+#include "Trainer.hpp"
+int main()
 {
 	Trainer trainer;
 

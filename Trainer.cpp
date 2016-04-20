@@ -4,7 +4,9 @@
 
 #include "Trainer.hpp"
 #include "NetworkManager.hpp"
+#include "Board.hpp"
 #include "AnalyzerBrainDead.hpp"
+#include "BoardPos.hpp"
 #include <shark/ObjectiveFunctions/Loss/SquaredLoss.h>
 
 #include<shark/Algorithms/GradientDescent/Rprop.h> //resilient propagation as optimizer
@@ -48,24 +50,25 @@ shark::LabeledData<shark::RealVector, shark::RealVector> getRandomData(int count
 
 	for(unsigned i=0; i < count; i++){
 
-		Board board;
-		BoardData* data = board.getData();
+		Board *board = new Board();
+		BoardData* data = board->getData();
 
 		for (BoardPos pos; pos != BoardPos::boardEnd; ++pos)
 		{
 			int r = distribution(engine);
 			if (r == 11)
-				board.getCase(pos) = BoardSquare::white;
+				board->getCase(pos) = BoardSquare::white;
 			else if (r == 1)
-				board.getCase(pos) = BoardSquare::black;
+				board->getCase(pos) = BoardSquare::black;
 		}
 		//board.fillTaboo(false, true, PlayerColor::blackPlayer);
 
 		for (BoardPos pos; pos != BoardPos::boardEnd; ++pos)
 		{
-			inputs[i](pos.y * BOARD_HEIGHT + pos.x) = board.getCase(pos);
+			inputs[i](pos.y * BOARD_HEIGHT + pos.x) = board->getCase(pos);
 		}
-		labels[i](0) = analyzer->getScore(board) + 1000;
+		labels[i](0) = analyzer->getScore(*board) + 1000;
+		delete board;
 	}
 	shark::LabeledData<shark::RealVector,shark::RealVector> dataset = shark::createLabeledDataFromRange(inputs,labels);
 	return dataset;

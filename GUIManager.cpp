@@ -83,12 +83,12 @@ void	GUIManager::drawBoard(const Board &b, std::string message)
 		sf::Sprite* sprite = nullptr;
 		switch (c)
 		{
-			case BoardSquare::taboo:
+			/*case BoardSquare::taboo:
 				if (pos == mousePos)
 					sprite = &sprite_preview_taboo_mouse;
 				else
 					sprite = &sprite_preview_taboo;
-				break ;
+				break ;*/ //TODO display taboo and good score
 			case BoardSquare::empty:
 				if (pos == mousePos && !message.size())
 					sprite = &sprite_preview;

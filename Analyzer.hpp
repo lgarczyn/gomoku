@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include "Board.hpp"
 #include "IAnalyzer.hpp"
 #include "NetworkManager.hpp"
 
