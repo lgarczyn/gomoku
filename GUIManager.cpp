@@ -90,12 +90,6 @@ void	GUIManager::drawBoard(const Board &b, bool isPlayerNext, const std::string 
 		sf::Text* text = nullptr;
 		switch (c)
 		{
-			/*case BoardSquare::taboo:
-				if (pos == mousePos)
-					sprite = &sprite_preview_taboo_mouse;
-				else
-					sprite = &sprite_preview_taboo;
-				break ;*/ //TODO display taboo and good score
 			case BoardSquare::empty:
 				if (p == -1)
 				{

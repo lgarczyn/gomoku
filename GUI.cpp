@@ -108,7 +108,8 @@ void game_page(GUIManager& win, bool isBlackAI, bool isWhiteAI)
         win.drawBoard(*g.getState(), isPlayerNext, text);
         win.display();
 
-        usleep(200);//TODO better framerate system
+        if (isPlayerNext)
+            usleep(200);
     }
 }
 

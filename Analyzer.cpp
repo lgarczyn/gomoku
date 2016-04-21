@@ -34,7 +34,6 @@ Score Analyzer::getScore(Board& board)
 	}
 
 	//TODO include captured whites and blacks
-	//TODO include captured whites and blacks
 	network.eval(inputs, outputs, *state);
 
 	board.hasScore = true;

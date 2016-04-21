@@ -130,26 +130,24 @@ bool Board::playCapture(int x, int y) {
 	return false;
 }
 
-//TODO check algo is accurate
 bool Board::checkFreeThree(int x, int y, int dirX, int dirY, BoardSquare enemy)
 {
 	int ix = x + 4 * -dirX;
 	int iy = y + 4 * -dirY;
-	int mx = x + 4 * dirX;
-	int my = y + 4 * dirY;
+	int mx = x + 5 * dirX;
+	int my = y + 5 * dirY;
 
 	//TODO find better way (seriously tough)
 	while (ix < 0 || iy < 0 || ix >= BOARD_WIDTH || iy >= BOARD_HEIGHT)
 		ix += dirX, iy += dirY;
-	while (mx < 0 || my < 0 || mx >= BOARD_WIDTH || my >= BOARD_HEIGHT)
+	while (mx < -1 || my < -1 || mx > BOARD_WIDTH || my > BOARD_HEIGHT)
 		mx -= dirX, my -= dirY;
 
-	BoardSquare buffer[6];// = {BoardSquare::empty };//TODO remove init
+	BoardSquare buffer[6];
 	int bufferIndex = 0;
 	bool didLoop = false;
 
-	//TODO find better way
-	while (ix * dirX <= mx * dirX && iy * dirY <= my * dirY)
+	while ((!dirX || ix != mx) && (!dirY || iy != my))
 	{
 		BoardSquare tmp = _data[iy][ix];
 		buffer[bufferIndex] = tmp;
@@ -187,7 +185,6 @@ bool Board::checkFreeThree(int x, int y, int dirX, int dirY, BoardSquare enemy)
 	return false;
 }
 
-//TODO BUG CURRENTLY TABOO POS ARE ERASED BY PRIORITY
 void Board::fillTaboo(bool limitBlack, bool doubleThree, PlayerColor player)
 {
 	BoardSquare enemy = (player == blackPlayer)? white : black;
