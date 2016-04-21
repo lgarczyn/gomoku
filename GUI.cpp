@@ -37,8 +37,10 @@ void game_page(GUIManager& win, bool isBlackAI, bool isWhiteAI)
     std::string         text("");
     VictoryState        victory;
     BoardPos            pos;
+    BoardPos            suggestion;
 
-    while (!hasWon)
+
+    while (1)
     {
         win.clear();
         sf::Event   event;
@@ -54,10 +56,8 @@ void game_page(GUIManager& win, bool isBlackAI, bool isWhiteAI)
                     break ;
                 case sf::Event::MouseButtonPressed:
 
-                    if ((isWhiteAI && isBlackAI) || hasWon)
-                    {
-                        break;
-                    }
+                    if (hasWon)
+                        return;
 
                     if (win.getMouseBoardPos(pos) && !hasWon)
                     {
@@ -81,8 +81,12 @@ void game_page(GUIManager& win, bool isBlackAI, bool isWhiteAI)
                 hasWon = true;
                 text = "White win\n" + getVictoryMessage(victory);
             }
+            else if (!isBlackAI)
+            {
+                suggestion = g.getNextMove();
+            }
         }
-        win.drawBoard(*g.getState(), text);
+        win.drawBoard(*state, suggestion, (isBlackAI && isWhiteAI), text);
         win.display();
 
         if (g.getTurn() == PlayerColor::blackPlayer && isBlackAI && !hasWon)
@@ -92,13 +96,17 @@ void game_page(GUIManager& win, bool isBlackAI, bool isWhiteAI)
                 hasWon = true;
                 text = "Black win\n" + getVictoryMessage(victory);
             }
+            else if (!isWhiteAI)
+            {
+                suggestion = g.getNextMove();
+            }
         }
-        win.drawBoard(*g.getState(), text);
+        Board* state = ;
+        win.drawBoard(g.getState(), suggestion, (isBlackAI && isWhiteAI), text);
         win.display();
 
         usleep(200);//TODO better framerate system
     }
-    usleep(5000000);
 }
 
 GUIManager::MenuButton menu_page(GUIManager& win)

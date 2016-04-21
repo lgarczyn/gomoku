@@ -61,84 +61,11 @@ VictoryState  Board::isTerminal(bool considerCapture)
 	return  novictory;
 }
 
-bool Board::isPosInterest(int x, int y, PlayerColor player) const
-{
-	int half_zone_size = 4;
-
-	for (int dirY = -half_zone_size ; dirY <= half_zone_size; ++dirY)
-		for (int dirX = -half_zone_size ; dirX <= half_zone_size; ++dirX) {
-			if (x + dirX < 0 || x + dirX >= BOARD_WIDTH
-				|| y + dirY < 0 || y + dirY >= BOARD_HEIGHT)
-				continue ;
-			if (_data[y + dirY][x + dirX] != BoardSquare::empty)
-				return (true);
-		}
-	return (false);
-}
-
 std::vector<ChildBoard> Board::getChildren(PlayerColor player, bool capture, int count = -1)
 {
-	fillPriority();//TODO add priority to offensive
-
-	/*auto childrenPos = std::vector<MoveScore>();//TODO CHECK if necessary
-	auto childrenRandom = std::vector<MoveScore>();
-
-	//auto children = std::vector<ChildBoard>(BOARD_HEIGHT * BOARD_WIDTH);
-
-	int autoSize = 0;
-	int randomSize = 0;
-	for (int y = 0; y < BOARD_HEIGHT; y++)
-	{
-		for (int x = 0; x < BOARD_WIDTH; x++)
-		{
-			int score = _priority[y][x];
-			if (score >= 6)
-			{
-				childrenPos.push_back(MoveScore(score, BoardPos(x, y)));
-				autoSize++;
-			}
-			else
-			{
-				childrenRandom.push_back(MoveScore(score, BoardPos(x, y)));
-				randomSize++;
-			}
-		}
-	}
-
-	shuffle (childrenRandom.begin(), childrenRandom.end(), std::default_random_engine(std::random_device{}()));
+	fillPriority();
 
 
-
-
-	struct Sorter
-	{
-		Sorter(){};
-		bool operator () (const MoveScore & a, const MoveScore & b)
-		{
-			return a.score > b.score;
-		}
-	};
-
-	sort(childrenRandom.begin(), childrenRandom.end(), Sorter());
-	sort(childrenPos.begin(), childrenPos.end(), Sorter());
-
-	auto children = std::vector<ChildBoard>();
-	for (auto move:childrenPos)
-	{
-		children.push_back(ChildBoard(
-				new Board(*this, move.pos, player, capture),
-				move.pos));
-	}
-	for (MoveScore move:childrenRandom)
-	{
-		if (children.size() >= count)
-			break;
-		children.push_back(ChildBoard(
-				new Board(*this, move.pos, player, capture),
-				move.pos));
-	}
-	return (children);
-	*/
 	auto childrenPos = std::vector<MoveScore>();
 
 	for (int y = 0; y < BOARD_HEIGHT; y++)
@@ -212,13 +139,13 @@ bool Board::checkFreeThree(int x, int y, int dirX, int dirY, BoardSquare enemy)
 	int mx = x + 4 * dirX;
 	int my = y + 4 * dirY;
 
-	//TODO find better way
+	//TODO find better way (seriously tough)
 	while (ix < 0 || iy < 0 || ix >= BOARD_WIDTH || iy >= BOARD_HEIGHT)
 		ix += dirX, iy += dirY;
 	while (mx < 0 || my < 0 || mx >= BOARD_WIDTH || my >= BOARD_HEIGHT)
 		mx -= dirX, my -= dirY;
 
-	BoardSquare buffer[6] = {BoardSquare::empty };//TODO remove init
+	BoardSquare buffer[6];// = {BoardSquare::empty };//TODO remove init
 	int bufferIndex = 0;
 	bool didLoop = false;
 
@@ -287,7 +214,7 @@ void Board::fillTaboo(bool limitBlack, bool doubleThree, PlayerColor player)
 			}
 	}
 	if (doubleThree)
-	{//TODO remove line from all sides
+	{//TODO remove line from all sides (???)
 		for (int y = 0; y < BOARD_HEIGHT; y++)
 		{
 			for (int x = 0; x < BOARD_WIDTH; x++)
@@ -317,7 +244,8 @@ inline int clamp(int value, int min, int max)
 	return value;
 }
 
-inline void Board::fillPriorityDir(int x, int y, int dirX, int dirY, BoardSquare ally)
+//inline //TODO put back
+void Board::fillPriorityDir(int x, int y, int dirX, int dirY, BoardSquare ally)
 {
 	const int maxX = clamp(x + 5 * dirX, -1, BOARD_WIDTH);
 	const int maxY = clamp(y + 5 * dirY, -1, BOARD_HEIGHT);
@@ -325,16 +253,17 @@ inline void Board::fillPriorityDir(int x, int y, int dirX, int dirY, BoardSquare
 	int value = 1;
 
 	x += dirX, y+= dirY;
-	while (x != maxX && y != maxY)
+	//wait for both iterator to either be static or have reached their goal
+	while ((!dirX || x != maxX) && (!dirY || y != maxY))
 	{
 		BoardSquare square = _data[y][x];
-		if (square == empty)
+		if (square == empty && _priority[y][x] >= 0)
 		{
 			_priority[y][x] += value;
 		}
 		else if (square == ally)
 		{
-			value++;
+			value <<= 1;
 		}
 		else
 		{
@@ -405,7 +334,7 @@ Board::Board(): _data(), _priority(), _capturedWhites(), _capturedBlacks(), _tur
 Board::Board(const Board& board):Board()
 {
 	*this = board;
-	bzero(_priority, sizeof(score));//TODO reuse score from previous
+	bzero(_priority, sizeof(_priority));//TODO reuse score from previous
 }
 
 Board::Board(const Board& board, BoardPos move, PlayerColor player, bool capture) : Board(board)
@@ -433,3 +362,5 @@ BoardSquare	Board::getCase(BoardPos pos) const { return (_data[pos.y][pos.x]); }
 BoardSquare&	Board::getCase(BoardPos pos) { return (_data[pos.y][pos.x]); }
 BoardSquare		Board::getCase(int x, int y) const {return (_data[y][x]);};
 BoardSquare&	Board::getCase(int x, int y) {return (_data[y][x]);};
+int 			Board::getPriority(int x, int y) const {return _priority[y][x];}
+int 			Board::getPriority(BoardPos pos) const {return _priority[pos.y][pos.x];}

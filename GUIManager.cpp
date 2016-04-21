@@ -5,6 +5,7 @@
 #include "GUIManager.hpp"
 
 #include <sstream>
+#include <string>
 
 GUIManager::GUIManager()
 		:sf::RenderWindow(sf::VideoMode(screen_width, screen_height), "Gomoku"),
@@ -60,7 +61,7 @@ sf::Vector2f	GUIManager::getMouseScreenRatio()
 	return value;
 }
 
-void	GUIManager::drawBoard(const Board &b, std::string message)
+void	GUIManager::drawBoard(const Board &b, const BoardPos* suggestion, bool isAllAI, const std::string message)
 {
 	BoardSquare 		c;
 	sf::Sprite			background(_textures.board);
@@ -79,8 +80,10 @@ void	GUIManager::drawBoard(const Board &b, std::string message)
 	for (BoardPos pos = BoardPos(); pos != BoardPos::boardEnd; ++pos)
 	{
 		c = b.getCase(pos);
+		int p = b.getPriority(pos);
 
 		sf::Sprite* sprite = nullptr;
+		sf::Text* text = nullptr;
 		switch (c)
 		{
 			/*case BoardSquare::taboo:
@@ -90,8 +93,28 @@ void	GUIManager::drawBoard(const Board &b, std::string message)
 					sprite = &sprite_preview_taboo;
 				break ;*/ //TODO display taboo and good score
 			case BoardSquare::empty:
-				if (pos == mousePos && !message.size())
-					sprite = &sprite_preview;
+				if (p == -1)
+				{
+					if (pos == mousePos && !isAllAI)
+						sprite = &sprite_preview_taboo_mouse;
+					else
+						sprite = &sprite_preview_taboo;
+				}
+				else
+				{
+					if (p > 0)
+					{
+						text = new sf::Text(std::to_string(p), _textures.font, 20);
+						text->setColor(sf::Color(0, 0, 0));
+					}
+					if (pos == mousePos && !message.size() && !isAllAI)
+						sprite = &sprite_preview;
+					else if (suggestion != nullptr && pos == suggestion)
+					{
+						sprite = &sprite_preview;
+					}
+
+				}
 				break ;
 			case BoardSquare::white:
 				sprite = &sprite_white;
@@ -107,6 +130,21 @@ void	GUIManager::drawBoard(const Board &b, std::string message)
 					screen_margin_x + board_offset_x + pos.x * cell_width - cell_width / 2,
 					screen_margin_y + board_offset_y + pos.y * cell_height - cell_width / 2);
 			this->draw(*sprite);
+		}
+		if (text != nullptr)
+		{
+			sf::Vector2f textPos = sf::Vector2f(
+					screen_margin_x + board_offset_x + pos.x * cell_width,
+					screen_margin_y + board_offset_y + pos.y * cell_height);
+
+			sf::Vector2f size = sf::Vector2f(40, 20);
+			sf::RectangleShape shape = sf::RectangleShape(size);
+			shape.setPosition(textPos.x - 20, textPos.y - 10);
+
+			centerOnPos(*text, textPos.x, textPos.y);
+			this->draw(shape);
+			this->draw(*text);
+			delete text;
 		}
 	}
 	if (message.size())

@@ -52,6 +52,8 @@ set(SOURCE_FILES
         Analyzer.cpp
         Analyzer.hpp
         Trainer.cpp
-        Trainer.hpp MoveScore.cpp MoveScore.hpp)
+        Trainer.hpp
+        MoveScore.cpp
+        MoveScore.hpp)
 add_executable(gomoku ${SOURCE_FILES})
 target_link_libraries(gomoku ${SHARK_LIBRARIES})

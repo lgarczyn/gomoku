@@ -1,12 +1,9 @@
 # gomoku
 
-TODO: mark taboo squares
-TODO: load and use AI
+BUG: taboo ignored
 
-TODO: solve memory leak
-TODO: optimize
-TODO: GUI display
+UGLY: public priority and data instead of friend
+
+TODO: player tip
 TODO: improv algo + timecut
-
-TODO: sort minimax
-TODO: menu
+TODO: include capture and turn in brain input

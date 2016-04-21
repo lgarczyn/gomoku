@@ -37,8 +37,10 @@ MoveScore Game::negamax(Board* node, int negDepth, Score alpha, Score beta, Play
 	MoveScore bestMove(ninfinity);
 	std::vector<MoveScore>	choice(10);
 
+	//TODO detect stalemate
 	if (!children.size())
-		return (MoveScore(0, BoardPos(rand() % BOARD_WIDTH, rand() % BOARD_HEIGHT)));
+		throw std::logic_error("GetChildren returned an empty array");
+		//return (MoveScore(0, BoardPos(rand() % BOARD_WIDTH, rand() % BOARD_HEIGHT)));
 
 	/*int max = negDepth * 5 / _depth;
 	if (children.size() > max)
@@ -140,12 +142,15 @@ bool Game::play(BoardPos pos)
 {
 	if (_state->getCase(pos) != BoardSquare::empty)
 		return false;
+	if (_state->getPriority(pos) < 0)
+		return false;
 
 	Board* tmp = _state;
 	_state = new Board(*_state, pos, _turn, _options.capture);
 	delete tmp;
 	_turn = -_turn;
 	_state->fillTaboo(_options.limitBlack, _options.doubleThree, _turn);
+	_state->fillPriority();
 	return _state->isTerminal(_options.captureWin);
 }
 
