@@ -39,6 +39,7 @@ public:
 	BoardSquare		getCase(int x, int y) const;
 	int 			getPriority(int x, int y) const;
 	int 			getPriority(BoardPos pos) const;
+	BoardPos		getBestPriority() const;
 	int 			getCapturedBlack() const;
 	int 			getCapturedWhite() const;
 

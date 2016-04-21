@@ -22,6 +22,7 @@ Game::Game(Options options):_options(options)
 	_turn = PlayerColor::blackPlayer;
 	_depth = 4;
 	_state->fillTaboo(_options.limitBlack, _options.doubleThree, _turn);
+	_state->_priority[9][9] = 1;
 }
 
 Game::~Game()

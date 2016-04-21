@@ -65,7 +65,6 @@ std::vector<ChildBoard> Board::getChildren(PlayerColor player, bool capture, int
 {
 	fillPriority();
 
-
 	auto childrenPos = std::vector<MoveScore>();
 
 	for (int y = 0; y < BOARD_HEIGHT; y++)
@@ -77,7 +76,7 @@ std::vector<ChildBoard> Board::getChildren(PlayerColor player, bool capture, int
 		}
 	}
 
-//	shuffle (childrenPos.begin(), childrenPos.end(), std::default_random_engine(std::random_device{}()));
+	shuffle (childrenPos.begin(), childrenPos.end(), std::default_random_engine(std::random_device{}()));
 
 	struct Sorter
 	{
@@ -93,7 +92,7 @@ std::vector<ChildBoard> Board::getChildren(PlayerColor player, bool capture, int
 	auto children = std::vector<ChildBoard>();
 	for (auto move:childrenPos)
 	{
-		if (children.size() >= count)
+		if (children.size() >= count && count >= 0)
 			break;
 		children.push_back(ChildBoard(
 				new Board(*this, move.pos, player, capture),
@@ -364,3 +363,18 @@ BoardSquare		Board::getCase(int x, int y) const {return (_data[y][x]);};
 BoardSquare&	Board::getCase(int x, int y) {return (_data[y][x]);};
 int 			Board::getPriority(int x, int y) const {return _priority[y][x];}
 int 			Board::getPriority(BoardPos pos) const {return _priority[pos.y][pos.x];}
+
+BoardPos		Board::getBestPriority() const
+{
+	MoveScore best = MoveScore(-1, BoardPos());
+
+	for (BoardPos current; current != BoardPos::boardEnd; ++current)
+	{
+		int p = getPriority(current);
+		if (p > best.score)
+		{
+			best = MoveScore(p, current);
+		}
+	}
+	return (best.pos);
+}

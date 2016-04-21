@@ -42,6 +42,8 @@ void game_page(GUIManager& win, bool isBlackAI, bool isWhiteAI)
 
     while (1)
     {
+        bool isPlayerNext;
+
         win.clear();
         sf::Event   event;
         while (win.pollEvent(event))
@@ -86,7 +88,8 @@ void game_page(GUIManager& win, bool isBlackAI, bool isWhiteAI)
                 suggestion = g.getNextMove();
             }
         }
-        win.drawBoard(*state, suggestion, (isBlackAI && isWhiteAI), text);
+        isPlayerNext = (!isBlackAI && g.getTurn() == blackPlayer) || (!isWhiteAI && g.getTurn() == whitePlayer);
+        win.drawBoard(*g.getState(), isPlayerNext, text);
         win.display();
 
         if (g.getTurn() == PlayerColor::blackPlayer && isBlackAI && !hasWon)
@@ -101,8 +104,8 @@ void game_page(GUIManager& win, bool isBlackAI, bool isWhiteAI)
                 suggestion = g.getNextMove();
             }
         }
-        Board* state = ;
-        win.drawBoard(g.getState(), suggestion, (isBlackAI && isWhiteAI), text);
+        isPlayerNext = (!isBlackAI && g.getTurn() == blackPlayer) || (!isWhiteAI && g.getTurn() == whitePlayer);
+        win.drawBoard(*g.getState(), isPlayerNext, text);
         win.display();
 
         usleep(200);//TODO better framerate system

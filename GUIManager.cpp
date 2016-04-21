@@ -61,7 +61,7 @@ sf::Vector2f	GUIManager::getMouseScreenRatio()
 	return value;
 }
 
-void	GUIManager::drawBoard(const Board &b, const BoardPos* suggestion, bool isAllAI, const std::string message)
+void	GUIManager::drawBoard(const Board &b, bool isPlayerNext, const std::string message)
 {
 	BoardSquare 		c;
 	sf::Sprite			background(_textures.board);
@@ -76,6 +76,10 @@ void	GUIManager::drawBoard(const Board &b, const BoardPos* suggestion, bool isAl
 	getMouseBoardPos(mousePos);
 	background.setPosition(screen_margin_x, screen_margin_y);
 	this->draw(background);
+
+	BoardPos bestPriority = b.getBestPriority();
+
+
 
 	for (BoardPos pos = BoardPos(); pos != BoardPos::boardEnd; ++pos)
 	{
@@ -95,7 +99,7 @@ void	GUIManager::drawBoard(const Board &b, const BoardPos* suggestion, bool isAl
 			case BoardSquare::empty:
 				if (p == -1)
 				{
-					if (pos == mousePos && !isAllAI)
+					if (pos == mousePos && isPlayerNext)
 						sprite = &sprite_preview_taboo_mouse;
 					else
 						sprite = &sprite_preview_taboo;
@@ -107,9 +111,9 @@ void	GUIManager::drawBoard(const Board &b, const BoardPos* suggestion, bool isAl
 						text = new sf::Text(std::to_string(p), _textures.font, 20);
 						text->setColor(sf::Color(0, 0, 0));
 					}
-					if (pos == mousePos && !message.size() && !isAllAI)
+					if (pos == mousePos && !message.size() && isPlayerNext)
 						sprite = &sprite_preview;
-					else if (suggestion != nullptr && pos == suggestion)
+					else if (isPlayerNext && pos == bestPriority)
 					{
 						sprite = &sprite_preview;
 					}
@@ -133,7 +137,7 @@ void	GUIManager::drawBoard(const Board &b, const BoardPos* suggestion, bool isAl
 		}
 		if (text != nullptr)
 		{
-			sf::Vector2f textPos = sf::Vector2f(
+			/*sf::Vector2f textPos = sf::Vector2f(
 					screen_margin_x + board_offset_x + pos.x * cell_width,
 					screen_margin_y + board_offset_y + pos.y * cell_height);
 
@@ -143,7 +147,7 @@ void	GUIManager::drawBoard(const Board &b, const BoardPos* suggestion, bool isAl
 
 			centerOnPos(*text, textPos.x, textPos.y);
 			this->draw(shape);
-			this->draw(*text);
+			this->draw(*text);*/
 			delete text;
 		}
 	}
