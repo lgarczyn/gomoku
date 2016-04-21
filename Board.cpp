@@ -210,7 +210,7 @@ void Board::fillTaboo(bool limitBlack, bool doubleThree, PlayerColor player)
 			}
 	}
 	if (doubleThree)
-	{//TODO remove line from all sides (???)
+	{
 		for (int y = 0; y < BOARD_HEIGHT; y++)
 		{
 			for (int x = 0; x < BOARD_WIDTH; x++)
@@ -330,7 +330,7 @@ Board::Board(): _data(), _priority(), _capturedWhites(), _capturedBlacks(), _tur
 Board::Board(const Board& board):Board()
 {
 	*this = board;
-	bzero(_priority, sizeof(_priority));//TODO reuse score from previous
+	bzero(_priority, sizeof(_priority));
 }
 
 Board::Board(const Board& board, BoardPos move, PlayerColor player, bool capture) : Board(board)
