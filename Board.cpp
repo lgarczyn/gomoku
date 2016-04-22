@@ -3,8 +3,6 @@
 //
 
 #include "Board.hpp"
-#include "Game.hpp"
-#include "MoveScore.hpp"
 #include <algorithm>	// min max
 #include <random>       // std::default_random_engine
 #include <chrono>       // std::chrono::system_clock
@@ -63,7 +61,7 @@ VictoryState  Board::isTerminal(bool considerCapture)
 
 std::vector<ChildBoard> Board::getChildren(PlayerColor player, bool capture, int count = -1)
 {
-	fillPriority();
+	fillPriority(player);
 
 	auto childrenPos = std::vector<MoveScore>();
 
@@ -241,12 +239,12 @@ inline int clamp(int value, int min, int max)
 }
 
 //inline //TODO put back
-void Board::fillPriorityDir(int x, int y, int dirX, int dirY, BoardSquare ally)
+void Board::fillPriorityDir(int x, int y, int dirX, int dirY, BoardSquare color, int bonus)
 {
 	const int maxX = clamp(x + 5 * dirX, -1, BOARD_WIDTH);
 	const int maxY = clamp(y + 5 * dirY, -1, BOARD_HEIGHT);
 
-	int value = 1;
+	int value = 1 + bonus;
 
 	x += dirX, y+= dirY;
 	//wait for both iterator to either be static or have reached their goal
@@ -257,9 +255,9 @@ void Board::fillPriorityDir(int x, int y, int dirX, int dirY, BoardSquare ally)
 		{
 			_priority[y][x] += value;
 		}
-		else if (square == ally)
+		else if (square == color)
 		{
-			value <<= 1;
+			value <<= 2;
 		}
 		else
 		{
@@ -269,24 +267,26 @@ void Board::fillPriorityDir(int x, int y, int dirX, int dirY, BoardSquare ally)
 	}
 };
 
-void Board::fillPriority()
+void Board::fillPriority(PlayerColor player)
 {
+	BoardSquare ally = (player == blackPlayer)? black : white;
 	for (int y = 0; y < BOARD_HEIGHT; y++)
 	{
 		for (int x = 0; x < BOARD_WIDTH; x++)
 		{
-			BoardSquare ally = _data[y][x];
-			if (ally != BoardSquare::empty)
+			BoardSquare color = _data[y][x];
+			int bonus = (ally != color);
+			if (color != BoardSquare::empty)
 			{
-				fillPriorityDir(x, y, -1, -1, ally);
-				fillPriorityDir(x, y, -1, 0, ally);
-				fillPriorityDir(x, y, -1, 1, ally);
-				fillPriorityDir(x, y, 0, -1, ally);
-				//fillPriorityDir(x, y, 0, 0, ally);
-				fillPriorityDir(x, y, 0, 1, ally);
-				fillPriorityDir(x, y, 1, -1, ally);
-				fillPriorityDir(x, y, 1, 0, ally);
-				fillPriorityDir(x, y, 1, 1, ally);
+				fillPriorityDir(x, y, -1, -1, color, bonus);
+				fillPriorityDir(x, y, -1, 0, color, bonus);
+				fillPriorityDir(x, y, -1, 1, color, bonus);
+				fillPriorityDir(x, y, 0, -1, color, bonus);
+				//fillPriorityDir(x, y, 0, 0, color, bonus);
+				fillPriorityDir(x, y, 0, 1, color, bonus);
+				fillPriorityDir(x, y, 1, -1, color, bonus);
+				fillPriorityDir(x, y, 1, 0, color, bonus);
+				fillPriorityDir(x, y, 1, 1, color, bonus);
 			}
 		}
 	}
@@ -361,7 +361,7 @@ BoardSquare&	Board::getCase(int x, int y) {return (_data[y][x]);};
 int 			Board::getPriority(int x, int y) const {return _priority[y][x];}
 int 			Board::getPriority(BoardPos pos) const {return _priority[pos.y][pos.x];}
 
-BoardPos		Board::getBestPriority() const
+MoveScore		Board::getBestPriority() const
 {
 	MoveScore best = MoveScore(-1, BoardPos());
 
@@ -373,5 +373,5 @@ BoardPos		Board::getBestPriority() const
 			best = MoveScore(p, current);
 		}
 	}
-	return (best.pos);
+	return (best);
 }

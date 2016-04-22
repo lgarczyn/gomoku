@@ -61,7 +61,7 @@ sf::Vector2f	GUIManager::getMouseScreenRatio()
 	return value;
 }
 
-void	GUIManager::drawBoard(const Board &b, bool isPlayerNext, const std::string message)
+void	GUIManager::drawBoard(const Board &b, bool isPlayerNext, Game::Options options, const std::string message)
 {
 	BoardSquare 		c;
 	sf::Sprite			background(_textures.board);
@@ -77,9 +77,7 @@ void	GUIManager::drawBoard(const Board &b, bool isPlayerNext, const std::string 
 	background.setPosition(screen_margin_x, screen_margin_y);
 	this->draw(background);
 
-	BoardPos bestPriority = b.getBestPriority();
-
-
+	MoveScore bestPriority = b.getBestPriority();
 
 	for (BoardPos pos = BoardPos(); pos != BoardPos::boardEnd; ++pos)
 	{
@@ -107,7 +105,7 @@ void	GUIManager::drawBoard(const Board &b, bool isPlayerNext, const std::string 
 					}
 					if (pos == mousePos && !message.size() && isPlayerNext)
 						sprite = &sprite_preview;
-					else if (isPlayerNext && pos == bestPriority)
+					else if (isPlayerNext && p == bestPriority.score) // pos == bestPriority)
 					{
 						sprite = &sprite_preview;
 					}
@@ -129,19 +127,23 @@ void	GUIManager::drawBoard(const Board &b, bool isPlayerNext, const std::string 
 					screen_margin_y + board_offset_y + pos.y * cell_height - cell_width / 2);
 			this->draw(*sprite);
 		}
-		if (text != nullptr)
+		if (text != nullptr && options.showPriority)
 		{
-			/*sf::Vector2f textPos = sf::Vector2f(
+			text->setColor(sf::Color::White);
+			sf::Vector2f textPos = sf::Vector2f(
 					screen_margin_x + board_offset_x + pos.x * cell_width,
 					screen_margin_y + board_offset_y + pos.y * cell_height);
 
 			sf::Vector2f size = sf::Vector2f(40, 20);
 			sf::RectangleShape shape = sf::RectangleShape(size);
+			shape.setFillColor(sf::Color(50, 30, 10, 220));
+			shape.setOutlineColor(sf::Color(50, 30, 10, 255));
+			shape.setOutlineThickness(1);
 			shape.setPosition(textPos.x - 20, textPos.y - 10);
 
 			centerOnPos(*text, textPos.x, textPos.y);
 			this->draw(shape);
-			this->draw(*text);*/
+			this->draw(*text);
 			delete text;
 		}
 	}

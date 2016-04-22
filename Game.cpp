@@ -33,23 +33,14 @@ Game::~Game()
 MoveScore Game::negamax(Board* node, int negDepth, Score alpha, Score beta, PlayerColor player)
 {
 	//auto children = node->getChildren(player, _options.capture, _analyzer);
-	auto children = node->getChildren(player, _options.capture, 10);
+	auto children = node->getChildren(player, _options.capture, (negDepth == _depth) ? 100 : 10);
 
 	MoveScore bestMove(ninfinity);
-	std::vector<MoveScore>	choice(10);
+	std::vector<MoveScore>	choice;
 
-	//TODO detect stalemate
+
 	if (!children.size())
 		throw std::logic_error("GetChildren returned an empty array");
-		//return (MoveScore(0, BoardPos(rand() % BOARD_WIDTH, rand() % BOARD_HEIGHT)));
-
-	/*int max = negDepth * 5 / _depth;
-	if (children.size() > max)
-	{
-		for (int i = max; i < children.size(); i++)
-			delete children[i].board;
-		children.resize(max);
-	}*/
 
 	for (int i = 0; i < children.size(); i++)
 	{
@@ -151,7 +142,7 @@ bool Game::play(BoardPos pos)
 	delete tmp;
 	_turn = -_turn;
 	_state->fillTaboo(_options.limitBlack, _options.doubleThree, _turn);
-	_state->fillPriority();
+	_state->fillPriority(_turn);
 	return _state->isTerminal(_options.captureWin);
 }
 

@@ -9,7 +9,7 @@ const 	int NetworkManager::network_depth = 19;
 
 void NetworkManager::setup_network(Network& network)
 {
-	network.setStructure(BOARD_WIDTH * BOARD_HEIGHT, network_depth * 10, 1, shark::FFNetStructures::InputOutputShortcut, true);
+	network.setStructure(BOARD_WIDTH * BOARD_HEIGHT + 2, network_depth * 10, 1, shark::FFNetStructures::InputOutputShortcut, true);
 }
 
 bool NetworkManager::read_network(const char* path, Network& network)

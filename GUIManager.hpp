@@ -7,6 +7,7 @@
 #include <SFML/Graphics.hpp>
 #include "Board.hpp"
 #include "TextureManager.hpp"
+#include "Game.hpp"
 
 class GUIManager : public sf::RenderWindow {
 public:
@@ -25,7 +26,7 @@ public:
 	MenuButton		getMenuButton();
 	bool			getMouseBoardPos(BoardPos& pos);
 	sf::Vector2f	getMouseScreenRatio();
-	void 			drawBoard(const Board &b, bool isPlayerNext, const std::string message);
+	void 			drawBoard(const Board &b, bool isPlayerNext, Game::Options options, const std::string message);
 	void 			drawOptions(std::vector<std::pair<std::string, bool>> options);
 	void 			drawMenu();
 private:

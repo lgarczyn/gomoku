@@ -9,6 +9,7 @@
 #include "BoardPos.hpp"
 #include <shark/ObjectiveFunctions/Loss/SquaredLoss.h>
 
+#include<shark/Algorithms/DirectSearch/ElitistCMA.h>
 #include<shark/Algorithms/GradientDescent/Rprop.h> //resilient propagation as optimizer
 #include<shark/ObjectiveFunctions/Loss/CrossEntropy.h> // loss during training
 #include<shark/ObjectiveFunctions/ErrorFunction.h> //error function to connect data model and loss
@@ -43,7 +44,7 @@ shark::LabeledData<shark::RealVector, shark::RealVector> getRandomData(int count
 
 
 	//the 2D xor Problem has 4 patterns, (0,0), (0,1), (1,0), (1,1)
-	std::vector<shark::RealVector> inputs(count, shark::RealVector(BOARD_WIDTH * BOARD_HEIGHT));
+	std::vector<shark::RealVector> inputs(count, shark::RealVector(BOARD_WIDTH * BOARD_HEIGHT + 2));
 	//the result is 1 if both inputs have a different value, and 0 otherwise
 	std::vector<shark::RealVector> labels(count, shark::RealVector(1));
 	IAnalyzer *analyzer = new AnalyzerBrainDead();
@@ -99,6 +100,8 @@ void Trainer::train()
 		//initialize Rprop and initialize the network randomly
 		//initRandomUniform(network,-0.1,0.1);
 		shark::IRpropPlus optimizer;
+		//shark::ElitistCMA optimizer;
+
 		optimizer.init(error);
 		unsigned numberOfSteps = 1000;
 		for (unsigned step = 0; step != numberOfSteps; ++step)

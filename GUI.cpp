@@ -89,7 +89,7 @@ void game_page(GUIManager& win, bool isBlackAI, bool isWhiteAI)
             }
         }
         isPlayerNext = (!isBlackAI && g.getTurn() == blackPlayer) || (!isWhiteAI && g.getTurn() == whitePlayer);
-        win.drawBoard(*g.getState(), isPlayerNext, text);
+        win.drawBoard(*g.getState(), isPlayerNext, options, text);
         win.display();
 
         if (g.getTurn() == PlayerColor::blackPlayer && isBlackAI && !hasWon)
@@ -105,7 +105,7 @@ void game_page(GUIManager& win, bool isBlackAI, bool isWhiteAI)
             }
         }
         isPlayerNext = (!isBlackAI && g.getTurn() == blackPlayer) || (!isWhiteAI && g.getTurn() == whitePlayer);
-        win.drawBoard(*g.getState(), isPlayerNext, text);
+        win.drawBoard(*g.getState(), isPlayerNext, options, text);
         win.display();
 
         if (isPlayerNext)
@@ -144,6 +144,8 @@ GUIManager::MenuButton menu_page(GUIManager& win)
 std::vector<std::pair<std::string, bool>> getOptionsData()
 {
     return std::vector<std::pair<std::string, bool>>({
+                               std::pair<std::string, bool>("Show player tips", options.showTips),
+                               std::pair<std::string, bool>("Show square priority", options.showPriority),
                                std::pair<std::string, bool>("Limit black starting moves", options.limitBlack),
                                std::pair<std::string, bool>("Block double free-threes", options.doubleThree),
                                std::pair<std::string, bool>("Allow capture", options.capture),
@@ -170,15 +172,17 @@ void option_page(GUIManager& win)
                         return ;
                     break ;
                 case sf::Event::MouseButtonPressed:
-                    pos = win.getMouseScreenRatio().y * 5;
+                    pos = win.getMouseScreenRatio().y * 7;
 
                     switch (pos)
                     {
-                        case 0: options.limitBlack = !options.limitBlack; break;
-                        case 1: options.doubleThree = !options.doubleThree; break;
-                        case 2: options.capture = !options.capture; break;
-                        case 3: options.captureWin = !options.captureWin; break;
-                        case 4: options.brainDead = !options.brainDead; break;
+                        case 0: options.showTips = !options.showTips; break;
+                        case 1: options.showPriority = !options.showPriority; break;
+                        case 2: options.limitBlack = !options.limitBlack; break;
+                        case 3: options.doubleThree = !options.doubleThree; break;
+                        case 4: options.capture = !options.capture; break;
+                        case 5: options.captureWin = !options.captureWin; break;
+                        case 6: options.brainDead = !options.brainDead; break;
                     }
                     break;
                 default:

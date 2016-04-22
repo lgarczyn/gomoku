@@ -16,6 +16,8 @@ class Game
 public:
 	struct Options
 	{
+		bool showTips = true;
+		bool showPriority = false;
 		bool limitBlack = false;
 		bool doubleThree = true;
 		bool capture = true;

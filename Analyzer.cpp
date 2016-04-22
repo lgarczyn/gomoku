@@ -6,7 +6,7 @@
 
 Analyzer::Analyzer()
 {
-	inputs = shark::RealMatrix(1, BOARD_HEIGHT * BOARD_WIDTH);
+	inputs = shark::RealMatrix(1, BOARD_HEIGHT * BOARD_WIDTH + 2);
 	outputs = shark::RealMatrix(1, 1);
 
 	NetworkManager::setup_network(network);
@@ -32,6 +32,8 @@ Score Analyzer::getScore(Board& board)
 			inputs.operator()(0, k++) = board.getCase(x, y);
 		}
 	}
+	inputs(0, k) = board.getCapturedWhite();
+	inputs(0, ++k) = board.getCapturedBlack();
 
 	//TODO include captured whites and blacks
 	network.eval(inputs, outputs, *state);

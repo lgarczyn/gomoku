@@ -16,9 +16,10 @@ class Board;
 #include "BoardSquare.hpp"
 #include "VictoryState.hpp"
 #include "ChildBoard.hpp"
+#include "MoveScore.hpp"
 
 using BoardData = BoardSquare[BOARD_HEIGHT][BOARD_WIDTH];
-using BoardScore = char[BOARD_HEIGHT][BOARD_WIDTH];
+using BoardScore = short[BOARD_HEIGHT][BOARD_WIDTH];
 
 class Board
 {
@@ -39,13 +40,13 @@ public:
 	BoardSquare		getCase(int x, int y) const;
 	int 			getPriority(int x, int y) const;
 	int 			getPriority(BoardPos pos) const;
-	BoardPos		getBestPriority() const;
+	MoveScore		getBestPriority() const;
 	int 			getCapturedBlack() const;
 	int 			getCapturedWhite() const;
 
 	void 			fillTaboo(bool limitBlack, bool doubleThree, PlayerColor player);
-	void 			fillPriority();
-	void 			fillPriorityDir(int x, int y, int dirX, int dirY, BoardSquare ally);
+	void 			fillPriority(PlayerColor player);
+	void 			fillPriorityDir(int x, int y, int dirX, int dirY, BoardSquare color, int bonus);
 	bool 			isPosLegal(int x, int y, bool limitBlack, bool doubleThree, PlayerColor player);
 	bool			checkFreeThree(int x, int y, int dirX, int dirY, BoardSquare enemy);
 	bool 			playCapture(int x, int y);
