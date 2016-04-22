@@ -9,29 +9,40 @@
 
 bool Board::isAlignedStoneDir(int x, int y, int dirX, int dirY, BoardSquare good, int size) const
 {
-	for (int i = 0 ; i < size ; ++i) {
-		if (x + i * dirX < 0 || x + i * dirX >= BOARD_WIDTH
-			|| y + i * dirY < 0 || y + i * dirY >= BOARD_HEIGHT)
+	for (int i = 1 ; i < size ; ++i) {
+		x += dirX;
+		y += dirY;
+
+		if (x  < 0 || x >= BOARD_WIDTH || y < 0 || y >= BOARD_HEIGHT)
 			return (false);
-		if (_data[y + dirY*i][x + dirX*i] != good)
+		if (_data[y][x] != good)
 			return (false);
 	}
 	return (true);
+}
+
+bool Board::isAlignedStonePos(int x, int y, int size) const
+{
+	BoardSquare c = _data[y][x];
+	if (c == empty) return false;
+	if (isAlignedStoneDir(x, y, -1, -1, c, size)) return (true);
+	if (isAlignedStoneDir(x, y, -1, 0, c, size)) return (true);
+	if (isAlignedStoneDir(x, y, -1, 1, c, size)) return (true);
+	if (isAlignedStoneDir(x, y, 0, -1, c, size)) return (true);
+	//if (isAlignedStoneDir(x, y, 0, 0, c, size)) return (true);
+	if (isAlignedStoneDir(x, y, 0, 1, c, size)) return (true);
+	if (isAlignedStoneDir(x, y, 1, -1, c, size)) return (true);
+	if (isAlignedStoneDir(x, y, 1, 0, c, size)) return (true);
+	if (isAlignedStoneDir(x, y, 1, 1, c, size)) return (true);
+	return false;
 }
 
 bool Board::isAlignedStone(int size) const
 {
 	for (int y = 0 ; y < BOARD_HEIGHT; ++y)
 		for (int x = 0 ; x < BOARD_WIDTH; ++x)
-			for (int dirX = -1 ; dirX <= 1; ++dirX)
-				for (int dirY = -1 ; dirY <= 1; ++dirY)
-					if (dirX || dirY) {
-						auto c = _data[y][x];
-						if (c == BoardSquare::white || c == BoardSquare::black)
-						if (isAlignedStoneDir(x, y, dirX, dirY, c, size)) {
-							return (true);
-						}
-					}
+			if (isAlignedStonePos(x, y, size))
+				return true;
 	return false;
 }
 
@@ -59,6 +70,20 @@ VictoryState  Board::isTerminal(bool considerCapture)
 	return  novictory;
 }
 
+VictoryState  Board::isTerminal(BoardPos pos, bool considerCapture)
+{
+	if (isAlignedStonePos(pos.x, pos.y, 5))
+		return aligned;
+	if (considerCapture)
+	{
+		if (_capturedWhites > 10)
+			return whitesCaptured;
+		if (_capturedBlacks > 10)
+			return blacksCaptured;
+	}
+	return  novictory;
+}
+
 std::vector<ChildBoard> Board::getChildren(PlayerColor player, bool capture, int count = -1)
 {
 	fillPriority(player);
@@ -74,7 +99,8 @@ std::vector<ChildBoard> Board::getChildren(PlayerColor player, bool capture, int
 		}
 	}
 
-	shuffle (childrenPos.begin(), childrenPos.end(), std::default_random_engine(std::random_device{}()));
+	//shuffle (childrenPos.begin(), childrenPos.end(), std::default_random_engine(std::random_device{}()));
+	//only shuffle is first?
 
 	struct Sorter
 	{

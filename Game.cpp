@@ -49,7 +49,7 @@ MoveScore Game::negamax(Board* node, int negDepth, Score alpha, Score beta, Play
 		Board* board = child.board;
 		BoardPos pos = child.move;
 
-		if (board->isTerminal(_options.captureWin))
+		if (board->isTerminal(pos, _options.captureWin))
 		{
 			score = pinfinity;
 		}

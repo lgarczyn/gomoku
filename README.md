@@ -1,10 +1,14 @@
 # gomoku
 
-UGLY: public priority and data instead of friend
+
+BUG: slow third move
+BUG: can play in AIvAI mode
 
 TODO: show captured count
 TODO: show time taken
 TODO: detect stalemate
+
+UGLY: public priority and data instead of friend
 
 TODO POS: improv algo + timecut
 TODO NN: train brain

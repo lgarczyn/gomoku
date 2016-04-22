@@ -87,14 +87,12 @@ Score countAlignedStone(Board& data, int size)
 	return sw;
 }
 
-#include <iostream>
-
 Score AnalyzerBrainDead::getScore(Board& board) {
 	Score score;
 
 	score = 0;
 	score += countAlignedStone(board, 5);
-	score += board.getCapturedBlack() * 5;
+	score += board.getCapturedBlack() * 5;//TODO check options if useful
 	score -= board.getCapturedWhite() * 5;
 	return score;
 }

@@ -27,6 +27,7 @@ class Board
 public:
 
 	VictoryState isTerminal(bool considerCapture);
+	VictoryState  isTerminal(BoardPos pos, bool considerCapture);
 	bool isPosInterest(int x, int y, PlayerColor player) const;
 	std::vector<ChildBoard> getChildren(PlayerColor player, bool capture, int count);
 	Board();
@@ -52,6 +53,7 @@ public:
 	bool 			playCapture(int x, int y);
 	bool 			playCaptureDir(int x, int y, int dirX, int dirY, BoardSquare type);
 	bool 			isAlignedStoneDir(int x, int y, int dirX, int dirY, BoardSquare good, int size) const;
+	bool		 	isAlignedStonePos(int x, int y, int size) const;
 	bool			isAlignedStone(int size) const;
 
 	bool 			hasScore;
