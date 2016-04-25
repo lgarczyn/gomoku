@@ -38,6 +38,8 @@ Score Analyzer::getScore(Board& board)
 	//TODO include captured whites and blacks
 	network.eval(inputs, outputs, *state);
 
+	board.score = network.operator()(shark::RealVector(BOARD_HEIGHT * BOARD_WIDTH + 2)).operator()(0);
+
 	board.hasScore = true;
 	board.score = outputs.operator()(0, 0);
 	return (board.score);

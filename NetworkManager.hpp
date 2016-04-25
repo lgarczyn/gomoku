@@ -17,6 +17,7 @@ public:
 	static void setup_network(Network& network);
 	static bool read_network(const char* path, Network& network);
 	static bool write_network(const char* path, Network& network);
+	Network		get_variations(Network value);
 };
 
 

@@ -28,6 +28,12 @@ bool NetworkManager::read_network(const char* path, Network& network)
 	}
 }
 
+Network NetworkManager::get_variations(Network value)
+{
+	value.setLayer(0, value.layerMatrix(0), value.bias(0));
+	return value;
+}
+
 bool NetworkManager::write_network(const char* path, Network& network)
 {
 	try

@@ -33,7 +33,7 @@ Game::~Game()
 MoveScore Game::negamax(Board* node, int negDepth, Score alpha, Score beta, PlayerColor player)
 {
 	//auto children = node->getChildren(player, _options.capture, _analyzer);
-	auto children = node->getChildren(player, _options.capture, (negDepth == _depth) ? 100 : 10);
+	auto children = node->getChildren(player, _options.capture, (negDepth == _depth) ? 100 : 20);
 
 	MoveScore bestMove(ninfinity);
 	std::vector<MoveScore>	choice;
@@ -88,6 +88,8 @@ MoveScore Game::negamax(Board* node, int negDepth, Score alpha, Score beta, Play
 		if (alpha > beta)
 			break;
 	}
+	if (negDepth == _depth)
+		return choice[0];
 	return choice[rand() % choice.size()];//TODO get fucking rid of rand
 }
 

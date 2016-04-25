@@ -145,6 +145,14 @@ void Trainer::train()
 	}
 }
 
+//LOAD NETWORK
+
+//GET NETWORK VARIATIONS //TODO create generation function, probably based on a normal-variation algo
+//COMPARE NETWORKS SKILLZ //TODO possibility of giving networks to Game
+//KEEP BEST NETWORKS
+
+//WRITE NETWORKS
+
 Trainer::~Trainer()
 {
 	NetworkManager::setup_network(network);

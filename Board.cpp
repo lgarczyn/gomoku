@@ -94,14 +94,17 @@ std::vector<ChildBoard> Board::getChildren(PlayerColor player, bool capture, int
 	{
 		for (int x = 0; x < BOARD_WIDTH; x++)
 		{
-			int score = _priority[y][x];
-			childrenPos.push_back(MoveScore(score, BoardPos(x, y)));
+			if (_data[y][x] == empty)
+			{
+				int score = _priority[y][x];
+				childrenPos.push_back(MoveScore(score, BoardPos(x, y)));
+			}
 		}
 	}
 
 	//shuffle (childrenPos.begin(), childrenPos.end(), std::default_random_engine(std::random_device{}()));
 	//only shuffle is first?
-
+	//TODO use boost::qsort
 	struct Sorter
 	{
 		Sorter(){};
@@ -271,25 +274,35 @@ void Board::fillPriorityDir(int x, int y, int dirX, int dirY, BoardSquare color,
 	const int maxY = clamp(y + 5 * dirY, -1, BOARD_HEIGHT);
 
 	int value = 1 + bonus;
+	int count = 0;
 
 	x += dirX, y+= dirY;
 	//wait for both iterator to either be static or have reached their goal
 	while ((!dirX || x != maxX) && (!dirY || y != maxY))
 	{
 		BoardSquare square = _data[y][x];
+		if (square == color)
+		{
+			value <<= 2;
+		}
+		else if (square != empty)
+		{
+			count++;
+			break;
+		}
+		x += dirX, y+= dirY;
+		count++;
+	}
+	while (count > 0)
+	{
+		count--;
+		x -= dirX, y -= dirY;
+
+		BoardSquare square = _data[y][x];
 		if (square == empty && _priority[y][x] >= 0)
 		{
 			_priority[y][x] += value;
 		}
-		else if (square == color)
-		{
-			value <<= 2;
-		}
-		else
-		{
-			break;
-		}
-		x += dirX, y+= dirY;
 	}
 };
 
