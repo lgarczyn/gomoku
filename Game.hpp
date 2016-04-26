@@ -23,6 +23,8 @@ public:
 		bool capture = true;
 		bool captureWin = true;
 		bool brainDead = true;
+		bool isBlackAI = true;
+		bool isWhiteAI = true;
 	};
 
 	Game(Options _options);
@@ -31,6 +33,8 @@ public:
 	bool play();
 
 	PlayerColor getTurn() const;
+	bool isPlayerNext() const;
+
 	Board *getState();
 	BoardPos getNextMove();
 

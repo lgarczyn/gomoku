@@ -88,6 +88,10 @@ std::vector<ChildBoard> Board::getChildren(PlayerColor player, bool capture, int
 {
 	fillPriority(player);
 
+	//EITHER
+	//set finished boards priority to higher
+	//
+
 	auto childrenPos = std::vector<MoveScore>();
 
 	for (int y = 0; y < BOARD_HEIGHT; y++)

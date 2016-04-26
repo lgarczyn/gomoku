@@ -61,7 +61,7 @@ sf::Vector2f	GUIManager::getMouseScreenRatio()
 	return value;
 }
 
-void	GUIManager::drawBoard(const Board &b, bool isPlayerNext, Game::Options options, const std::string message)
+void	GUIManager::drawBoard(Game& g, Game::Options options, const std::string message)
 {
 	BoardSquare 		c;
 	sf::Sprite			background(_textures.board);
@@ -71,6 +71,10 @@ void	GUIManager::drawBoard(const Board &b, bool isPlayerNext, Game::Options opti
 	sf::Sprite			sprite_preview_taboo(_textures.stone_preview_taboo);
 	sf::Sprite			sprite_preview_taboo_mouse(_textures.stone_preview_taboo);
 	sf::Sprite			sprite_suggestion(_textures.stone_suggestion);
+
+
+	Board &b = *g.getState();
+	bool isPlayerNext = g.isPlayerNext();
 
 	BoardPos mousePos;
 	getMouseBoardPos(mousePos);
@@ -160,6 +164,7 @@ void	GUIManager::drawBoard(const Board &b, bool isPlayerNext, Game::Options opti
 		draw(wonPopup);
 		draw(wonText);
 	}
+	display();
 }
 
 void 		GUIManager::drawMenu()

@@ -20,7 +20,7 @@ Game::Game(Options options):_options(options)
 	_analyzer = new AnalyzerBrainDead();
 #endif
 	_turn = PlayerColor::blackPlayer;
-	_depth = 4;
+	_depth = 5;
 	_state->fillTaboo(_options.limitBlack, _options.doubleThree, _turn);
 	_state->_priority[9][9] = 1;
 }
@@ -32,10 +32,9 @@ Game::~Game()
 
 MoveScore Game::negamax(Board* node, int negDepth, Score alpha, Score beta, PlayerColor player)
 {
-	//auto children = node->getChildren(player, _options.capture, _analyzer);
-	auto children = node->getChildren(player, _options.capture, (negDepth == _depth) ? 100 : 20);
+	auto children = node->getChildren(player, _options.capture, (negDepth == _depth) ? 20 : 20);
 
-	MoveScore bestMove(ninfinity);
+	MoveScore bestMove(ninfinity - 1);
 	std::vector<MoveScore>	choice;
 
 
@@ -51,7 +50,7 @@ MoveScore Game::negamax(Board* node, int negDepth, Score alpha, Score beta, Play
 
 		if (board->isTerminal(pos, _options.captureWin))
 		{
-			score = pinfinity;
+			score = pinfinity - _depth + negDepth;
 		}
 		else if (negDepth <= 1)
 		{
@@ -67,9 +66,10 @@ MoveScore Game::negamax(Board* node, int negDepth, Score alpha, Score beta, Play
 		}
 		else
 		{
-			score = -negamax(child.board, negDepth - 1, -alpha - 1, -alpha, -player).score;
-			if (alpha < score && score < beta)
-				score = -negamax(child.board, negDepth - 1, -beta, -score, -player).score;
+			//score = -negamax(child.board, negDepth - 1, -alpha - 1, -alpha, -player).score;
+			//if (alpha < score && score < beta)
+			//	score = -negamax(child.board, negDepth - 1, -beta, -score, -player).score;
+			score = -negamax(child.board, negDepth - 1, -beta, -alpha, -player).score;
 		}
 		if (score > bestMove.score)
 		{
@@ -128,7 +128,7 @@ MoveScore Game::pvs(Board *node, int depth, int alpha, int beta, PlayerColor pla
 
 BoardPos Game::getNextMove()
 {
-	auto  pos = negamax(_state, _depth, ninfinity, pinfinity, -_turn).pos;
+	auto  pos = negamax(_state, _depth, ninfinity, pinfinity, _turn).pos;
 	return pos;
 }
 
@@ -151,6 +151,13 @@ bool Game::play(BoardPos pos)
 bool Game::play()
 {
 	return play(getNextMove());
+}
+
+bool Game::isPlayerNext() const
+{
+	return
+		(!_options.isBlackAI && getTurn() == blackPlayer) ||
+		(!_options.isWhiteAI && getTurn() == whitePlayer);
 }
 
 Board *Game::getState()

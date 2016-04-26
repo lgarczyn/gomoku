@@ -7,8 +7,6 @@
 
 using namespace std;
 
-Game::Options options;
-
 std::string getVictoryMessage(VictoryState v)
 {
     std::string text;
@@ -30,20 +28,18 @@ std::string getVictoryMessage(VictoryState v)
     return (text);
 }
 
-void game_page(GUIManager& win, bool isBlackAI, bool isWhiteAI)
+void game_page(GUIManager& win, Game::Options &options)
 {
     Game                g(options);
     bool                hasWon = false;
     std::string         text("");
     VictoryState        victory;
     BoardPos            pos;
-    BoardPos            suggestion;
 
-
+    win.drawBoard(g, options, text);
     while (1)
     {
-        bool isPlayerNext;
-
+        bool shouldWait = true;
         win.clear();
         sf::Event   event;
         while (win.pollEvent(event))
@@ -68,47 +64,40 @@ void game_page(GUIManager& win, bool isBlackAI, bool isWhiteAI)
                             hasWon = true;
                             text = "Victory\n" + getVictoryMessage(victory);
                         }
+                        win.drawBoard(g, options, text);
                     }
-
                     break ;
                 default:
                     break;
             }
         }
 
-        if (g.getTurn() == PlayerColor::whitePlayer && isWhiteAI && !hasWon)
+        if (g.isPlayerNext())
+            win.drawBoard(g, options, text);
+
+        if (g.getTurn() == PlayerColor::whitePlayer && options.isWhiteAI && !hasWon)
         {
             if (g.play())
             {
                 hasWon = true;
                 text = "White win\n" + getVictoryMessage(victory);
             }
-            else if (!isBlackAI)
-            {
-                suggestion = g.getNextMove();
-            }
+            win.drawBoard(g, options, text);
+            shouldWait = false;
         }
-        isPlayerNext = (!isBlackAI && g.getTurn() == blackPlayer) || (!isWhiteAI && g.getTurn() == whitePlayer);
-        win.drawBoard(*g.getState(), isPlayerNext, options, text);
-        win.display();
 
-        if (g.getTurn() == PlayerColor::blackPlayer && isBlackAI && !hasWon)
+        if (g.getTurn() == PlayerColor::blackPlayer && options.isBlackAI && !hasWon)
         {
             if (g.play())
             {
                 hasWon = true;
                 text = "Black win\n" + getVictoryMessage(victory);
             }
-            else if (!isWhiteAI)
-            {
-                suggestion = g.getNextMove();
-            }
+            win.drawBoard(g, options, text);
+            shouldWait = false;
         }
-        isPlayerNext = (!isBlackAI && g.getTurn() == blackPlayer) || (!isWhiteAI && g.getTurn() == whitePlayer);
-        win.drawBoard(*g.getState(), isPlayerNext, options, text);
-        win.display();
 
-        if (isPlayerNext)
+        if (shouldWait)
             usleep(200);
     }
 }
@@ -141,7 +130,7 @@ GUIManager::MenuButton menu_page(GUIManager& win)
     }
 }
 
-std::vector<std::pair<std::string, bool>> getOptionsData()
+std::vector<std::pair<std::string, bool>> getOptionsData(Game::Options &options)
 {
     return std::vector<std::pair<std::string, bool>>({
                                std::pair<std::string, bool>("Show player tips", options.showTips),
@@ -154,7 +143,7 @@ std::vector<std::pair<std::string, bool>> getOptionsData()
                        });
 }
 
-void option_page(GUIManager& win)
+void option_page(GUIManager& win, Game::Options &options)
 {
     int pos;
     while (1)
@@ -189,7 +178,7 @@ void option_page(GUIManager& win)
                     break;
             }
         }
-        win.drawOptions(getOptionsData());
+        win.drawOptions(getOptionsData(options));
         win.display();
         usleep(200);
     }
@@ -197,6 +186,7 @@ void option_page(GUIManager& win)
 
 void GUI::start_loop()
 {
+    Game::Options       options;
     GUIManager          win;
 
     srand(time(NULL));
@@ -205,16 +195,22 @@ void GUI::start_loop()
         switch (menu_page(win))
         {
             case GUIManager::AIVersusAI:
-                game_page(win, true, true);
+                options.isBlackAI = true;
+                options.isWhiteAI = true;
+                game_page(win, options);
                 break;
             case GUIManager::PlayerVersusAI:
-                game_page(win, false, true);
+                options.isBlackAI = false;
+                options.isWhiteAI = true;
+                game_page(win, options);
                 break;
             case GUIManager::PlayerVersusPlayer:
-                game_page(win, false, false);
+                options.isBlackAI = false;
+                options.isWhiteAI = true;
+                game_page(win, options);
                 break;
             case GUIManager::Options:
-                option_page(win);
+                option_page(win, options);
                 break;
         }
     }
