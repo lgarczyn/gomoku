@@ -1,7 +1,5 @@
 # gomoku
 
-
-BUG: slow third move
 BUG: can play in AIvAI mode
 
 TODO: show captured count

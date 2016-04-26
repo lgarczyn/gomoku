@@ -57,7 +57,7 @@ void game_page(GUIManager& win, Game::Options &options)
                     if (hasWon)
                         return;
 
-                    if (win.getMouseBoardPos(pos) && !hasWon)
+                    if (g.isPlayerNext() && win.getMouseBoardPos(pos) && !hasWon)
                     {
                         if (g.play(pos))
                         {
