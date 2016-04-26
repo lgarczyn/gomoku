@@ -1,7 +1,9 @@
 # gomoku
 
-BUG: can play in AIvAI mode
-
+TODO: show where was last-move/last capture
+    diff with previous state?
+    store in Game now that GUIManager has access to it?
+TODO: consider capture in heuristics
 TODO: show captured count
 TODO: show time taken
 TODO: detect stalemate
