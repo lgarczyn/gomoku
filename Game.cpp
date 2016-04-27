@@ -23,6 +23,7 @@ Game::Game(Options options):_options(options)
 	_depth = 5;
 	_state->fillTaboo(_options.limitBlack, _options.doubleThree, _turn);
 	_state->_priority[9][9] = 1;
+	_previousState = nullptr;
 }
 
 Game::~Game()
@@ -32,7 +33,7 @@ Game::~Game()
 
 MoveScore Game::negamax(Board* node, int negDepth, Score alpha, Score beta, PlayerColor player)
 {
-	auto children = node->getChildren(player, _options.capture, (negDepth == _depth) ? 200 : 20);
+	auto children = node->getChildren(player, _options.capture, (negDepth == _depth) ? 20 : 20);
 
 	MoveScore bestMove(ninfinity - 1);
 	std::vector<MoveScore>	choice;
@@ -139,13 +140,22 @@ bool Game::play(BoardPos pos)
 	if (_state->getPriority(pos) < 0)
 		return false;
 
-	Board* tmp = _state;
-	_state = new Board(*_state, pos, _turn, _options.capture);
-	delete tmp;
+	delete _previousState;
+	_previousState = _state;
+	_state = new Board(*_previousState, pos, _turn, _options.capture);
+
 	_turn = -_turn;
 	_state->fillTaboo(_options.limitBlack, _options.doubleThree, _turn);
 	_state->fillPriority(_turn);
+
 	return _state->isTerminal(_options.captureWin);
+}
+
+bool Game::hasPosChanged(BoardPos pos) const
+{
+	if (_previousState == nullptr)
+		return false;
+	return _previousState->getCase(pos) != _state->getCase(pos);
 }
 
 bool Game::play()

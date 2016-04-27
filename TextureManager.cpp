@@ -35,9 +35,14 @@ SpriteManager::SpriteManager()
 	{
 		throw std::logic_error("Could not load preview taboo stone texture");
 	}
+	if (!highlight.loadFromFile("./textures/highlight.png"))
+	{
+		throw std::logic_error("Could not load preview highlight texture");
+	}
 	stone_black.setSmooth(true);
 	stone_white.setSmooth(true);
 	stone_suggestion.setSmooth(true);
 	stone_preview.setSmooth(true);
 	stone_preview_taboo.setSmooth(true);
+	highlight.setSmooth(true);
 }

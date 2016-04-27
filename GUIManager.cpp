@@ -64,6 +64,7 @@ sf::Vector2f	GUIManager::getMouseScreenRatio()
 void	GUIManager::drawBoard(Game& g, Game::Options options, const std::string message)
 {
 	BoardSquare 		c;
+	sf::Sprite			highlight(_textures.highlight);
 	sf::Sprite			background(_textures.board);
 	sf::Sprite			sprite_black(_textures.stone_black);
 	sf::Sprite			sprite_white(_textures.stone_white);
@@ -72,10 +73,8 @@ void	GUIManager::drawBoard(Game& g, Game::Options options, const std::string mes
 	sf::Sprite			sprite_preview_taboo_mouse(_textures.stone_preview_taboo);
 	sf::Sprite			sprite_suggestion(_textures.stone_suggestion);
 
-
 	Board &b = *g.getState();
 	bool isPlayerNext = g.isPlayerNext();
-
 
 	BoardPos mousePos;
 	getMouseBoardPos(mousePos);
@@ -88,7 +87,9 @@ void	GUIManager::drawBoard(Game& g, Game::Options options, const std::string mes
 	{
 		c = b.getCase(pos);
 		int p = b.getPriority(pos);
+		bool isHighlighted = g.hasPosChanged(pos);
 
+		//check if piece of priority text is needed
 		sf::Sprite* sprite = nullptr;
 		sf::Text* text = nullptr;
 		switch (c)
@@ -124,6 +125,16 @@ void	GUIManager::drawBoard(Game& g, Game::Options options, const std::string mes
 				sprite = &sprite_black;
 				break ;
 		}
+		//draw highlight
+		if (isHighlighted)
+		{
+			highlight.setScale(cell_width / 100., cell_width / 100.);
+			centerOnPos(highlight,
+						screen_margin_x + board_offset_x + pos.x * cell_width,
+						screen_margin_y + board_offset_y + pos.y * cell_height);
+			this->draw(highlight);
+		}
+		//draw piece
 		if (sprite != nullptr)
 		{
 			sprite->setScale(cell_width / 64., cell_width / 64.);
@@ -132,6 +143,7 @@ void	GUIManager::drawBoard(Game& g, Game::Options options, const std::string mes
 						screen_margin_y + board_offset_y + pos.y * cell_height);
 			this->draw(*sprite);
 		}
+		//draw priority
 		if (text != nullptr && options.showPriority)
 		{
 			text->setColor(sf::Color::White);

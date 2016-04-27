@@ -34,6 +34,7 @@ public:
 
 	PlayerColor getTurn() const;
 	bool isPlayerNext() const;
+	bool hasPosChanged(BoardPos pos) const;
 
 	Board *getState();
 	BoardPos getNextMove();
@@ -42,6 +43,7 @@ private:
 
 	Options _options;
 	Board *_state;
+	Board *_previousState;
 	IAnalyzer* _analyzer;
 	PlayerColor _turn;
 	int _depth;
