@@ -19,7 +19,7 @@ Analyzer::Analyzer()
 	state = network.createState();
 }
 
-Score Analyzer::getScore(Board& board)
+Score Analyzer::getScore(Board& board, bool considerCapture)
 {
 	if (board.hasScore)
 		return board.score;
@@ -32,8 +32,8 @@ Score Analyzer::getScore(Board& board)
 			inputs.operator()(0, k++) = board.getCase(x, y);
 		}
 	}
-	inputs(0, k) = board.getCapturedWhite();
-	inputs(0, ++k) = board.getCapturedBlack();
+	inputs(0, k) = considerCapture ? board.getCapturedWhite() : 0;
+	inputs(0, ++k) = considerCapture ? board.getCapturedBlack() : 0;
 
 	//TODO include captured whites and blacks
 	network.eval(inputs, outputs, *state);

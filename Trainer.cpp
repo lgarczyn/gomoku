@@ -68,7 +68,7 @@ shark::LabeledData<shark::RealVector, shark::RealVector> getRandomData(int count
 		{
 			inputs[i](pos.y * BOARD_HEIGHT + pos.x) = board->getCase(pos);
 		}
-		labels[i](0) = analyzer->getScore(*board) + 1000;
+		labels[i](0) = analyzer->getScore(*board, true) + 1000;
 		delete board;
 	}
 	shark::LabeledData<shark::RealVector,shark::RealVector> dataset = shark::createLabeledDataFromRange(inputs,labels);
@@ -139,7 +139,7 @@ void Trainer::train()
 
 			network.eval(input, output, *network.createState());
 
-			std::cout << "Dataset score: " << analyzer->getScore(*board) << std::endl;
+			std::cout << "Dataset score: " << analyzer->getScore(*board, true) << std::endl;
 			std::cout << "Analyzed score: " << output.operator()(0, 0) - 1000 << std::endl;
 		}
 	}

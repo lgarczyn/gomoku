@@ -56,7 +56,7 @@ MoveScore Game::negamax(Board* node, int negDepth, Score alpha, Score beta, Play
 		else if (negDepth <= 1)
 		{
 			//board->fillTaboo(_options.limitBlack, _options.doubleThree, -player);
-			score = player * _analyzer->getScore(*board);
+			score = player * _analyzer->getScore(*board, _options.captureWin);
 		}
 		else if (i == 0)
 		{
@@ -99,7 +99,7 @@ MoveScore Game::pvs(Board *node, int depth, int alpha, int beta, PlayerColor pla
 	if (node->isTerminal(_options.capture))
 		return ninfinity;
 	if (depth == 0)
-		return player * _analyzer->getScore(*node);
+		return player * _analyzer->getScore(*node, _options.captureWin);
 
 	auto children = node->getChildren(player, _options.capture, 10);
 

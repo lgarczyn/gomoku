@@ -12,3 +12,4 @@ using Score=int;
 #define BOARD_HEIGHT 19
 const int pinfinity = std::numeric_limits<Score>::max() / 2;
 const int ninfinity = std::numeric_limits<Score>::min() / 2;
+const int captureVictoryPoints = 10;

@@ -76,10 +76,14 @@ VictoryState  Board::isTerminal(BoardPos pos, bool considerCapture)
 		return aligned;
 	if (considerCapture)
 	{
-		if (_capturedWhites > 10)
+		if (_capturedWhites >= captureVictoryPoints)
 			return whitesCaptured;
-		if (_capturedBlacks > 10)
+		if (_capturedBlacks >= captureVictoryPoints)
 			return blacksCaptured;
+	}
+	if (_turnNum - _capturedBlacks - _capturedWhites == BOARD_HEIGHT * BOARD_WIDTH)
+	{
+		return staleMate;
 	}
 	return  novictory;
 }

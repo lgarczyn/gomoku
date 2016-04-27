@@ -7,21 +7,25 @@
 
 using namespace std;
 
-std::string getVictoryMessage(VictoryState v)
+std::string getVictoryMessage(VictoryState v, PlayerColor turn)
 {
     std::string text;
+    std::string player = (turn == blackPlayer) ? "Black" : "White";
+    player += " player wins:\n";
 
     switch (v)
     {
         case aligned:
-            text = "Five stone aligned";
+            text = player + "Five stones aligned";
             break;
         case whitesCaptured:
-            text = "Enough whites stone captured";
+            text = player + "Enough white stones captured";
             break;
         case blacksCaptured:
-            text = "Enough blacks stone captured";
+            text = player + "Enough black stones captured";
             break;
+        case staleMate:
+            text = "Stalemate";
         default:
             break;
     }
@@ -62,7 +66,8 @@ void game_page(GUIManager& win, Game::Options &options)
                         if (g.play(pos))
                         {
                             hasWon = true;
-                            text = "Victory\n" + getVictoryMessage(victory);
+                            victory = g.getState()->isTerminal(options.capture);
+                            text = getVictoryMessage(victory, (PlayerColor)-g.getTurn());
                         }
                         win.drawBoard(g, options, text);
                     }
@@ -80,7 +85,8 @@ void game_page(GUIManager& win, Game::Options &options)
             if (g.play())
             {
                 hasWon = true;
-                text = "White win\n" + getVictoryMessage(victory);
+                victory = g.getState()->isTerminal(options.capture);
+                text = getVictoryMessage(victory, whitePlayer);
             }
             win.drawBoard(g, options, text);
             shouldWait = false;
@@ -91,7 +97,8 @@ void game_page(GUIManager& win, Game::Options &options)
             if (g.play())
             {
                 hasWon = true;
-                text = "Black win\n" + getVictoryMessage(victory);
+                victory = g.getState()->isTerminal(options.capture);
+                text = getVictoryMessage(victory, blackPlayer);
             }
             win.drawBoard(g, options, text);
             shouldWait = false;

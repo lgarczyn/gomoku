@@ -11,6 +11,7 @@ enum VictoryState
 	aligned = 1,
 	whitesCaptured = 2,
 	blacksCaptured = 3,
+	staleMate = 4,
 };
 
 #endif //GOMOKU_VICTORYSTATE_HPP

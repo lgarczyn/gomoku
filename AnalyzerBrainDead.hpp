@@ -13,7 +13,7 @@ class AnalyzerBrainDead : public IAnalyzer
 {
 public:
 	AnalyzerBrainDead();
-	Score getScore(Board& board);
+	Score getScore(Board& board, bool considerCapture);
 
 private:
 	void fillScore(Board &board);

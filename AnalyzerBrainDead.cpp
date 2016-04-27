@@ -4,6 +4,7 @@
 
 #include "AnalyzerBrainDead.hpp"
 #include "Board.hpp"
+#include "Game.hpp"
 
 AnalyzerBrainDead::AnalyzerBrainDead() { }
 
@@ -157,11 +158,17 @@ void AnalyzerBrainDead::fillScore(Board &board)
 	}
 }
 
-Score AnalyzerBrainDead::getScore(Board &board)
+Score AnalyzerBrainDead::getScore(Board &board, bool considerCapture)
 {
 	_score = 0;
 	
 	fillScore(board);
+
+	if (considerCapture)
+	{
+		_score += 1 << board._capturedBlacks / 2;
+		_score -= 1 << board._capturedWhites / 2;
+	}
 
 	return _score;
 }
