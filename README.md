@@ -1,11 +1,13 @@
 # gomoku
 
-TODO: show where was last-move/last capture
-    diff with previous state?
-    store in Game now that GUIManager has access to it?
+
 TODO: consider capture in heuristics
+    check
 TODO: show time taken
+    std::cout
 TODO: detect stalemate
+    children is empty
+TODO: add back victory message
 
 UGLY: public priority and data instead of friend
 
