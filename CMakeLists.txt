@@ -45,8 +45,6 @@ set(SOURCE_FILES
         VictoryState.hpp
         ChildBoard.cpp
         ChildBoard.hpp
-        BoardStore.cpp
-        BoardStore.hpp
         NetworkManager.cpp
         NetworkManager.hpp
         Analyzer.cpp

@@ -32,7 +32,7 @@ Game::~Game()
 
 MoveScore Game::negamax(Board* node, int negDepth, Score alpha, Score beta, PlayerColor player)
 {
-	auto children = node->getChildren(player, _options.capture, (negDepth == _depth) ? 20 : 20);
+	auto children = node->getChildren(player, _options.capture, (negDepth == _depth) ? 200 : 20);
 
 	MoveScore bestMove(ninfinity - 1);
 	std::vector<MoveScore>	choice;

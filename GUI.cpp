@@ -206,7 +206,7 @@ void GUI::start_loop()
                 break;
             case GUIManager::PlayerVersusPlayer:
                 options.isBlackAI = false;
-                options.isWhiteAI = true;
+                options.isWhiteAI = false;
                 game_page(win, options);
                 break;
             case GUIManager::Options:

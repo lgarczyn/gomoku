@@ -30,9 +30,9 @@ public:
 	void 			drawOptions(std::vector<std::pair<std::string, bool>> options);
 	void 			drawMenu();
 private:
-	static const int screen_width = 1000;
+	static const int screen_width = 1140;
 	static const int screen_height = 1000;
-	static const int screen_margin_x = 0;
+	static const int screen_margin_x = 70;
 	static const int screen_margin_y = 0;
 	static const int board_width = 1000;
 	static const int board_height = 1000;
@@ -40,6 +40,11 @@ private:
 	static const int board_offset_y = 50;
 	static const int cell_width = 50;
 	static const int cell_height = 50;
+
+	static const int score_cell_count = 18;
+	static const int score_cell_height = screen_height / score_cell_count;
+	static const int score_offset_x = screen_margin_x / 2;
+	static const int score_offset_y = score_cell_height / 2;
 
 	int 					_w;
 	int 					_h;

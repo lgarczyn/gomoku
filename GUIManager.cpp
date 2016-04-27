@@ -8,7 +8,7 @@
 #include <string>
 
 GUIManager::GUIManager()
-		:sf::RenderWindow(sf::VideoMode(screen_width, screen_height), "Gomoku"),
+		:sf::RenderWindow(sf::VideoMode(screen_width, screen_height), "Gomoku", sf::Style::Titlebar | sf::Style::Close),
 		_w(screen_width),
 		_h(screen_height),
 		_lineWidth(2),
@@ -76,9 +76,10 @@ void	GUIManager::drawBoard(Game& g, Game::Options options, const std::string mes
 	Board &b = *g.getState();
 	bool isPlayerNext = g.isPlayerNext();
 
+
 	BoardPos mousePos;
 	getMouseBoardPos(mousePos);
-	background.setPosition(screen_margin_x, screen_margin_y);
+	background.setPosition(0, 0);
 	this->draw(background);
 
 	MoveScore bestPriority = b.getBestPriority();
@@ -126,9 +127,9 @@ void	GUIManager::drawBoard(Game& g, Game::Options options, const std::string mes
 		if (sprite != nullptr)
 		{
 			sprite->setScale(cell_width / 64., cell_width / 64.);
-			sprite->setPosition(
-					screen_margin_x + board_offset_x + pos.x * cell_width - cell_width / 2,
-					screen_margin_y + board_offset_y + pos.y * cell_height - cell_width / 2);
+			centerOnPos(*sprite,
+						screen_margin_x + board_offset_x + pos.x * cell_width,
+						screen_margin_y + board_offset_y + pos.y * cell_height);
 			this->draw(*sprite);
 		}
 		if (text != nullptr && options.showPriority)
@@ -151,6 +152,7 @@ void	GUIManager::drawBoard(Game& g, Game::Options options, const std::string mes
 			delete text;
 		}
 	}
+
 	if (message.size())
 	{
 		sf::RectangleShape			wonPopup(sf::Vector2f(_w * 0.8,200));
@@ -164,6 +166,31 @@ void	GUIManager::drawBoard(Game& g, Game::Options options, const std::string mes
 		draw(wonPopup);
 		draw(wonText);
 	}
+
+	sprite_black.setScale(cell_width / 64., cell_width / 64.);
+	int count = b.getCapturedBlack();
+	if (count > score_cell_count)
+		count = score_cell_count;
+	for (int i = 0; i < count; i++)
+	{
+		int posx = score_offset_x;
+		int posy = (screen_height * (i + 0.5) / score_cell_count);
+		centerOnPos(sprite_black, posx, posy);
+		draw(sprite_black);
+	}
+
+	sprite_white.setScale(cell_width / 64., cell_width / 64.);
+	count = b.getCapturedWhite();
+	if (count > score_cell_count)
+		count = score_cell_count;
+	for (int i = 0; i < count; i++)
+	{
+		int posx = screen_width - score_offset_x;
+		int posy = (screen_height * (i + 0.5) / score_cell_count);
+		centerOnPos(sprite_white, posx, posy);
+		draw(sprite_white);
+	}
+
 	display();
 }
 
