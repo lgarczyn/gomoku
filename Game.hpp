@@ -5,6 +5,7 @@
 
 #pragma once
 
+#include <ctime>
 #include "PlayerColor.hpp"
 #include "BoardPos.hpp"
 #include "IAnalyzer.hpp"
@@ -35,12 +36,14 @@ public:
 	PlayerColor getTurn() const;
 	bool isPlayerNext() const;
 	bool hasPosChanged(BoardPos pos) const;
+	bool isOverdue();
 	double getTimeTaken() const;
 
 	Board *getState();
 	BoardPos getNextMove();
 
 private:
+	clock_t _start;
 	double 	_timeTaken;
 	Options _options;
 	Board *_state;

@@ -117,15 +117,21 @@ BoardPos Game::negamax(Board* node, PlayerColor player)
 	return choice[rand() % choice.size()].pos;//TODO get fucking rid of rand
 }
 
+
+bool Game::isOverdue()
+{
+
+}
+
 BoardPos Game::getNextMove()
 {
 	using namespace std;
-	clock_t begin = clock();
+	clock_t _start = clock();
 
 	BoardPos pos = negamax(_state, _turn);
 
 	clock_t end = clock();
-	_timeTaken = double(end - begin) / CLOCKS_PER_SEC;
+	_timeTaken = double(end - _start) / CLOCKS_PER_SEC;
 
 	return pos;
 }

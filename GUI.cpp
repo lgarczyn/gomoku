@@ -87,9 +87,9 @@ void game_page(GUIManager& win, Game::Options &options)
                 hasWon = true;
                 victory = g.getState()->isTerminal(options.capture);
                 text = getVictoryMessage(victory, whitePlayer);
-                std::cout << text << std::endl;
             }
             std::cout << "AI white: time taken: " << g.getTimeTaken() << std::endl;
+            if (text != "") std::cout << text << std::endl;
             win.drawBoard(g, options, text);
             shouldWait = false;
         }
@@ -101,9 +101,9 @@ void game_page(GUIManager& win, Game::Options &options)
                 hasWon = true;
                 victory = g.getState()->isTerminal(options.capture);
                 text = getVictoryMessage(victory, blackPlayer);
-                std::cout << text << std::endl;
             }
             std::cout << "AI black: time taken: " << g.getTimeTaken() << std::endl;
+            if (text != "") std::cout << text << std::endl;
             win.drawBoard(g, options, text);
             shouldWait = false;
         }
