@@ -35,12 +35,13 @@ public:
 	PlayerColor getTurn() const;
 	bool isPlayerNext() const;
 	bool hasPosChanged(BoardPos pos) const;
+	double getTimeTaken() const;
 
 	Board *getState();
 	BoardPos getNextMove();
 
 private:
-
+	double 	_timeTaken;
 	Options _options;
 	Board *_state;
 	Board *_previousState;

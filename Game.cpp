@@ -4,12 +4,11 @@
 
 #include "Game.hpp"
 #include "Analyzer.hpp"
-#include "Board.hpp"
-#include <iostream>
+#include <chrono>
 
 using namespace std;
 
-Game::Game(Options options):_options(options)
+Game::Game(Options options):_options(options), _timeTaken()
 {
 	_state = new Board();
 #ifdef ANALYZER_AVAILABLE
@@ -120,7 +119,14 @@ BoardPos Game::negamax(Board* node, PlayerColor player)
 
 BoardPos Game::getNextMove()
 {
-	auto  pos = negamax(_state, _turn);
+	using namespace std;
+	clock_t begin = clock();
+
+	BoardPos pos = negamax(_state, _turn);
+
+	clock_t end = clock();
+	_timeTaken = double(end - begin) / CLOCKS_PER_SEC;
+
 	return pos;
 }
 
@@ -147,6 +153,11 @@ bool Game::hasPosChanged(BoardPos pos) const
 	if (_previousState == nullptr)
 		return false;
 	return _previousState->getCase(pos) != _state->getCase(pos);
+}
+
+double Game::getTimeTaken() const
+{
+	return _timeTaken;
 }
 
 bool Game::play()
