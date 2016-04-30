@@ -47,7 +47,8 @@ private:
 	IAnalyzer* _analyzer;
 	PlayerColor _turn;
 	int _depth;
-	MoveScore negamax(Board* node, int depth, Score alpha, Score beta, PlayerColor player);
+	Score negamax(Board* node, int depth, Score alpha, Score beta, PlayerColor player);
+	BoardPos negamax(Board* node, PlayerColor player);
 	MoveScore pvs(Board* node, int depth, Score alpha, Score beta, PlayerColor player);
 };
 

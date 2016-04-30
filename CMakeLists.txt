@@ -32,7 +32,6 @@ set(SOURCE_FILES
         Game.hpp
         MTDF.cpp
         MTDF.hpp
-        BoardPos.cpp
         BoardPos.hpp
         BoardSquare.hpp
         GUIManager.cpp
@@ -52,6 +51,6 @@ set(SOURCE_FILES
         Trainer.cpp
         Trainer.hpp
         MoveScore.cpp
-        MoveScore.hpp)
+        MoveScore.hpp BoardPos.cpp)
 add_executable(gomoku ${SOURCE_FILES})
 target_link_libraries(gomoku ${SHARK_LIBRARIES})

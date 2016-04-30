@@ -7,7 +7,7 @@
 #include <random>       // std::default_random_engine
 #include <chrono>       // std::chrono::system_clock
 
-bool Board::isAlignedStoneDir(int x, int y, int dirX, int dirY, BoardSquare good, int size) const
+/*bool Board::isAlignedStoneDir(int x, int y, int dirX, int dirY, BoardSquare good, int size) const
 {
 	for (int i = 1 ; i < size ; ++i) {
 		x += dirX;
@@ -35,6 +35,11 @@ bool Board::isAlignedStonePos(int x, int y, int size) const
 	if (isAlignedStoneDir(x, y, 1, 0, c, size)) return (true);
 	if (isAlignedStoneDir(x, y, 1, 1, c, size)) return (true);
 	return false;
+
+
+
+
+
 }
 
 bool Board::isAlignedStone(int size) const
@@ -44,17 +49,62 @@ bool Board::isAlignedStone(int size) const
 			if (isAlignedStonePos(x, y, size))
 				return true;
 	return false;
+}*/
+
+
+
+inline bool Board::isAlignedStoneDir(int x, int y, int dirX, int dirY, BoardSquare color, int size) const
+{
+	int ix = x + (size - 1) * -dirX;
+	int iy = y + (size - 1) * -dirY;
+	int mx = x + size * dirX;
+	int my = y + size * dirY;
+
+	//TODO find better way (seriously tough)
+	while (ix < 0 || iy < 0 || ix >= BOARD_WIDTH || iy >= BOARD_HEIGHT)
+		ix += dirX, iy += dirY;
+	while (mx < -1 || my < -1 || mx > BOARD_WIDTH || my > BOARD_HEIGHT)
+		mx -= dirX, my -= dirY;
+
+	int count = 0;
+
+	while ((!dirX || ix != mx) && (!dirY || iy != my))
+	{
+		if (_data[iy][ix] != color)
+		{
+			count = 0;
+		}
+		else if (++count == size)
+		{
+			return true;
+		}
+		ix += dirX, iy += dirY;
+	}
+	return false;
 }
 
-int 		Board::getCapturedBlack() const
+bool Board::isAlignedStonePos(int x, int y, int size) const
 {
-	return (_capturedBlacks);
+	BoardSquare c = _data[y][x];
+	if (c == empty) return false;
+
+	if (isAlignedStoneDir(x, y, 1, 0, c, size)) return true;
+	if (isAlignedStoneDir(x, y, 1, 1, c, size)) return true;
+	if (isAlignedStoneDir(x, y, 0, 1, c, size)) return true;
+	if (isAlignedStoneDir(x, y, -1, 1, c, size)) return true;
+	return false;
 }
 
-int 		Board::getCapturedWhite() const
+bool Board::isAlignedStone(int size) const
 {
-	return (_capturedWhites);
+	for (int y = 0 ; y < BOARD_HEIGHT; ++y)
+		for (int x = 0 ; x < BOARD_WIDTH; ++x)
+			if (_data[y][x] != empty)
+				if (isAlignedStonePos(x, y, size))
+					return true;
+	return false;
 }
+
 
 VictoryState  Board::isTerminal(bool considerCapture)
 {
@@ -372,9 +422,12 @@ bool Board::isPosLegal(int x, int y, bool limitBlack, bool doubleThree, PlayerCo
 	return true;
 }
 
-Board::Board(): _data(), _priority(), _capturedWhites(), _capturedBlacks(), _turnNum(), hasScore() { }
+Board::Board(): _data(), _priority(), _capturedWhites(), _capturedBlacks(), _turnNum(), hasScore()
+{
+	_priority[9][9] = 1;
+}
 
-Board::Board(const Board& board):Board()
+Board::Board(const Board& board)
 {
 	*this = board;
 	bzero(_priority, sizeof(_priority));
@@ -399,14 +452,6 @@ Board::Board(const Board& board, BoardPos move, PlayerColor player, bool capture
 	}
 	_turnNum = board._turnNum + 1;
 }
-
-BoardData* Board::getData() { return &_data; }
-BoardSquare	Board::getCase(BoardPos pos) const { return (_data[pos.y][pos.x]); }
-BoardSquare&	Board::getCase(BoardPos pos) { return (_data[pos.y][pos.x]); }
-BoardSquare		Board::getCase(int x, int y) const {return (_data[y][x]);};
-BoardSquare&	Board::getCase(int x, int y) {return (_data[y][x]);};
-int 			Board::getPriority(int x, int y) const {return _priority[y][x];}
-int 			Board::getPriority(BoardPos pos) const {return _priority[pos.y][pos.x];}
 
 MoveScore		Board::getBestPriority() const
 {

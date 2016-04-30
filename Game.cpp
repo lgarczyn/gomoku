@@ -22,7 +22,6 @@ Game::Game(Options options):_options(options)
 	_turn = PlayerColor::blackPlayer;
 	_depth = 5;
 	_state->fillTaboo(_options.limitBlack, _options.doubleThree, _turn);
-	_state->_priority[9][9] = 1;
 	_previousState = nullptr;
 }
 
@@ -31,13 +30,11 @@ Game::~Game()
 
 }
 
-MoveScore Game::negamax(Board* node, int negDepth, Score alpha, Score beta, PlayerColor player)
+Score Game::negamax(Board* node, int negDepth, Score alpha, Score beta, PlayerColor player)
 {
-	auto children = node->getChildren(player, _options.capture, (negDepth == _depth) ? 20 : 20);
+	auto children = node->getChildren(player, _options.capture, 20);
 
-	MoveScore bestMove(ninfinity - 1);
-	std::vector<MoveScore>	choice;
-
+	Score bestScore = ninfinity;
 
 	if (!children.size())
 		throw std::logic_error("GetChildren returned an empty array");
@@ -45,7 +42,7 @@ MoveScore Game::negamax(Board* node, int negDepth, Score alpha, Score beta, Play
 	for (int i = 0; i < children.size(); i++)
 	{
 		ChildBoard child = children[i];
-		int score;
+		Score score;
 		Board* board = child.board;
 		BoardPos pos = child.move;
 
@@ -55,22 +52,51 @@ MoveScore Game::negamax(Board* node, int negDepth, Score alpha, Score beta, Play
 		}
 		else if (negDepth <= 1)
 		{
-			//board->fillTaboo(_options.limitBlack, _options.doubleThree, -player);
 			score = player * _analyzer->getScore(*board, _options.captureWin);
-		}
-		else if (i == 0)
-		{
-			board->fillTaboo(_options.limitBlack, _options.doubleThree, -player);
-			//score = -negamax(board, negaDepth - 1, -beta, -alpha, -player).score;
-
-			score = -negamax(child.board, negDepth - 1, -beta, -alpha, -player).score;
 		}
 		else
 		{
-			//score = -negamax(child.board, negDepth - 1, -alpha - 1, -alpha, -player).score;
-			//if (alpha < score && score < beta)
-			//	score = -negamax(child.board, negDepth - 1, -beta, -score, -player).score;
-			score = -negamax(child.board, negDepth - 1, -beta, -alpha, -player).score;
+			score = -negamax(child.board, negDepth - 1, -beta, -alpha, -player);
+		}
+		if (score > bestScore)
+		{
+			bestScore = score;
+		}
+		delete board;
+
+		alpha = std::max(alpha, score);
+		if (alpha > beta)
+			break;
+	}
+	return bestScore;
+}
+
+BoardPos Game::negamax(Board* node, PlayerColor player)
+{
+	Score alpha = ninfinity;
+	Score beta = pinfinity;
+	auto children = node->getChildren(player, _options.capture, 20);
+
+	MoveScore bestMove(ninfinity - 1);
+	std::vector<MoveScore>	choice;
+
+	if (!children.size())
+		throw std::logic_error("GetChildren returned an empty array");
+
+	for (int i = 0; i < children.size(); i++)
+	{
+		ChildBoard child = children[i];
+		Score score;
+		Board* board = child.board;
+		BoardPos pos = child.move;
+
+		if (board->isTerminal(pos, _options.captureWin))
+		{
+			score = pinfinity;
+		}
+		else
+		{
+			score = -negamax(child.board, _depth - 1, -beta, -alpha, -player);
 		}
 		if (score > bestMove.score)
 		{
@@ -89,47 +115,12 @@ MoveScore Game::negamax(Board* node, int negDepth, Score alpha, Score beta, Play
 		if (alpha > beta)
 			break;
 	}
-	if (negDepth == _depth)
-		return choice[0];
-	return choice[rand() % choice.size()];//TODO get fucking rid of rand
-}
-
-MoveScore Game::pvs(Board *node, int depth, int alpha, int beta, PlayerColor player)
-{
-	if (node->isTerminal(_options.capture))
-		return ninfinity;
-	if (depth == 0)
-		return player * _analyzer->getScore(*node, _options.captureWin);
-
-	auto children = node->getChildren(player, _options.capture, 10);
-
-	MoveScore bestMove;
-	for (int i = 0; i < children.size(); i++)
-	{
-		ChildBoard child = children[i];
-		int score = ninfinity;
-		if (i == 0)
-		{
-			score = -pvs(child.board, depth - 1, -beta, -alpha, -player).score;
-		}
-		else
-		{
-			score = -pvs(child.board, depth - 1, -alpha - 1, -alpha, -player).score;
-			if (alpha < score && score < beta)
-				score = -pvs(child.board, depth - 1, -beta, -score, -player).score;
-		}
-		if (alpha > score)
-			bestMove = MoveScore(alpha, child.move);
-		if (alpha >= beta)
-			break;
-	}
-
-	return bestMove;
+	return choice[rand() % choice.size()].pos;//TODO get fucking rid of rand
 }
 
 BoardPos Game::getNextMove()
 {
-	auto  pos = negamax(_state, _depth, ninfinity, pinfinity, _turn).pos;
+	auto  pos = negamax(_state, _turn);
 	return pos;
 }
 

@@ -34,20 +34,10 @@ public:
 	Board(const Board& board);
 	Board(const Board& board, BoardPos move, PlayerColor player, bool capture);
 
-	BoardData*		getData();
-	BoardSquare&	getCase(BoardPos pos);
-	BoardSquare&	getCase(int x, int y);
-	BoardSquare 	getCase(BoardPos pos) const;
-	BoardSquare		getCase(int x, int y) const;
-	int 			getPriority(int x, int y) const;
-	int 			getPriority(BoardPos pos) const;
-	MoveScore		getBestPriority() const;
-	int 			getCapturedBlack() const;
-	int 			getCapturedWhite() const;
-
 	void 			fillTaboo(bool limitBlack, bool doubleThree, PlayerColor player);
 	void 			fillPriority(PlayerColor player);
 	void 			fillPriorityDir(int x, int y, int dirX, int dirY, BoardSquare color, int bonus);
+	MoveScore		getBestPriority() const;
 	bool 			isPosLegal(int x, int y, bool limitBlack, bool doubleThree, PlayerColor player);
 	bool			checkFreeThree(int x, int y, int dirX, int dirY, BoardSquare enemy);
 	bool 			playCapture(int x, int y);
@@ -56,15 +46,29 @@ public:
 	bool		 	isAlignedStonePos(int x, int y, int size) const;
 	bool			isAlignedStone(int size) const;
 
+//Declaration here for optimization
+
+	BoardData*		getData() { return &_data; }
+	BoardSquare		getCase(BoardPos pos) const { return (_data[pos.y][pos.x]); }
+	BoardSquare&	getCase(BoardPos pos) { return (_data[pos.y][pos.x]); }
+	BoardSquare		getCase(int x, int y) const {return (_data[y][x]);};
+	BoardSquare&	getCase(int x, int y) {return (_data[y][x]);};
+	int 			getCapturedBlack() const {return (_capturedBlacks);}
+	int 			getCapturedWhite() const {return (_capturedWhites);}
+	int 			getPriority(int x, int y) const {return _priority[y][x];}
+	int 			getPriority(BoardPos pos) const {return _priority[pos.y][pos.x];}
+
 	bool 			hasScore;
 	float 			score;
+private:
 	BoardData		_data;
 	BoardScore		_priority;
-private:
 	int				_capturedWhites;
 	int				_capturedBlacks;
 	int 			_turnNum;
-	//friend class Analyzer;
+
+	friend class AnalyzerNrainDead;
+	friend class Analyzer;
 };
 
 

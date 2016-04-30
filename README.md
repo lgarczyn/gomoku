@@ -1,6 +1,5 @@
 # gomoku
 
-
 TODO: show time taken
     std::cout
 
