@@ -11,6 +11,9 @@
 #include "IAnalyzer.hpp"
 #include "Constants.hpp"
 #include "MoveScore.hpp"
+#include "ChildBoard.hpp"
+#include "ThreadPool.hpp"
+#include <atomic>
 
 class Game
 {
@@ -51,9 +54,18 @@ private:
 	IAnalyzer* _analyzer;
 	PlayerColor _turn;
 	int _depth;
-	Score negamax(Board* node, int depth, Score alpha, Score beta, PlayerColor player);
-	BoardPos negamax(Board* node, PlayerColor player);
-	MoveScore pvs(Board* node, int depth, Score alpha, Score beta, PlayerColor player);
+	static Score negamax(Board* node, int depth, Score alpha, Score beta, PlayerColor player);
+	static MoveScore negamax_thread(ThreadData data);
+	static BoardPos start_negamax(Board *node, PlayerColor player);
+
+	struct ThreadData
+	{
+		ChildBoard node;
+		std::atomic<Score>& alpha;
+		PlayerColor player;
+	};
+
+	ThreadPool<ThreadData, MoveScore> _pool;
 };
 
 

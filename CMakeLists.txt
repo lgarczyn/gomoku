@@ -16,8 +16,9 @@ link_libraries("sfml-window")
 link_libraries("boost_serialization")
 link_libraries("shark")
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -ofast")
+set(CMAKE_CXX_FLAGS " -std=c++11 -ofast -ffast-math")
 # -pg --profile")
+# ${CMAKE_CXX_FLAGS})
 
 set(SOURCE_FILES
         main.cpp
@@ -51,6 +52,6 @@ set(SOURCE_FILES
         Trainer.cpp
         Trainer.hpp
         MoveScore.cpp
-        MoveScore.hpp BoardPos.cpp)
+        MoveScore.hpp BoardPos.cpp ThreadPool.cpp ThreadPool.hpp)
 add_executable(gomoku ${SOURCE_FILES})
 target_link_libraries(gomoku ${SHARK_LIBRARIES})
