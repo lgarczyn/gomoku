@@ -52,6 +52,9 @@ set(SOURCE_FILES
         Trainer.cpp
         Trainer.hpp
         MoveScore.cpp
-        MoveScore.hpp BoardPos.cpp ThreadPool.cpp ThreadPool.hpp)
+        MoveScore.hpp
+        BoardPos.cpp
+        ThreadPool.cpp
+        ThreadPool.hpp ThreadData.hpp)
 add_executable(gomoku ${SOURCE_FILES})
 target_link_libraries(gomoku ${SHARK_LIBRARIES})

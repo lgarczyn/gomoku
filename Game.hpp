@@ -13,6 +13,7 @@
 #include "MoveScore.hpp"
 #include "ChildBoard.hpp"
 #include "ThreadPool.hpp"
+#include "ThreadData.hpp"
 #include <atomic>
 
 class Game
@@ -46,6 +47,10 @@ public:
 	BoardPos getNextMove();
 
 private:
+
+	typedef ThreadPool<ThreadData, MoveScore> Pool;
+	static const int threadCount = 8;
+
 	clock_t _start;
 	double 	_timeTaken;
 	Options _options;
@@ -54,18 +59,11 @@ private:
 	IAnalyzer* _analyzer;
 	PlayerColor _turn;
 	int _depth;
-	static Score negamax(Board* node, int depth, Score alpha, Score beta, PlayerColor player);
+	Score negamax(Board* node, int depth, Score alpha, Score beta, PlayerColor player);
 	static MoveScore negamax_thread(ThreadData data);
-	static BoardPos start_negamax(Board *node, PlayerColor player);
+	BoardPos start_negamax(Board *node, PlayerColor player);
 
-	struct ThreadData
-	{
-		ChildBoard node;
-		std::atomic<Score>& alpha;
-		PlayerColor player;
-	};
-
-	ThreadPool<ThreadData, MoveScore> _pool;
+	Pool *_pool;
 };
 
 

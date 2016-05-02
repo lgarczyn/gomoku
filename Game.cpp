@@ -23,11 +23,12 @@ Game::Game(Options options):_options(options), _timeTaken()
 	_depth = 5 + (slowMode ? 1 : 0);
 	_state->fillTaboo(_options.limitBlack, _options.doubleThree, _turn);
 	_previousState = nullptr;
+	_pool = new Pool(threadCount);
 }
 
 Game::~Game()
 {
-
+	delete _pool;
 }
 
 Score Game::negamax(Board* node, int negDepth, Score alpha, Score beta, PlayerColor player)
@@ -72,27 +73,33 @@ Score Game::negamax(Board* node, int negDepth, Score alpha, Score beta, PlayerCo
 	return bestScore;
 }
 
-MoveScore Game::negamax_thread(ChildBoard node, std::atomic<Score>& alpha, PlayerColor player)
+MoveScore Game::negamax_thread(ThreadData data)
 {
-	if (isOverdue())
+	Game& game = *data.game;
+
+	if (game.isOverdue())
 	{
 		return ninfinity;
 	}
 
 	Score score;
-	Board* board = node.board;
-	BoardPos pos = node.move;
 
-	if (board->isTerminal(pos, _options.captureWin))
+	Board* board = data.node.board;
+	BoardPos pos = data.node.move;
+
+
+	std::atomic<int>* alpha = data.alpha;
+
+	if (board->isTerminal(pos, game._options.captureWin))
 	{
 		score = pinfinity;
 	}
 	else
 	{
-		score = -negamax(board, _depth - 1, ninfinity, -alpha, -player);
+		score = -game.negamax(board, game._depth - 1, ninfinity, -alpha->load(), -data.player);
 	}
 
-	alpha.store(std::max(alpha.load(), score));
+	alpha->store(std::max(alpha->load(), score));
 
 	delete board;
 
@@ -102,16 +109,29 @@ MoveScore Game::negamax_thread(ChildBoard node, std::atomic<Score>& alpha, Playe
 BoardPos Game::start_negamax(Board *node, PlayerColor player)
 {
 	std::atomic<Score> alpha(ninfinity);
-	auto children = node->getChildren(player, _options.capture, 20);
+	std::vector<ChildBoard> children = node->getChildren(player, _options.capture, 200);
 
 	if (!children.size())
 		throw std::logic_error("GetChildren returned an empty array");
 
+	std::vector<ThreadData> threadData;
+
+	for (int i = 0; i < children.size(); i++)
+	{
+		threadData.push_back(
+				ThreadData(
+					children[i],
+					&alpha,
+					player,
+					this));
+	}
+
+
+	auto function = std::function<MoveScore(ThreadData)>(this, &Game::negamax_thread);
+	std::vector<MoveScore> result = _pool->run(function, threadData);
+
 	MoveScore bestMove(ninfinity - 1);
 	std::vector<MoveScore>	choice;
-	std::vector<MoveScore> result = std::vector<MoveScore>();
-	//get MoveScore vector using threadpool
-
 	for (int i = 0; i < result.size(); i++)
 	{
 		Score score = result[i].score;
