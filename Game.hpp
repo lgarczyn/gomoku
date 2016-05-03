@@ -14,23 +14,12 @@
 #include "ChildBoard.hpp"
 #include "ThreadPool.hpp"
 #include "ThreadData.hpp"
+#include "Options.hpp"
 #include <atomic>
 
 class Game
 {
 public:
-	struct Options
-	{
-		bool showTips = true;
-		bool showPriority = false;
-		bool limitBlack = false;
-		bool doubleThree = true;
-		bool capture = true;
-		bool captureWin = true;
-		bool brainDead = true;
-		bool isBlackAI = true;
-		bool isWhiteAI = true;
-	};
 
 	Game(Options _options);
 	~Game();
@@ -49,7 +38,6 @@ public:
 private:
 
 	typedef ThreadPool<ThreadData, MoveScore> Pool;
-	static const int threadCount = 8;
 
 	clock_t _start;
 	double 	_timeTaken;
@@ -60,7 +48,7 @@ private:
 	PlayerColor _turn;
 	int _depth;
 	Score negamax(Board* node, int depth, Score alpha, Score beta, PlayerColor player);
-	static MoveScore negamax_thread(ThreadData data);
+	MoveScore negamax_thread(ThreadData data);
 	BoardPos start_negamax(Board *node, PlayerColor player);
 
 	Pool *_pool;

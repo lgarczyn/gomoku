@@ -11,17 +11,14 @@ class Game;
 
 struct ThreadData
 {
-	ThreadData(ChildBoard _node, std::atomic<Score>* _alpha, PlayerColor _player, Game* _game):
+	ThreadData(ChildBoard _node, std::atomic<Score>* _alpha, PlayerColor _player):
 			node(_node),
 			alpha(_alpha),
-			player(_player),
-			game(_game)
+			player(_player)
 	{}
-
 
 	~ThreadData(){};
 	ChildBoard node;
 	std::atomic<Score>* alpha;
 	PlayerColor player;
-	Game* game;
 };

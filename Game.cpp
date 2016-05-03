@@ -4,10 +4,13 @@
 
 #include "Game.hpp"
 #include "Analyzer.hpp"
-#include <chrono>
-#include <thread>
 
 using namespace std;
+
+const bool slowMode = false;
+const double time_linit = (slowMode ? 3 : 0.5);
+const double time_margin = 0.001;
+static const int threadCount = 1;
 
 Game::Game(Options options):_options(options), _timeTaken()
 {
@@ -75,9 +78,7 @@ Score Game::negamax(Board* node, int negDepth, Score alpha, Score beta, PlayerCo
 
 MoveScore Game::negamax_thread(ThreadData data)
 {
-	Game& game = *data.game;
-
-	if (game.isOverdue())
+	if (isOverdue())
 	{
 		return ninfinity;
 	}
@@ -90,13 +91,13 @@ MoveScore Game::negamax_thread(ThreadData data)
 
 	std::atomic<int>* alpha = data.alpha;
 
-	if (board->isTerminal(pos, game._options.captureWin))
+	if (board->isTerminal(pos, _options.captureWin))
 	{
 		score = pinfinity;
 	}
 	else
 	{
-		score = -game.negamax(board, game._depth - 1, ninfinity, -alpha->load(), -data.player);
+		score = -negamax(board, _depth - 1, ninfinity, -alpha->load(), -data.player);
 	}
 
 	alpha->store(std::max(alpha->load(), score));
@@ -122,12 +123,11 @@ BoardPos Game::start_negamax(Board *node, PlayerColor player)
 				ThreadData(
 					children[i],
 					&alpha,
-					player,
-					this));
+					player));
 	}
 
 
-	auto function = std::function<MoveScore(ThreadData)>(this, &Game::negamax_thread);
+	std::function<MoveScore(ThreadData)> function = boost::bind(&Game::negamax_thread, this, _1);
 	std::vector<MoveScore> result = _pool->run(function, threadData);
 
 	MoveScore bestMove(ninfinity - 1);

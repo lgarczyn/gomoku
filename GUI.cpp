@@ -32,7 +32,7 @@ std::string getVictoryMessage(VictoryState v, PlayerColor turn)
     return (text);
 }
 
-void game_page(GUIManager& win, Game::Options &options)
+void game_page(GUIManager& win, Options &options)
 {
     Game                g(options);
     bool                hasWon = false;
@@ -141,7 +141,7 @@ GUIManager::MenuButton menu_page(GUIManager& win)
     }
 }
 
-std::vector<std::pair<std::string, bool>> getOptionsData(Game::Options &options)
+std::vector<std::pair<std::string, bool>> getOptionsData(Options &options)
 {
     return std::vector<std::pair<std::string, bool>>({
                                std::pair<std::string, bool>("Show player tips", options.showTips),
@@ -154,7 +154,7 @@ std::vector<std::pair<std::string, bool>> getOptionsData(Game::Options &options)
                        });
 }
 
-void option_page(GUIManager& win, Game::Options &options)
+void option_page(GUIManager& win, Options &options)
 {
     int pos;
     while (1)
@@ -197,7 +197,7 @@ void option_page(GUIManager& win, Game::Options &options)
 
 void GUI::start_loop()
 {
-    Game::Options       options;
+    Options       options;
     GUIManager          win;
 
     srand(time(NULL));
@@ -205,22 +205,22 @@ void GUI::start_loop()
     {
         switch (menu_page(win))
         {
-            case GUIManager::AIVersusAI:
+            case GUIManager::ButtonAIVersusAI:
                 options.isBlackAI = true;
                 options.isWhiteAI = true;
                 game_page(win, options);
                 break;
-            case GUIManager::PlayerVersusAI:
+            case GUIManager::ButtonPlayerVersusAI:
                 options.isBlackAI = false;
                 options.isWhiteAI = true;
                 game_page(win, options);
                 break;
-            case GUIManager::PlayerVersusPlayer:
+            case GUIManager::ButtonPlayerVersusPlayer:
                 options.isBlackAI = false;
                 options.isWhiteAI = false;
                 game_page(win, options);
                 break;
-            case GUIManager::Options:
+            case GUIManager::ButtonOptions:
                 option_page(win, options);
                 break;
         }

@@ -5,7 +5,7 @@
 #include "GUIManager.hpp"
 
 #include <sstream>
-#include <string>
+#include "Game.hpp"
 
 GUIManager::GUIManager()
 		:sf::RenderWindow(sf::VideoMode(screen_width, screen_height), "Gomoku", sf::Style::Titlebar | sf::Style::Close),
@@ -61,7 +61,7 @@ sf::Vector2f	GUIManager::getMouseScreenRatio()
 	return value;
 }
 
-void	GUIManager::drawBoard(Game& g, Game::Options options, const std::string message)
+void	GUIManager::drawBoard(Game& g, Options options, const std::string message)
 {
 	BoardSquare 		c;
 	sf::Sprite			highlight(_textures.highlight);

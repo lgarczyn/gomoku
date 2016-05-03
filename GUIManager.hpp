@@ -7,17 +7,19 @@
 #include <SFML/Graphics.hpp>
 #include "Board.hpp"
 #include "TextureManager.hpp"
-#include "Game.hpp"
+#include "Options.hpp"
+
+class Game;
 
 class GUIManager : public sf::RenderWindow {
 public:
 
 	enum MenuButton
 	{
-		PlayerVersusAI = 0,
-		PlayerVersusPlayer = 1,
-		AIVersusAI = 2,
-		Options = 3,
+		ButtonPlayerVersusAI = 0,
+		ButtonPlayerVersusPlayer = 1,
+		ButtonAIVersusAI = 2,
+		ButtonOptions = 3,
 	};
 
 	GUIManager();
@@ -26,7 +28,7 @@ public:
 	MenuButton		getMenuButton();
 	bool			getMouseBoardPos(BoardPos& pos);
 	sf::Vector2f	getMouseScreenRatio();
-	void			drawBoard(Game& g, Game::Options options, const std::string message);
+	void			drawBoard(Game& g, Options options, const std::string message);
 	void 			drawOptions(std::vector<std::pair<std::string, bool>> options);
 	void 			drawMenu();
 private:
