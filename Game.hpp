@@ -16,6 +16,7 @@
 #include "ThreadData.hpp"
 #include "Options.hpp"
 #include <atomic>
+#include <chrono>
 
 class Game
 {
@@ -39,7 +40,7 @@ private:
 
 	typedef ThreadPool<ThreadData, MoveScore> Pool;
 
-	clock_t _start;
+	std::chrono::high_resolution_clock::time_point _start;
 	double 	_timeTaken;
 	Options _options;
 	Board *_state;
