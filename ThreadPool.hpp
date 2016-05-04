@@ -101,31 +101,18 @@ void ThreadPool<Data, Value>::waitForData()
 			//will contain the thread data/values index for this loop
 			int index;
 
-			//if startedCounter is above or equal to 0 (not every data element was consumed)
-			// decrement startedCounter
-			//set index as startedcounter
-
-			//if startedCounter == size
-			// index = size - 1;
-			//if startedCounter > 0
-			// index >= 0
-			//if startedCounter == 0
-			// index = -1;
-			//if startedCounter == -1
-			// index = -1
+			//get current counter then increment it for next thread
 			{
 				Lock lock(_startedCounterMutex);
 
-				if (_startedCounter >= 0)
-					--_startedCounter;
-				index = _startedCounter;
+				index = _startedCounter++;
 			}
 
-			//if index is not -1
+			//if index is under data size
 			// calculate data/values couple
 			//else
-			// set another thread as finished
-			if (index >= 0)
+			// set thread as finished
+			if (index < _data.size())
 			{
 				_values[index] = _call(_data[index]);
 			}
@@ -149,10 +136,8 @@ std::vector<Value> ThreadPool<Data, Value>::run(Call call, const std::vector<Dat
 	_call = call;
 	_data = data;
 
-	int size = _data.size();
-
-	_values.resize(size);
-	_startedCounter = size;
+	_values.resize(_data.size());
+	_startedCounter = 0;
 	_finishedCounter.store(_threads.size());
 
 	//release every threads waiting start loop

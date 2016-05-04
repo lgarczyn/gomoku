@@ -10,7 +10,7 @@ using namespace std;
 const bool slowMode = false;
 const double time_linit = (slowMode ? 3 : 0.5);
 const double time_margin = 0.001;
-static const int threadCount = 1;
+static const int threadCount = 8;
 
 Game::Game(Options options):_options(options), _timeTaken()
 {
@@ -110,7 +110,7 @@ MoveScore Game::negamax_thread(ThreadData data)
 BoardPos Game::start_negamax(Board *node, PlayerColor player)
 {
 	std::atomic<Score> alpha(ninfinity);
-	std::vector<ChildBoard> children = node->getChildren(player, _options.capture, 200);
+	std::vector<ChildBoard> children = node->getChildren(player, _options.capture, 20);
 
 	if (!children.size())
 		throw std::logic_error("GetChildren returned an empty array");
@@ -128,12 +128,6 @@ BoardPos Game::start_negamax(Board *node, PlayerColor player)
 
 	std::function<MoveScore(ThreadData)> function = boost::bind(&Game::negamax_thread, this, _1);
 	std::vector<MoveScore> result = _pool->run(function, threadData);
-
-	/*std::vector<MoveScore> result(threadData.size());
-	for (int i = 0; i < threadData.size(); i++)
-	{
-		result[i] = negamax_thread(threadData[i]);
-	}*/
 
 	MoveScore bestMove(ninfinity - 1);
 	std::vector<MoveScore>	choice;
