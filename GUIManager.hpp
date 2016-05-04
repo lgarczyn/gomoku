@@ -50,7 +50,6 @@ private:
 
 	int 					_w;
 	int 					_h;
-	int 					_lineWidth;
 	sf::Color				_colorBG;
 	sf::Color				_colorLine;
 	SpriteManager			_textures;

@@ -68,7 +68,7 @@ inline bool Board::isAlignedStoneDir(int x, int y, int dirX, int dirY, BoardSqua
 
 	int count = 0;
 
-	while ((!dirX || ix != mx) && (!dirY || iy != my))
+	while ((dirX == 0 || ix != mx) && (dirY == 0 || iy != my))
 	{
 		if (_data[iy][ix] != color)
 		{
@@ -138,7 +138,7 @@ VictoryState  Board::isTerminal(BoardPos pos, bool considerCapture)
 	return  novictory;
 }
 
-std::vector<ChildBoard> Board::getChildren(PlayerColor player, bool capture, int count = -1)
+std::vector<ChildBoard> Board::getChildren(PlayerColor player, bool capture, size_t count = -1)
 {
 	fillPriority(player);
 
@@ -177,7 +177,7 @@ std::vector<ChildBoard> Board::getChildren(PlayerColor player, bool capture, int
 	auto children = std::vector<ChildBoard>();
 	for (auto move:childrenPos)
 	{
-		if (children.size() >= count && count >= 0)
+		if (children.size() >= count)
 			break;
 		children.push_back(ChildBoard(
 				new Board(*this, move.pos, player, capture),
@@ -410,19 +410,22 @@ bool Board::isPosLegal(int x, int y, bool limitBlack, bool doubleThree, PlayerCo
 				return true;
 		}
 	}
-	int count = 0;
-	if (checkFreeThree(x, y, 1, 0, enemy)) count++;
-	if (checkFreeThree(x, y, 1, 1, enemy)) count++;
-	if (count >= 2) { return false; }
-	if (checkFreeThree(x, y, 0, 1, enemy)) count++;
-	if (count == 0) { return true; }
-	if (count >= 2) { return false; }
-	if (checkFreeThree(x, y, -1, 1, enemy)) count++;
-	if (count >= 2) { return false; }
+	if (doubleThree)
+	{
+		int count = 0;
+		if (checkFreeThree(x, y, 1, 0, enemy)) count++;
+		if (checkFreeThree(x, y, 1, 1, enemy)) count++;
+		if (count >= 2) { return false; }
+		if (checkFreeThree(x, y, 0, 1, enemy)) count++;
+		if (count == 0) { return true; }
+		if (count >= 2) { return false; }
+		if (checkFreeThree(x, y, -1, 1, enemy)) count++;
+		if (count >= 2) { return false; }
+	}
 	return true;
 }
 
-Board::Board(): _data(), _priority(), _capturedWhites(), _capturedBlacks(), _turnNum(), hasScore()
+Board::Board(): _data(), _priority(), _capturedWhites(), _capturedBlacks(), _turnNum()
 {
 	_priority[9][9] = 1;
 }

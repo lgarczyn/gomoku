@@ -49,10 +49,9 @@ shark::LabeledData<shark::RealVector, shark::RealVector> getRandomData(int count
 	std::vector<shark::RealVector> labels(count, shark::RealVector(1));
 	IAnalyzer *analyzer = new AnalyzerBrainDead();
 
-	for(unsigned i=0; i < count; i++){
+	for(size_t i=0; i < count; i++){
 
 		Board *board = new Board();
-		BoardData* data = board->getData();
 
 		for (BoardPos pos; pos != BoardPos::boardEnd; ++pos)
 		{

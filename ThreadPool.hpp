@@ -33,9 +33,10 @@ private:
 
 	Call _call;
 
-	std::atomic<int> _finishedCounter;
 	std::mutex _startedCounterMutex;
 	int _startedCounter;
+	std::mutex _finishedCounterMutex;
+	int _finishedCounter;
 
 
 	std::mutex _condMutexFinished;
@@ -72,7 +73,7 @@ ThreadPool<Data, Value>::~ThreadPool()
 	_started.notify_all();
 
 	//creates threads
-	for (int i = 0; i < _threads.size(); i++)
+	for (size_t i = 0; i < _threads.size(); i++)
 	{
 		_threads[i]->join();
 		delete _threads[i];
@@ -120,9 +121,15 @@ void ThreadPool<Data, Value>::waitForData()
 			{
 				//set another thread as finished
 				//if all of them are, notify main thread to stop waiting
-				_finishedCounter--;
-				if (_finishedCounter == 0)
-					_finished.notify_one();//could potentially be fired twice, but shouldn't be a problem
+				{
+					Lock lock(_finishedCounterMutex);
+
+					_finishedCounter--;
+					if (_finishedCounter <= 0)
+						_finished.notify_one();
+				}
+				//could potentially be fired twice, but shouldn't be a problem
+				//BUG possible, pas de notify
 				break;
 			}
 		}
@@ -138,15 +145,14 @@ std::vector<Value> ThreadPool<Data, Value>::run(Call call, const std::vector<Dat
 
 	_values.resize(_data.size());
 	_startedCounter = 0;
-	_finishedCounter.store(_threads.size());
+	_finishedCounter = _threads.size();
 
 	//release every threads waiting start loop
 	_started.notify_all();
 	{
 		//make main thread wait until notify_one is called from waitForData
 		Lock lock(_condMutexFinished);
-		_finished.wait(lock);
+		_finished.wait(lock);//BUG possible: wait apres notify
 	}
 	return (_values);
 }
-

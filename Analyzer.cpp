@@ -21,9 +21,6 @@ Analyzer::Analyzer()
 
 Score Analyzer::getScore(Board& board, bool considerCapture)
 {
-	if (board.hasScore)
-		return board.score;
-
 	int k = 0;
 	for (int y = 0; y < BOARD_HEIGHT; y++)
 	{
@@ -38,11 +35,9 @@ Score Analyzer::getScore(Board& board, bool considerCapture)
 	//TODO include captured whites and blacks
 	network.eval(inputs, outputs, *state);
 
-	board.score = network.operator()(shark::RealVector(BOARD_HEIGHT * BOARD_WIDTH + 2)).operator()(0);
+	network.operator()(shark::RealVector(BOARD_HEIGHT * BOARD_WIDTH + 2)).operator()(0);
 
-	board.hasScore = true;
-	board.score = outputs.operator()(0, 0);
-	return (board.score);
+	return (outputs.operator()(0, 0));
 }
 
 Analyzer::~Analyzer()

@@ -29,7 +29,7 @@ public:
 	VictoryState isTerminal(bool considerCapture);
 	VictoryState  isTerminal(BoardPos pos, bool considerCapture);
 	bool isPosInterest(int x, int y, PlayerColor player) const;
-	std::vector<ChildBoard> getChildren(PlayerColor player, bool capture, int count);
+	std::vector<ChildBoard> getChildren(PlayerColor player, bool capture, size_t count);
 	Board();
 	Board(const Board& board);
 	Board(const Board& board, BoardPos move, PlayerColor player, bool capture);
@@ -58,8 +58,6 @@ public:
 	int 			getPriority(int x, int y) const {return _priority[y][x];}
 	int 			getPriority(BoardPos pos) const {return _priority[pos.y][pos.x];}
 
-	bool 			hasScore;
-	float 			score;
 private:
 	BoardData		_data;
 	BoardScore		_priority;

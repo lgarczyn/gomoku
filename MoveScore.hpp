@@ -14,8 +14,8 @@ struct MoveScore
 	BoardPos pos;
 
 	MoveScore(Score _score, BoardPos _pos):score(_score), pos(_pos){}
-	MoveScore(Score _score):pos(),score(_score){}
-	MoveScore():pos(),score(){}
+	MoveScore(Score _score):score(_score),pos(){}
+	MoveScore():score(),pos(){}
 };
 
 

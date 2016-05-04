@@ -11,7 +11,6 @@ GUIManager::GUIManager()
 		:sf::RenderWindow(sf::VideoMode(screen_width, screen_height), "Gomoku", sf::Style::Titlebar | sf::Style::Close),
 		_w(screen_width),
 		_h(screen_height),
-		_lineWidth(2),
 		_colorBG(173, 216, 230),
 		_colorLine(0, 0, 128),
 		_textures()
