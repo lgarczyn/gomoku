@@ -42,7 +42,7 @@ Score Game::negamax(Board* node, int negDepth, Score alpha, Score beta, PlayerCo
 		throw std::logic_error("GetChildren returned an empty array");
 
 	Score bestScore = ninfinity;
-	std::vector<Score> scores = std::vector<Score>(children.size());
+	//std::vector<Score> scores = std::vector<Score>(children.size());
 
 	for (int i = 0; i < children.size() && !isOverdue(); i++)
 	{
@@ -115,20 +115,25 @@ BoardPos Game::start_negamax(Board *node, PlayerColor player)
 	if (!children.size())
 		throw std::logic_error("GetChildren returned an empty array");
 
-	std::vector<ThreadData> threadData;
+	std::vector<ThreadData> threadData(children.size());
 
 	for (int i = 0; i < children.size(); i++)
 	{
-		threadData.push_back(
-				ThreadData(
+		threadData[i] =	ThreadData(
 					children[i],
 					&alpha,
-					player));
+					player);
 	}
 
 
 	std::function<MoveScore(ThreadData)> function = boost::bind(&Game::negamax_thread, this, _1);
 	std::vector<MoveScore> result = _pool->run(function, threadData);
+
+	/*std::vector<MoveScore> result(threadData.size());
+	for (int i = 0; i < threadData.size(); i++)
+	{
+		result[i] = negamax_thread(threadData[i]);
+	}*/
 
 	MoveScore bestMove(ninfinity - 1);
 	std::vector<MoveScore>	choice;

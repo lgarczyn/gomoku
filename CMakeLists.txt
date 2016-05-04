@@ -54,7 +54,8 @@ set(SOURCE_FILES
         MoveScore.cpp
         MoveScore.hpp
         BoardPos.cpp
-        ThreadPool.cpp
-        ThreadPool.hpp ThreadData.hpp IGame.hpp Options.hpp)
+        ThreadPool.hpp
+        ThreadData.hpp
+        Options.hpp)
 add_executable(gomoku ${SOURCE_FILES})
 target_link_libraries(gomoku ${SHARK_LIBRARIES})
