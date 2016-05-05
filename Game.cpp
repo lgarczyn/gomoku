@@ -132,13 +132,16 @@ BoardPos Game::start_negamax(Board *node, PlayerColor player)
 
 
 	std::function<MoveScore(ThreadData)> function = boost::bind(&Game::negamax_thread, this, _1);
-	std::vector<MoveScore> result;// = _pool->run(function, threadData);
-
+#ifdef NON_THREADED
+	std::vector<MoveScore> result;
 	result.resize(threadData.size());
 	for (size_t i = 0; i < threadData.size(); i++)
 	{
 		result[i] = function(threadData[i]);
 	}
+#else
+	std::vector<MoveScore> result = _pool->run(function, threadData);
+#endif
 
 	MoveScore bestMove(ninfinity - 100);
 	std::vector<MoveScore>	choice;
