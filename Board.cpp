@@ -155,7 +155,10 @@ std::vector<ChildBoard> Board::getChildren(PlayerColor player, bool capture, siz
 			if (_data[y][x] == empty)
 			{
 				int score = _priority[y][x];
-				childrenPos.push_back(MoveScore(score, BoardPos(x, y)));
+				if (score)
+				{
+					childrenPos.push_back(MoveScore(score, BoardPos(x, y)));
+				}
 			}
 		}
 	}

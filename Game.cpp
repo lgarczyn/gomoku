@@ -13,7 +13,7 @@ const double time_margin = 0.001;
 const int threadCount = 8;
 const int initial_width = 200;
 const int deep_width = 200;
-const int const_depth = 3;
+const int const_depth = 4;
 
 #define NON_THREADED
 
@@ -55,11 +55,12 @@ Score Game::negamax(Board* node, int negDepth, Score alpha, Score beta, PlayerCo
 	for (i = 0; i < children.size(); i++)
 	{
 		Board* board = children[i].board;
+		BoardPos pos = children[i].move;
 
 		if (alpha <= beta && !isOverdue())
 		{
 			Score score;
-			if (board->isTerminal(_options.captureWin))
+			if (board->isTerminal(pos, _options.captureWin))
 			{
 				score = pinfinity + negDepth;
 			}
