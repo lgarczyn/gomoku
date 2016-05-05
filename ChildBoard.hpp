@@ -15,8 +15,8 @@ struct ChildBoard
 	Board *board;
 	BoardPos move;
 
-	ChildBoard();
-	ChildBoard(Board *_board, BoardPos _move);
+	ChildBoard():board(),move(){};
+	ChildBoard(Board *_board, BoardPos _move):board(_board),move(_move){};
 };
 
 

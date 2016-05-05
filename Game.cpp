@@ -49,8 +49,8 @@ Score Game::negamax(Board* node, int negDepth, Score alpha, Score beta, PlayerCo
 
 	Score bestScore = ninfinity;
 	//std::vector<Score> scores = std::vector<Score>(children.size());
-
-	for (size_t i = 0; i < children.size() && !isOverdue(); i++)
+	size_t i;
+	for (i = 0; i < children.size(); i++)
 	{
 		ChildBoard child = children[i];
 		Board* board = child.board;
@@ -64,9 +64,13 @@ Score Game::negamax(Board* node, int negDepth, Score alpha, Score beta, PlayerCo
 		{
 			score = player * _analyzer->getScore(*board, _options.captureWin);
 		}
-		else
+		else if (!isOverdue())
 		{
 			score = -negamax(board, negDepth - 1, -beta, -alpha, -player);
+		}
+		else
+		{
+			score = ninfinity;
 		}
 		if (score > bestScore)
 		{
@@ -78,6 +82,8 @@ Score Game::negamax(Board* node, int negDepth, Score alpha, Score beta, PlayerCo
 		if (alpha > beta)
 			break;
 	}
+
+
 	return bestScore;
 }
 
@@ -88,12 +94,14 @@ MoveScore Game::negamax_thread(ThreadData data)
 	Board* board = data.node.board;
 	BoardPos pos = data.node.move;
 
-	//if (isOverdue())
-	//{
-	//	return MoveScore(ninfinity, pos);
-	//}
+	if (isOverdue())
+	{
+		delete board;
+		return MoveScore(ninfinity, pos);
+	}
 	if (data.alpha->load() > pinfinity)
 	{
+		delete board;
 		return MoveScore(ninfinity, pos);
 	}
 
@@ -111,7 +119,6 @@ MoveScore Game::negamax_thread(ThreadData data)
 	alpha->store(std::max(alpha->load(), score));
 
 	delete board;
-
 	return (MoveScore(score, pos));
 }
 

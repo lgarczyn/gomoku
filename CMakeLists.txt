@@ -16,7 +16,7 @@ link_libraries("sfml-window")
 link_libraries("boost_serialization")
 link_libraries("shark")
 
-set(CMAKE_CXX_FLAGS " -std=c++11 -ofast -ffast-math -g ${CMAKE_CXX_FLAGS} -Wall -Wextra")
+set(CMAKE_CXX_FLAGS " -std=c++11 -ofast -ffast-math -g ${CMAKE_CXX_FLAGS}")
 
 set(SOURCE_FILES
         main.cpp
@@ -41,7 +41,6 @@ set(SOURCE_FILES
         TextureManager.cpp
         TextureManager.hpp
         VictoryState.hpp
-        ChildBoard.cpp
         ChildBoard.hpp
         NetworkManager.cpp
         NetworkManager.hpp
