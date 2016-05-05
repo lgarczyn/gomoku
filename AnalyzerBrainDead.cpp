@@ -6,6 +6,7 @@
 #include "Board.hpp"
 
 AnalyzerBrainDead::AnalyzerBrainDead() { }
+AnalyzerBrainDead::~AnalyzerBrainDead() { }
 
 inline int clamp(int value, int min, int max)
 {

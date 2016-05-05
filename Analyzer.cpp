@@ -19,6 +19,11 @@ Analyzer::Analyzer()
 	state = network.createState();
 }
 
+Analyzer::~Analyzer()
+{
+	//delete allocated brain
+}
+
 Score Analyzer::getScore(Board& board, bool considerCapture)
 {
 	int k = 0;
@@ -38,9 +43,4 @@ Score Analyzer::getScore(Board& board, bool considerCapture)
 	network.operator()(shark::RealVector(BOARD_HEIGHT * BOARD_WIDTH + 2)).operator()(0);
 
 	return (outputs.operator()(0, 0));
-}
-
-Analyzer::~Analyzer()
-{
-	//delete allocated brain
 }

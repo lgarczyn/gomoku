@@ -13,7 +13,8 @@ const double time_margin = 0.001;
 const int threadCount = 8;
 const int initial_width = 40;
 const int deep_width = 20;
-const int const_depth = 5;
+const int const_depth = 6;
+
 
 Game::Game(Options options):_options(options), _timeTaken()
 {
@@ -76,8 +77,6 @@ Score Game::negamax(Board* node, int negDepth, Score alpha, Score beta, PlayerCo
 			}
 			alpha = std::max(alpha, score);
 		}
-		else
-
 		delete board;
 	}
 

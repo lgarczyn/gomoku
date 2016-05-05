@@ -7,7 +7,7 @@
 
 #include <limits>
 
-using Score=long long int;
+using Score = long long int;
 #define BOARD_WIDTH 19
 #define BOARD_HEIGHT 19
 const Score pinfinity = std::numeric_limits<Score>::max() / 4;

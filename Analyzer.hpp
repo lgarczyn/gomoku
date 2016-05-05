@@ -38,6 +38,6 @@ private:
 	boost::shared_ptr<shark::State> state;
 public:
 	Analyzer();
+	virtual ~Analyzer();
 	Score getScore(Board& board, bool considerCapture);
-	~Analyzer();
 };

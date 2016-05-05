@@ -481,6 +481,8 @@ Board::Board(const Board& board, BoardPos move, PlayerColor player, bool capture
 	_turnNum = board._turnNum + 1;
 }
 
+Board::~Board() { }
+
 MoveScore		Board::getBestPriority() const
 {
 	MoveScore best = MoveScore(-1, BoardPos());

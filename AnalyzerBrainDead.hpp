@@ -13,6 +13,7 @@ class AnalyzerBrainDead : public IAnalyzer
 {
 public:
 	AnalyzerBrainDead();
+	virtual ~AnalyzerBrainDead();
 	Score getScore(Board& board, bool considerCapture);
 
 private:

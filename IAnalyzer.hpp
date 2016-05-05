@@ -11,6 +11,7 @@ class Board;
 class IAnalyzer
 {
 public:
+	virtual ~IAnalyzer() {};
 	virtual Score getScore(Board& board, bool considerCapture) = 0;
 };
 

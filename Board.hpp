@@ -25,7 +25,7 @@ class Board
 {
 	friend class AnalyzerBrainDead;
 public:
-
+	int id;
 	VictoryState isTerminal(bool considerCapture);
 	VictoryState  isTerminal(BoardPos pos, bool considerCapture);
 	bool isPosInterest(int x, int y, PlayerColor player) const;
@@ -33,6 +33,7 @@ public:
 	Board();
 	Board(const Board& board);
 	Board(const Board& board, BoardPos move, PlayerColor player, bool capture);
+	virtual ~Board();
 
 	void 			fillTaboo(bool limitBlack, bool doubleThree, PlayerColor player);
 	void 			fillPriority(PlayerColor player);
