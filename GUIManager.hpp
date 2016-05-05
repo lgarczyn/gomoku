@@ -52,5 +52,5 @@ private:
 	int 					_h;
 	sf::Color				_colorBG;
 	sf::Color				_colorLine;
-	SpriteManager			_textures;
+	static SpriteManager	_textures;
 };

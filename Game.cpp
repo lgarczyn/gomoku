@@ -35,6 +35,9 @@ Game::Game(Options options):_options(options), _timeTaken()
 Game::~Game()
 {
 	delete _pool;
+	delete _analyzer;
+	delete _state;
+	delete _previousState;
 }
 
 Score Game::negamax(Board* node, int negDepth, Score alpha, Score beta, PlayerColor player)

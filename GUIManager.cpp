@@ -12,12 +12,12 @@ GUIManager::GUIManager()
 		_w(screen_width),
 		_h(screen_height),
 		_colorBG(173, 216, 230),
-		_colorLine(0, 0, 128),
-		_textures()
+		_colorLine(0, 0, 128)
 {
 
 }
 
+SpriteManager GUIManager::_textures = SpriteManager();
 
 template<class T>
 void		centerOnPos(T& target, float x, float y)
@@ -71,6 +71,7 @@ void	GUIManager::drawBoard(Game& g, Options options, const std::string message)
 	sf::Sprite			sprite_preview_taboo(_textures.stone_preview_taboo);
 	sf::Sprite			sprite_preview_taboo_mouse(_textures.stone_preview_taboo);
 	sf::Sprite			sprite_suggestion(_textures.stone_suggestion);
+	sf::Text			text_victory;
 
 	Board &b = *g.getState();
 	bool isPlayerNext = g.isPlayerNext();
@@ -105,7 +106,8 @@ void	GUIManager::drawBoard(Game& g, Options options, const std::string message)
 				{
 					if (p > 0)
 					{
-						text = new sf::Text(std::to_string(p), _textures.font, 20);
+						text_victory = sf::Text(std::to_string(p), _textures.font, 20);
+						text = &text_victory;
 						text->setColor(sf::Color(0, 0, 0));
 					}
 					if (pos == mousePos && !message.size() && isPlayerNext)
@@ -160,7 +162,6 @@ void	GUIManager::drawBoard(Game& g, Options options, const std::string message)
 			centerOnPos(*text, textPos.x, textPos.y);
 			this->draw(shape);
 			this->draw(*text);
-			delete text;
 		}
 	}
 

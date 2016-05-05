@@ -35,7 +35,7 @@ Trainer::Trainer()
 //http://image.diku.dk/shark/sphinx_pages/build/html/rest_sources/tutorials/algorithms/ffnet.html
 
 
-shark::LabeledData<shark::RealVector, shark::RealVector> getRandomData(int count = 100)
+shark::LabeledData<shark::RealVector, shark::RealVector> getRandomData(size_t count = 100)
 {
 	std::default_random_engine engine;
 
