@@ -52,37 +52,33 @@ Score Game::negamax(Board* node, int negDepth, Score alpha, Score beta, PlayerCo
 	size_t i;
 	for (i = 0; i < children.size(); i++)
 	{
-		ChildBoard child = children[i];
-		Board* board = child.board;
-		Score score;
+		Board* board = children[i].board;
 
-		if (board->isTerminal(_options.captureWin))
+		if (alpha <= beta && !isOverdue())
 		{
-			score = pinfinity + negDepth;
-		}
-		else if (negDepth <= 1)
-		{
-			score = player * _analyzer->getScore(*board, _options.captureWin);
-		}
-		else if (!isOverdue())
-		{
-			score = -negamax(board, negDepth - 1, -beta, -alpha, -player);
+			Score score;
+			if (board->isTerminal(_options.captureWin))
+			{
+				score = pinfinity + negDepth;
+			}
+			else if (negDepth <= 1)
+			{
+				score = player * _analyzer->getScore(*board, _options.captureWin);
+			}
+			else
+			{
+				score = -negamax(board, negDepth - 1, -beta, -alpha, -player);
+			}
+			if (score > bestScore)
+			{
+				bestScore = score;
+			}
+			alpha = std::max(alpha, score);
 		}
 		else
-		{
-			score = ninfinity;
-		}
-		if (score > bestScore)
-		{
-			bestScore = score;
-		}
+
 		delete board;
-
-		alpha = std::max(alpha, score);
-		if (alpha > beta)
-			break;
 	}
-
 
 	return bestScore;
 }
