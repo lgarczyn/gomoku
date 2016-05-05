@@ -11,11 +11,9 @@ const bool slowMode = true;
 const double time_linit = (slowMode ? 30 : 0.5);
 const double time_margin = 0.001;
 const int threadCount = 8;
-const int initial_width = 200;
-const int deep_width = 200;
-const int const_depth = 4;
-
-#define NON_THREADED
+const int initial_width = 40;
+const int deep_width = 20;
+const int const_depth = 5;
 
 Game::Game(Options options):_options(options), _timeTaken()
 {
@@ -104,7 +102,7 @@ MoveScore Game::negamax_thread(ThreadData data)
 		return MoveScore(ninfinity, pos);
 	}
 
-	std::atomic<int>* alpha = data.alpha;
+	std::atomic<Score>* alpha = data.alpha;
 
 	if (board->isTerminal(_options.captureWin))
 	{

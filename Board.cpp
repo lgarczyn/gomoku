@@ -367,6 +367,16 @@ void Board::fillPriorityDir(int x, int y, int dirX, int dirY, BoardSquare color,
 	}
 };
 
+void Board::fillCapturePriorityDir(int x, int y, int dirX, int dirY, BoardSquare color)
+{
+	if (_data[y + dirY * 1][x + dirX * 1] == color &&
+		_data[y + dirY * 2][x + dirX * 2] == color &&
+		_data[y + dirY * 3][x + dirX * 3] == empty)
+	{
+		_priority[y + dirY * 3][x + dirX * 3] += capturePriority;
+	}
+};
+
 void Board::fillPriority(PlayerColor player)
 {
 	BoardSquare ally = (player == blackPlayer)? black : white;
@@ -378,6 +388,8 @@ void Board::fillPriority(PlayerColor player)
 			int bonus = (ally != color);
 			if (color != BoardSquare::empty)
 			{
+				BoardSquare enemyColor = (color == white) ? black : white;
+
 				fillPriorityDir(x, y, -1, -1, color, bonus);
 				fillPriorityDir(x, y, -1, 0, color, bonus);
 				fillPriorityDir(x, y, -1, 1, color, bonus);
@@ -387,6 +399,16 @@ void Board::fillPriority(PlayerColor player)
 				fillPriorityDir(x, y, 1, -1, color, bonus);
 				fillPriorityDir(x, y, 1, 0, color, bonus);
 				fillPriorityDir(x, y, 1, 1, color, bonus);
+
+				fillCapturePriorityDir(x, y, -1, -1, enemyColor);
+				fillCapturePriorityDir(x, y, -1, 0, enemyColor);
+				fillCapturePriorityDir(x, y, -1, 1, enemyColor);
+				fillCapturePriorityDir(x, y, 0, -1, enemyColor);
+				//fillCapturePriorityDir(x, y, 0, 0, enemyColor);
+				fillCapturePriorityDir(x, y, 0, 1, enemyColor);
+				fillCapturePriorityDir(x, y, 1, -1, enemyColor);
+				fillCapturePriorityDir(x, y, 1, 0, enemyColor);
+				fillCapturePriorityDir(x, y, 1, 1, enemyColor);
 			}
 		}
 	}

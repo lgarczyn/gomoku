@@ -36,14 +36,10 @@ public:
 
 	void 			fillTaboo(bool limitBlack, bool doubleThree, PlayerColor player);
 	void 			fillPriority(PlayerColor player);
-	void 			fillPriorityDir(int x, int y, int dirX, int dirY, BoardSquare color, int bonus);
 	MoveScore		getBestPriority() const;
 	bool 			isPosLegal(int x, int y, bool limitBlack, bool doubleThree, PlayerColor player);
 	bool			checkFreeThree(int x, int y, int dirX, int dirY, BoardSquare enemy);
 	bool 			playCapture(int x, int y);
-	bool 			playCaptureDir(int x, int y, int dirX, int dirY, BoardSquare type);
-	bool 			isAlignedStoneDir(int x, int y, int dirX, int dirY, BoardSquare good, int size) const;
-	bool		 	isAlignedStonePos(int x, int y, int size) const;
 	bool			isAlignedStone(int size) const;
 
 //Declaration here for optimization
@@ -64,6 +60,13 @@ private:
 	int				_capturedWhites;
 	int				_capturedBlacks;
 	int 			_turnNum;
+
+	void 			fillPriorityDir(int x, int y, int dirX, int dirY, BoardSquare color, int bonus);
+	void 			fillCapturePriorityDir(int x, int y, int dirX, int dirY, BoardSquare color);
+
+	bool 			isAlignedStoneDir(int x, int y, int dirX, int dirY, BoardSquare good, int size) const;
+	bool		 	isAlignedStonePos(int x, int y, int size) const;
+	bool 			playCaptureDir(int x, int y, int dirX, int dirY, BoardSquare type);
 
 	friend class AnalyzerNrainDead;
 	friend class Analyzer;
