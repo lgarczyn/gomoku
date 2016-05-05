@@ -15,6 +15,8 @@ const int initial_width = 200;
 const int deep_width = 200;
 const int const_depth = 3;
 
+#define NON_THREADED
+
 Game::Game(Options options):_options(options), _timeTaken()
 {
 	_state = new Board();
