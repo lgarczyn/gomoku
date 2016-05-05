@@ -113,7 +113,7 @@ void ThreadPool<Data, Value>::waitForData()
 			// calculate data/values couple
 			//else
 			// set thread as finished
-			if (index < _data.size())
+			if (static_cast<size_t>(index) < _data.size())
 			{
 				_values[index] = _call(_data[index]);
 			}

@@ -85,22 +85,20 @@ MoveScore Game::negamax_thread(ThreadData data)
 	Board* board = data.node.board;
 	BoardPos pos = data.node.move;
 
-	if (isOverdue())
-	{
-		return MoveScore(ninfinity, pos);
-	}
+	//if (isOverdue())
+	//{
+	//	return MoveScore(ninfinity, pos);
+	//}
 	if (data.alpha->load() > pinfinity)
 	{
 		return MoveScore(ninfinity, pos);
 	}
 
-
-
 	std::atomic<int>* alpha = data.alpha;
 
 	if (board->isTerminal(_options.captureWin))
 	{
-		score = pinfinity;
+		score = pinfinity + _depth;
 	}
 	else
 	{
@@ -166,6 +164,7 @@ BoardPos Game::start_negamax(Board *node, PlayerColor player)
 
 bool Game::isOverdue()
 {
+	return false;
 	using namespace std;
 	auto current = std::chrono::high_resolution_clock::now();
 
