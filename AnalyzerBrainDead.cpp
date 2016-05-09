@@ -14,6 +14,7 @@ AnalyzerBrainDead::~AnalyzerBrainDead() { }
 	const int maxY = CLAMP(y + 5 * dirY, -1, BOARD_HEIGHT);
 
 	int value = 1;
+	int emptyCount = 0;
 
 	x += dirX, y+= dirY;
 	while ((!dirX || x != maxX) && (!dirY || y != maxY))
@@ -21,7 +22,7 @@ AnalyzerBrainDead::~AnalyzerBrainDead() { }
 		BoardSquare square = board._data[y][x];
 		if (square == empty)
 		{
-			_score += (color == BoardSquare::white) ? value : -value;
+			emptyCount++;
 		}
 		else if (square == color)
 		{
@@ -33,6 +34,7 @@ AnalyzerBrainDead::~AnalyzerBrainDead() { }
 		}
 		x += dirX, y+= dirY;
 	}
+	_score += ((color == BoardSquare::white) ? value : -value) * emptyCount;
 };
 
 void AnalyzerBrainDead::fillScore(Board &board)
@@ -77,6 +79,7 @@ void AnalyzerBrainDead::fillScore(Board &board)
 							const int maxY = CLAMP(y + 5 * dirY, -1, BOARD_HEIGHT);
 
 							int value = 1;
+							int emptyCount = 0;
 
 							int _x = x + dirX;
 							int _y = y + dirY;
@@ -86,7 +89,7 @@ void AnalyzerBrainDead::fillScore(Board &board)
 								BoardSquare square = board._data[_y][_x];
 								if (square == empty)
 								{
-									_score += (color == BoardSquare::white) ? value : -value;
+									emptyCount++;
 								}
 								else if (square == color)
 								{
@@ -98,6 +101,8 @@ void AnalyzerBrainDead::fillScore(Board &board)
 								}
 								_x += dirX, _y+= dirY;
 							}
+
+							_score += ((color == BoardSquare::white) ? value : -value) * emptyCount;
 						}
 					}
 				}
