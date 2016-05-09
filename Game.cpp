@@ -7,7 +7,7 @@
 
 using namespace std;
 
-const bool slowMode = false;
+const bool slowMode = true;
 const double time_linit = (slowMode ? 30 : 0.5);
 const double time_margin = 0.001;
 const int threadCount = 8;

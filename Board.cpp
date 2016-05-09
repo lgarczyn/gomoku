@@ -319,20 +319,11 @@ void Board::fillTaboo(bool limitBlack, bool doubleThree, PlayerColor player)
 	}
 }
 
-inline int clamp(int value, int min, int max)
-{
-	if (value <= min)
-		return min;
-	if (value >= max)
-		return max;
-	return value;
-}
-
 //inline //TODO put back
 void Board::fillPriorityDir(int x, int y, int dirX, int dirY, BoardSquare color, int bonus)
 {
-	const int maxX = clamp(x + 5 * dirX, -1, BOARD_WIDTH);
-	const int maxY = clamp(y + 5 * dirY, -1, BOARD_HEIGHT);
+	const int maxX = CLAMP(x + 5 * dirX, -1, BOARD_WIDTH);
+	const int maxY = CLAMP(y + 5 * dirY, -1, BOARD_HEIGHT);
 
 	int value = 1 + bonus;
 	int count = 0;

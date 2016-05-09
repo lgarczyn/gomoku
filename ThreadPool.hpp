@@ -67,7 +67,7 @@ ThreadPool<Data, Value>::ThreadPool(int threadCount)
 
 	//creates threads
 	_threads.resize(threadCount);
-	std::cout << "main thread creating children" << std::endl;
+	display("main thread creating children");
 	for (int i = 0; i < threadCount; i++)
 	{
 		auto functor = std::bind(&ThreadPool::waitForData, this, i);

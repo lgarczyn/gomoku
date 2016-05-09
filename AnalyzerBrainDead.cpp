@@ -8,19 +8,10 @@
 AnalyzerBrainDead::AnalyzerBrainDead() { }
 AnalyzerBrainDead::~AnalyzerBrainDead() { }
 
-inline int clamp(int value, int min, int max)
+/*inline void AnalyzerBrainDead::fillScoreDir(Board &board, int x, int y, int dirX, int dirY, BoardSquare color)
 {
-	if (value <= min)
-		return min;
-	if (value >= max)
-		return max;
-	return value;
-}
-
-inline void AnalyzerBrainDead::fillScoreDir(Board &board, int x, int y, int dirX, int dirY, BoardSquare color)
-{
-	const int maxX = clamp(x + 5 * dirX, -1, BOARD_WIDTH);
-	const int maxY = clamp(y + 5 * dirY, -1, BOARD_HEIGHT);
+	const int maxX = CLAMP(x + 5 * dirX, -1, BOARD_WIDTH);
+	const int maxY = CLAMP(y + 5 * dirY, -1, BOARD_HEIGHT);
 
 	int value = 1;
 
@@ -62,6 +53,54 @@ void AnalyzerBrainDead::fillScore(Board &board)
 				fillScoreDir(board, x, y, 1, -1, color);
 				fillScoreDir(board, x, y, 1, 0, color);
 				fillScoreDir(board, x, y, 1, 1, color);
+			}
+		}
+	}
+}*/
+
+void AnalyzerBrainDead::fillScore(Board &board)
+{
+	for (int y = 0; y < BOARD_HEIGHT; y++)
+	{
+		for (int x = 0; x < BOARD_WIDTH; x++)
+		{
+			BoardSquare color = board._data[y][x];
+			if (color != BoardSquare::empty)
+			{
+				for (int dirX = -1; dirX <= 1; dirX++)
+				{
+					for (int dirY = -1; dirY <= 1; dirY++)
+					{
+						if (dirX || dirY)
+						{
+							const int maxX = CLAMP(x + 5 * dirX, -1, BOARD_WIDTH);
+							const int maxY = CLAMP(y + 5 * dirY, -1, BOARD_HEIGHT);
+
+							int value = 1;
+
+							int _x = x + dirX;
+							int _y = y + dirY;
+
+							while ((!dirX || _x != maxX) && (!dirY || _y != maxY))
+							{
+								BoardSquare square = board._data[_y][_x];
+								if (square == empty)
+								{
+									_score += (color == BoardSquare::white) ? value : -value;
+								}
+								else if (square == color)
+								{
+									value <<= 2;
+								}
+								else
+								{
+									break;
+								}
+								_x += dirX, _y+= dirY;
+							}
+						}
+					}
+				}
 			}
 		}
 	}

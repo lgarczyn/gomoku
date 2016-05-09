@@ -15,3 +15,5 @@ const Score ninfinity = -pinfinity;
 
 const int captureVictoryPoints = 10;
 const int capturePriority = 30;
+
+#define CLAMP(x, min, max) ((x < min) ? min : ((x > max) ? max : x))
