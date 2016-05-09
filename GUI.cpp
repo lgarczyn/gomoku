@@ -51,7 +51,7 @@ void game_page(GUIManager& win, Options &options)
             switch (event.type)
             {
                 case sf::Event::Closed:
-                    exit(2);
+                    exit(0);
                 case sf::Event::KeyPressed:
                     if (event.key.code == sf::Keyboard::Escape)
                         return;
@@ -124,10 +124,10 @@ GUIManager::MenuButton menu_page(GUIManager& win)
             switch (event.type)
             {
                 case sf::Event::Closed:
-                    exit(3);
+                    exit(0);
                 case sf::Event::KeyPressed:
                     if (event.key.code == sf::Keyboard::Escape)
-                        exit(4);
+                        exit(0);
                     break ;
                 case sf::Event::MouseButtonPressed:
                     return win.getMenuButton();
@@ -166,7 +166,7 @@ void option_page(GUIManager& win, Options &options)
             switch (event.type)
             {
                 case sf::Event::Closed:
-                    exit(5);
+                    exit(0);
                 case sf::Event::KeyPressed:
                     if (event.key.code == sf::Keyboard::Escape)
                         return ;

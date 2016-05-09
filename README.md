@@ -1,14 +1,9 @@
 # gomoku
 
 
-BUG: inf wait
-BUG: exit(0)
-BUG: failed to send the k packet
-
-Bug posible is terminal stonedir
-
-
-TODO exit(0)
+BUG: inf wait // is fixed ?
+BUG: exit(0) // is fixed ?
+BUG: failed to send the k packet // is fixed ?
 
 TODO POS: improv algo + timecut
 TODO NN: train brain
