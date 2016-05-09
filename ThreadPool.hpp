@@ -86,14 +86,13 @@ ThreadPool<Data, Value>::~ThreadPool()
 
 	//creates threads
 
-	std::cout << "main thread deleting children" << std::endl;
+	display("main thread deleting children");
 	for (size_t i = 0; i < _threads.size(); i++)
 	{
 		_threads[i]->join();
 		delete _threads[i];
 	}
-
-	std::cout << "main thread deleted children" << std::endl;
+	display("main thread deleted children");
 
 }
 
@@ -186,8 +185,8 @@ std::vector<Value> ThreadPool<Data, Value>::run(Call call, const std::vector<Dat
 
 	//release every threads waiting start loop
 
-	std::cout << "main thread loads " << _values.size() << " elements" << std::endl;
-	std::cout << "main thread notifying start" << std::endl;
+	display("main thread loads " + std::to_string(_values.size()) + " elements");
+	display("main thread notifying start");
 	_started.notify_all();
 
 	{

@@ -7,13 +7,13 @@
 
 using namespace std;
 
-const bool slowMode = true;
+const bool slowMode = false;
 const double time_linit = (slowMode ? 30 : 0.5);
 const double time_margin = 0.001;
 const int threadCount = 8;
 const int initial_width = 40;
 const int deep_width = 20;
-const int const_depth = 6;
+const int const_depth = 5 + slowMode;
 
 
 Game::Game(Options options):_options(options), _timeTaken()
