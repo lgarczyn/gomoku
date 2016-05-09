@@ -12,17 +12,17 @@
 #include "Constants.hpp"
 #include "MoveScore.hpp"
 #include "ChildBoard.hpp"
-#include "ThreadPool.hpp"
 #include "ThreadData.hpp"
 #include "Options.hpp"
 #include <atomic>
 #include <chrono>
 
+template <typename Data, typename Value> class ThreadPool;
+
 class Game
 {
 public:
-
-	Game(Options& _options);
+	Game(const Options& _options);
 	~Game();
 	bool play(BoardPos pos);
 	bool play();
@@ -30,7 +30,8 @@ public:
 	PlayerColor getTurn() const;
 	bool isPlayerNext() const;
 	bool hasPosChanged(BoardPos pos) const;
-	bool isOverdue();
+	bool isOverdue() const;
+	double getTimeDiff() const;
 	double getTimeTaken() const;
 
 	Board *getState();

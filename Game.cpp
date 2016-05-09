@@ -168,12 +168,18 @@ BoardPos Game::start_negamax(Board *node, PlayerColor player)
 }
 
 
-bool Game::isOverdue()
+bool Game::isOverdue() const
 {
 	using namespace std;
 	auto current = std::chrono::high_resolution_clock::now();
 
 	return double(std::chrono::duration_cast<std::chrono::milliseconds>(current - _start).count()) > (_timeLimit - timeMargin) * 1000;
+}
+
+double Game::getTimeDiff() const
+{
+	auto current = std::chrono::high_resolution_clock::now();
+	return double(std::chrono::duration_cast<std::chrono::milliseconds>(current - _start).count()) / 1000;
 }
 
 BoardPos Game::getNextMove()
@@ -182,8 +188,8 @@ BoardPos Game::getNextMove()
 
 	BoardPos pos = start_negamax(_state, _turn);
 
-	auto current = std::chrono::high_resolution_clock::now();
-	_timeTaken = double(std::chrono::duration_cast<std::chrono::milliseconds>(current - _start).count()) / 1000;
+	_timeTaken = getTimeDiff();
+
 	return pos;
 }
 

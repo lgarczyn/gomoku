@@ -6,6 +6,7 @@
 
 #include "ChildBoard.hpp"
 #include "PlayerColor.hpp"
+#include <atomic>
 
 class Game;
 

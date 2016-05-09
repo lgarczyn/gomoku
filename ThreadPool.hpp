@@ -96,7 +96,6 @@ ThreadPool<Data, Value>::~ThreadPool()
 
 }
 
-
 template <typename Data, typename Value>
 void ThreadPool<Data, Value>::waitForData(int i)
 {
