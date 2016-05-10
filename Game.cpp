@@ -7,16 +7,16 @@
 
 using namespace std;
 
-const bool slowMode = true;
-const double time_linit = (slowMode ? 30 : 0.5);
-const double time_margin = 0.001;
+const double timeMargin = 0.001;
+const int initialWidth = 40;
+const int deepWidth = 20;
 const int threadCount = 8;
-const int initial_width = 40;
-const int deep_width = 20;
-const int const_depth = 5 + slowMode;
 
-
-Game::Game(Options options):_options(options), _timeTaken()
+Game::Game(Options& options) :
+		_options(options),
+		_timeLimit(options.slowMode ? 10 : 0.5),
+		_constDepth(6 + options.slowMode),
+		_timeTaken()
 {
 	_state = new Board();
 #ifdef ANALYZER_AVAILABLE
@@ -27,7 +27,7 @@ Game::Game(Options options):_options(options), _timeTaken()
 	_analyzer = new AnalyzerBrainDead();
 #endif
 	_turn = PlayerColor::blackPlayer;
-	_depth = const_depth;
+	_depth = _constDepth;
 	_state->fillTaboo(_options.limitBlack, _options.doubleThree, _turn);
 	_previousState = nullptr;
 	_pool = new Pool(threadCount);
@@ -43,12 +43,12 @@ Game::~Game()
 
 Score Game::negamax(Board* node, int negDepth, Score alpha, Score beta, PlayerColor player)
 {
-	auto children = node->getChildren(player, _options.capture, deep_width);
+	auto children = node->getChildren(player, _options.capture, deepWidth);
 
 	if (!children.size())
 		throw std::logic_error("GetChildren returned an empty array");
 
-	Score bestScore = ninfinity;
+	//Score bestScore = ninfinity - 100;
 	//std::vector<Score> scores = std::vector<Score>(children.size());
 	size_t i;
 	for (i = 0; i < children.size(); i++)
@@ -71,16 +71,13 @@ Score Game::negamax(Board* node, int negDepth, Score alpha, Score beta, PlayerCo
 			{
 				score = -negamax(board, negDepth - 1, -beta, -alpha, -player);
 			}
-			if (score > bestScore)
-			{
-				bestScore = score;
-			}
+			//bestScore = std::max(bestScore, score);
 			alpha = std::max(alpha, score);
 		}
 		delete board;
 	}
 
-	return bestScore;
+	return alpha;
 }
 
 MoveScore Game::negamax_thread(ThreadData data)
@@ -121,7 +118,7 @@ MoveScore Game::negamax_thread(ThreadData data)
 BoardPos Game::start_negamax(Board *node, PlayerColor player)
 {
 	std::atomic<Score> alpha(ninfinity);
-	std::vector<ChildBoard> children = node->getChildren(player, _options.capture, initial_width);
+	std::vector<ChildBoard> children = node->getChildren(player, _options.capture, initialWidth);
 
 	if (!children.size())
 		throw std::logic_error("GetChildren returned an empty array");
@@ -161,7 +158,7 @@ BoardPos Game::start_negamax(Board *node, PlayerColor player)
 			bestMove = move;
 			choice.push_back(bestMove);
 		}
-		else if (move.score == bestMove.score)
+		else if (move.score == bestMove.score && move.score > ninfinity)
 		{
 			bestMove = move;
 			choice.push_back(bestMove);
@@ -173,11 +170,10 @@ BoardPos Game::start_negamax(Board *node, PlayerColor player)
 
 bool Game::isOverdue()
 {
-	return false;
 	using namespace std;
 	auto current = std::chrono::high_resolution_clock::now();
 
-	return double(std::chrono::duration_cast<std::chrono::milliseconds>(current - _start).count()) > (time_linit - time_margin) * 1000;
+	return double(std::chrono::duration_cast<std::chrono::milliseconds>(current - _start).count()) > (_timeLimit - timeMargin) * 1000;
 }
 
 BoardPos Game::getNextMove()

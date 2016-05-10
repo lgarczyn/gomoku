@@ -40,7 +40,7 @@ public:
 	MoveScore		getBestPriority() const;
 	bool 			isPosLegal(int x, int y, bool limitBlack, bool doubleThree, PlayerColor player);
 	bool			checkFreeThree(int x, int y, int dirX, int dirY, BoardSquare enemy);
-	bool 			playCapture(int x, int y);
+	int 			playCapture(int x, int y);
 	bool			isAlignedStone(int size) const;
 
 //Declaration here for optimization

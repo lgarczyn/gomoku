@@ -22,7 +22,7 @@ class Game
 {
 public:
 
-	Game(Options _options);
+	Game(Options& _options);
 	~Game();
 	bool play(BoardPos pos);
 	bool play();
@@ -41,13 +41,18 @@ private:
 	typedef ThreadPool<ThreadData, MoveScore> Pool;
 
 	std::chrono::high_resolution_clock::time_point _start;
-	double 	_timeTaken;
-	Options _options;
-	Board *_state;
-	Board *_previousState;
-	IAnalyzer* _analyzer;
-	PlayerColor _turn;
-	int _depth;
+
+	Options	_options;
+	double	_timeLimit;
+	double	_timeTaken;
+	int		_constDepth;
+	int		_depth;
+
+	Board*		_state;
+	Board*		_previousState;
+	IAnalyzer*	_analyzer;
+	PlayerColor	_turn;
+
 	Score negamax(Board* node, int depth, Score alpha, Score beta, PlayerColor player);
 	MoveScore negamax_thread(ThreadData data);
 	BoardPos start_negamax(Board *node, PlayerColor player);

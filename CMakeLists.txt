@@ -54,5 +54,9 @@ set(SOURCE_FILES
         ThreadPool.hpp
         ThreadData.hpp
         Options.hpp)
+if(COMMAND cmake_policy)
+    cmake_policy(SET CMP0003 NEW)
+endif(COMMAND cmake_policy)
+
 add_executable(gomoku ${SOURCE_FILES})
 target_link_libraries(gomoku ${SHARK_LIBRARIES})

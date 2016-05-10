@@ -58,9 +58,6 @@ void game_page(GUIManager& win, Options &options)
                     break ;
                 case sf::Event::MouseButtonPressed:
 
-                    if (hasWon)
-                        return;
-
                     if (g.isPlayerNext() && win.getMouseBoardPos(pos) && !hasWon)
                     {
                         if (g.play(pos))
@@ -146,17 +143,19 @@ std::vector<std::pair<std::string, bool>> getOptionsData(Options &options)
     return std::vector<std::pair<std::string, bool>>({
                                std::pair<std::string, bool>("Show player tips", options.showTips),
                                std::pair<std::string, bool>("Show square priority", options.showPriority),
+                               std::pair<std::string, bool>("Don't limit deep search", options.slowMode),
                                std::pair<std::string, bool>("Limit black starting moves", options.limitBlack),
                                std::pair<std::string, bool>("Block double free-threes", options.doubleThree),
                                std::pair<std::string, bool>("Allow capture", options.capture),
                                std::pair<std::string, bool>("Allow win by capture", options.captureWin),
-                               std::pair<std::string, bool>("Use neural network", !options.brainDead)
                        });
 }
 
 void option_page(GUIManager& win, Options &options)
 {
-    int pos;
+    int     pos;
+    auto    optionsVector = getOptionsData(options);
+
     while (1)
     {
         win.clear();
@@ -172,24 +171,26 @@ void option_page(GUIManager& win, Options &options)
                         return ;
                     break ;
                 case sf::Event::MouseButtonPressed:
-                    pos = win.getMouseScreenRatio().y * 7;
+                    pos = win.getMouseScreenRatio().y * optionsVector.size();
 
                     switch (pos)
                     {
                         case 0: options.showTips = !options.showTips; break;
                         case 1: options.showPriority = !options.showPriority; break;
-                        case 2: options.limitBlack = !options.limitBlack; break;
-                        case 3: options.doubleThree = !options.doubleThree; break;
-                        case 4: options.capture = !options.capture; break;
-                        case 5: options.captureWin = !options.captureWin; break;
-                        case 6: options.brainDead = !options.brainDead; break;
+                        case 2: options.slowMode = !options.slowMode; break;
+                        case 3: options.limitBlack = !options.limitBlack; break;
+                        case 4: options.doubleThree = !options.doubleThree; break;
+                        case 5: options.capture = !options.capture; break;
+                        case 6: options.captureWin = !options.captureWin; break;
+                       // case 7: options.brainDead = !options.brainDead; break;
                     }
                     break;
                 default:
                     break;
             }
         }
-        win.drawOptions(getOptionsData(options));
+        optionsVector = getOptionsData(options);
+        win.drawOptions(optionsVector);
         win.display();
         usleep(200);
     }

@@ -112,9 +112,9 @@ VictoryState  Board::isTerminal(bool considerCapture)
 		return aligned;
 	if (considerCapture)
 	{
-		if (_capturedWhites > 10)
+		if (_capturedWhites >= captureVictoryPoints)
 			return whitesCaptured;
-		if (_capturedBlacks > 10)
+		if (_capturedBlacks >= captureVictoryPoints)
 			return blacksCaptured;
 	}
 	return  novictory;
@@ -203,19 +203,20 @@ bool Board::playCaptureDir(int x, int y, int dirX, int dirY, BoardSquare good) {
 			&& _data[y + dirY*3][x + dirX*3] == good);
 }
 
-bool Board::playCapture(int x, int y) {
+int Board::playCapture(int x, int y) {
 	BoardSquare c = _data[y][x];
 
+	int capCount = 0;
 	for (int dirX = -1 ; dirX <= 1; ++dirX)
 		for (int dirY = -1 ; dirY <= 1; ++dirY)
 			if (dirX || dirY) {
 				if (playCaptureDir(x, y, dirX, dirY, c)) {
 					_data[y + dirY * 1][x + dirX * 1] = BoardSquare::empty;
 					_data[y + dirY * 2][x + dirX * 2] = BoardSquare::empty;
-					return (true);
+					++capCount;
 				}
 			}
-	return false;
+	return capCount;
 }
 
 bool Board::checkFreeThree(int x, int y, int dirX, int dirY, BoardSquare enemy)
@@ -335,7 +336,7 @@ void Board::fillPriorityDir(int x, int y, int dirX, int dirY, BoardSquare color,
 		BoardSquare square = _data[y][x];
 		if (square == color)
 		{
-			value <<= 2;
+			value <<= 3;
 		}
 		else if (square != empty)
 		{
@@ -360,12 +361,16 @@ void Board::fillPriorityDir(int x, int y, int dirX, int dirY, BoardSquare color,
 
 void Board::fillCapturePriorityDir(int x, int y, int dirX, int dirY, BoardSquare color)
 {
-	if (_data[y + dirY * 1][x + dirX * 1] == color &&
-		_data[y + dirY * 2][x + dirX * 2] == color &&
-		_data[y + dirY * 3][x + dirX * 3] == empty)
-	{
-		_priority[y + dirY * 3][x + dirX * 3] += capturePriority;
-	}
+	int endX = x + dirX * 3;
+	int endY = y + dirY * 3;
+
+	if (endX >= 0 && endX < BOARD_WIDTH && endY >= 0 && endY < BOARD_HEIGHT)
+		if (_data[y + dirY * 1][x + dirX * 1] == color &&
+			_data[y + dirY * 2][x + dirX * 2] == color &&
+			_data[endY][endX] == empty)
+		{
+			_priority[endY][endX] += capturePriority;
+		}
 };
 
 void Board::fillPriority(PlayerColor player)
@@ -461,13 +466,11 @@ Board::Board(const Board& board, BoardPos move, PlayerColor player, bool capture
 
 	if (capture)
 	{
-		if (playCapture(move.x, move.y))
-		{
-			if (player == PlayerColor::whitePlayer)
-				_capturedBlacks += 2;
-			else
-				_capturedWhites += 2;
-		}
+		int captures = playCapture(move.x, move.y);
+		if (player == PlayerColor::whitePlayer)
+			_capturedBlacks += 2 * captures;
+		else
+			_capturedWhites += 2 * captures;
 	}
 	_turnNum = board._turnNum + 1;
 }

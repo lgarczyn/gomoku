@@ -17,6 +17,7 @@ public:
 	bool brainDead = true;
 	bool isBlackAI = true;
 	bool isWhiteAI = true;
+	bool slowMode = false;
 };
 
 
