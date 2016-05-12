@@ -60,8 +60,9 @@ void AnalyzerBrainDead::fillScore(Board &board)
 	}
 }*/
 
-void AnalyzerBrainDead::fillScore(Board &board)
+Score AnalyzerBrainDead::fillScore(Board &board)
 {
+	Score score = 0;
 	for (int y = 0; y < BOARD_HEIGHT; y++)
 	{
 		for (int x = 0; x < BOARD_WIDTH; x++)
@@ -89,7 +90,7 @@ void AnalyzerBrainDead::fillScore(Board &board)
 								BoardSquare square = board._data[_y][_x];
 								if (square == empty)
 								{
-									_score += value;
+									score += value;
 									emptyCount++;
 								}
 								else if (square == color)
@@ -103,26 +104,25 @@ void AnalyzerBrainDead::fillScore(Board &board)
 								_x += dirX, _y+= dirY;
 							}
 							value >>= 2;
-							_score += ((color == BoardSquare::white) ? value : -value) * emptyCount;
+							score += ((color == BoardSquare::white) ? value : -value) * emptyCount;
 						}
 					}
 				}
 			}
 		}
 	}
+	return score;
 }
 
 Score AnalyzerBrainDead::getScore(Board &board, bool considerCapture)
 {
-	_score = 0;
-	
-	fillScore(board);
+	Score score = fillScore(board);
 
 	if (considerCapture)
 	{
-		_score += 1 << board._capturedBlacks / 2;
-		_score -= 1 << board._capturedWhites / 2;
+		score += 1 << board._capturedBlacks / 2;
+		score -= 1 << board._capturedWhites / 2;
 	}
 
-	return _score;
+	return score;
 }

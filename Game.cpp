@@ -209,6 +209,7 @@ bool Game::play(BoardPos pos)
 	_state->fillTaboo(_options.limitBlack, _options.doubleThree, _turn);
 	_state->fillPriority(_turn);
 
+	std::cout << "Current board score is: " << _analyzer->getScore(*_state, _options.captureWin) << std::endl;
 	return _state->isTerminal(pos, _options.captureWin);
 }
 

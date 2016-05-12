@@ -17,9 +17,7 @@ public:
 	Score getScore(Board& board, bool considerCapture);
 
 private:
-	void fillScore(Board &board);
-	//void fillScoreDir(Board &board, int x, int y, int dirX, int dirY, BoardSquare color);
-	Score _score;
+	Score fillScore(Board &board);
 };
 
 
