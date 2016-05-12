@@ -4,15 +4,16 @@
 
 #include "Game.hpp"
 #include "Analyzer.hpp"
+#include "ThreadPool.hpp"
 
 using namespace std;
 
-const double timeMargin = 0.001;
-const int initialWidth = 40;
+const double timeMargin = 0.01;
+const int initialWidth = 30;
 const int deepWidth = 20;
 const int threadCount = 8;
 
-Game::Game(Options& options) :
+Game::Game(const Options& options) :
 		_options(options),
 		_timeLimit(options.slowMode ? 10 : 0.5),
 		_constDepth(6 + options.slowMode),

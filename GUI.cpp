@@ -143,7 +143,7 @@ std::vector<std::pair<std::string, bool>> getOptionsData(Options &options)
     return std::vector<std::pair<std::string, bool>>({
                                std::pair<std::string, bool>("Show player tips", options.showTips),
                                std::pair<std::string, bool>("Show square priority", options.showPriority),
-                               std::pair<std::string, bool>("Don't limit deep search", options.slowMode),
+                               std::pair<std::string, bool>("Activate deep search", options.slowMode),
                                std::pair<std::string, bool>("Limit black starting moves", options.limitBlack),
                                std::pair<std::string, bool>("Block double free-threes", options.doubleThree),
                                std::pair<std::string, bool>("Allow capture", options.capture),

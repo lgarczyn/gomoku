@@ -320,13 +320,13 @@ void Board::fillTaboo(bool limitBlack, bool doubleThree, PlayerColor player)
 	}
 }
 
-//inline //TODO put back
-void Board::fillPriorityDir(int x, int y, int dirX, int dirY, BoardSquare color, int bonus)
+
+inline void Board::fillPriorityDir(int x, int y, int dirX, int dirY, BoardSquare color)//, int bonus)
 {
 	const int maxX = CLAMP(x + 5 * dirX, -1, BOARD_WIDTH);
 	const int maxY = CLAMP(y + 5 * dirY, -1, BOARD_HEIGHT);
 
-	int value = 1 + bonus;
+	int value = 1;// + bonus;
 	int count = 0;
 
 	x += dirX, y+= dirY;
@@ -338,7 +338,14 @@ void Board::fillPriorityDir(int x, int y, int dirX, int dirY, BoardSquare color,
 		{
 			value <<= 3;
 		}
-		else if (square != empty)
+		else if (square == empty)
+		{
+			if (_priority[y][x] >= 0)
+			{
+				_priority[y][x] += value;
+			}
+		}
+		else
 		{
 			count++;
 			break;
@@ -346,6 +353,7 @@ void Board::fillPriorityDir(int x, int y, int dirX, int dirY, BoardSquare color,
 		x += dirX, y+= dirY;
 		count++;
 	}
+	value >>= 2;
 	while (count > 0)
 	{
 		count--;
@@ -386,15 +394,15 @@ void Board::fillPriority(PlayerColor player)
 			{
 				BoardSquare enemyColor = (color == white) ? black : white;
 
-				fillPriorityDir(x, y, -1, -1, color, bonus);
-				fillPriorityDir(x, y, -1, 0, color, bonus);
-				fillPriorityDir(x, y, -1, 1, color, bonus);
-				fillPriorityDir(x, y, 0, -1, color, bonus);
-				//fillPriorityDir(x, y, 0, 0, color, bonus);
-				fillPriorityDir(x, y, 0, 1, color, bonus);
-				fillPriorityDir(x, y, 1, -1, color, bonus);
-				fillPriorityDir(x, y, 1, 0, color, bonus);
-				fillPriorityDir(x, y, 1, 1, color, bonus);
+				fillPriorityDir(x, y, -1, -1, color);//, bonus);
+				fillPriorityDir(x, y, -1, 0, color);//, bonus);
+				fillPriorityDir(x, y, -1, 1, color);//, bonus);
+				fillPriorityDir(x, y, 0, -1, color);//, bonus);
+				//fillPriorityDir(x, y, 0, 0, color);//, bonus);
+				fillPriorityDir(x, y, 0, 1, color);//, bonus);
+				fillPriorityDir(x, y, 1, -1, color);//, bonus);
+				fillPriorityDir(x, y, 1, 0, color);//, bonus);
+				fillPriorityDir(x, y, 1, 1, color);//, bonus);
 
 				fillCapturePriorityDir(x, y, -1, -1, enemyColor);
 				fillCapturePriorityDir(x, y, -1, 0, enemyColor);

@@ -89,11 +89,12 @@ void AnalyzerBrainDead::fillScore(Board &board)
 								BoardSquare square = board._data[_y][_x];
 								if (square == empty)
 								{
+									_score += value;
 									emptyCount++;
 								}
 								else if (square == color)
 								{
-									value <<= 2;
+									value <<= 3;
 								}
 								else
 								{
@@ -101,7 +102,7 @@ void AnalyzerBrainDead::fillScore(Board &board)
 								}
 								_x += dirX, _y+= dirY;
 							}
-
+							value >>= 2;
 							_score += ((color == BoardSquare::white) ? value : -value) * emptyCount;
 						}
 					}

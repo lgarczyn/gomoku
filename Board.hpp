@@ -62,7 +62,7 @@ private:
 	int				_capturedBlacks;
 	int 			_turnNum;
 
-	void 			fillPriorityDir(int x, int y, int dirX, int dirY, BoardSquare color, int bonus);
+	void 			fillPriorityDir(int x, int y, int dirX, int dirY, BoardSquare color);//, int bonus);
 	void 			fillCapturePriorityDir(int x, int y, int dirX, int dirY, BoardSquare color);
 
 	bool 			isAlignedStoneDir(int x, int y, int dirX, int dirY, BoardSquare good, int size) const;
