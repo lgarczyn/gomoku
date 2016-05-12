@@ -70,6 +70,7 @@ Score AnalyzerBrainDead::fillScore(Board &board)
 			BoardSquare color = board._data[y][x];
 			if (color != BoardSquare::empty)
 			{
+
 				for (int dirX = -1; dirX <= 1; dirX++)
 				{
 					for (int dirY = -1; dirY <= 1; dirY++)
@@ -90,7 +91,7 @@ Score AnalyzerBrainDead::fillScore(Board &board)
 								BoardSquare square = board._data[_y][_x];
 								if (square == empty)
 								{
-									score += value;
+									score += ((color == BoardSquare::white) ? value : -value);
 									emptyCount++;
 								}
 								else if (square == color)
