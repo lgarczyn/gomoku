@@ -57,7 +57,8 @@ void game_page(GUIManager& win, Options &options)
                         return;
                     break ;
                 case sf::Event::MouseButtonPressed:
-
+					if (hasWon)
+						return;
                     if (g.isPlayerNext() && win.getMouseBoardPos(pos) && !hasWon)
                     {
                         if (g.play(pos))
