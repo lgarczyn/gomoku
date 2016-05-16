@@ -33,6 +33,7 @@ public:
 	bool isOverdue() const;
 	double getTimeDiff() const;
 	double getTimeTaken() const;
+	Score getCurrentScore() const;
 
 	Board *getState();
 	BoardPos getNextMove();

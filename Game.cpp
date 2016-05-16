@@ -194,6 +194,11 @@ BoardPos Game::getNextMove()
 	return pos;
 }
 
+Score Game::getCurrentScore() const
+{
+	return _analyzer->getScore(*_state, _options.captureWin);
+}
+
 bool Game::play(BoardPos pos)
 {
 	if (_state->getCase(pos) != BoardSquare::empty)
@@ -209,7 +214,6 @@ bool Game::play(BoardPos pos)
 	_state->fillTaboo(_options.limitBlack, _options.doubleThree, _turn);
 	_state->fillPriority(_turn);
 
-	std::cout << "Current board score is: " << _analyzer->getScore(*_state, _options.captureWin) << std::endl;
 	return _state->isTerminal(pos, _options.captureWin);
 }
 

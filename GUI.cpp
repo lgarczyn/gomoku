@@ -16,16 +16,16 @@ std::string getVictoryMessage(VictoryState v, PlayerColor turn)
     switch (v)
     {
         case aligned:
-            text = player + "Five stones aligned";
+            text = player + "  Five stones aligned";
             break;
         case whitesCaptured:
-            text = player + "Enough white stones captured";
+            text = player + "  Enough white stones captured";
             break;
         case blacksCaptured:
-            text = player + "Enough black stones captured";
+            text = player + "  Enough black stones captured";
             break;
         case staleMate:
-            text = "Stalemate";
+            text = "  Stalemate";
         default:
             break;
     }
@@ -61,12 +61,14 @@ void game_page(GUIManager& win, Options &options)
 						return;
                     if (g.isPlayerNext() && win.getMouseBoardPos(pos) && !hasWon)
                     {
+                        std::cout << "Player " << (g.getTurn() == whitePlayer ? "white:" : "black:") << std::endl;
                         if (g.play(pos))
                         {
                             hasWon = true;
                             victory = g.getState()->isTerminal(options.capture);
                             text = getVictoryMessage(victory, (PlayerColor)-g.getTurn());
                         }
+                        std::cout << "  Board score: " << g.getCurrentScore() << std::endl;
                         win.drawBoard(g, options, text);
                     }
                     break ;
@@ -86,7 +88,9 @@ void game_page(GUIManager& win, Options &options)
                 victory = g.getState()->isTerminal(options.capture);
                 text = getVictoryMessage(victory, whitePlayer);
             }
-            std::cout << "AI white: time taken: " << g.getTimeTaken() << std::endl;
+            std::cout << "AI white:" << std::endl;
+            std::cout << "  Board score: " << g.getCurrentScore() << std::endl;
+            std::cout << "  Time taken: " << g.getTimeTaken() << std::endl;
             if (text != "") std::cout << text << std::endl;
             win.drawBoard(g, options, text);
             shouldWait = false;
@@ -100,7 +104,9 @@ void game_page(GUIManager& win, Options &options)
                 victory = g.getState()->isTerminal(options.capture);
                 text = getVictoryMessage(victory, blackPlayer);
             }
-            std::cout << "AI black: time taken: " << g.getTimeTaken() << std::endl;
+            std::cout << "AI black:" << std::endl;
+            std::cout << "  Board score: " << g.getCurrentScore() << std::endl;
+            std::cout << "  Time taken: " << g.getTimeTaken() << std::endl;
             if (text != "") std::cout << text << std::endl;
             win.drawBoard(g, options, text);
             shouldWait = false;
