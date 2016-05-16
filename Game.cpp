@@ -9,7 +9,7 @@
 using namespace std;
 
 const double timeMargin = 0.01;
-const int initialWidth = 20;
+const int initialWidth = 40;
 const int deepWidth = 20;
 const int threadCount = 8;
 
