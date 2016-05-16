@@ -1,0 +1,3 @@
+/nfs/2014/l/lgarczyn/p/gomoku/CMAKE/CMakeFiles/edit_cache.dir
+/nfs/2014/l/lgarczyn/p/gomoku/CMAKE/CMakeFiles/rebuild_cache.dir
+/nfs/2014/l/lgarczyn/p/gomoku/CMAKE/CMakeFiles/gomoku.dir
