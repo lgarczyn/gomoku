@@ -112,7 +112,7 @@ void	GUIManager::drawBoard(Game& g, Options options, const std::string message)
 					}
 					if (pos == mousePos && !message.size() && isPlayerNext)
 						sprite = &sprite_preview;
-					else if (isPlayerNext && p == bestPriority.score) // pos == bestPriority)
+					else if (isPlayerNext && p == bestPriority.score && options.showTips) // pos == bestPriority)
 					{
 						sprite = &sprite_preview;
 					}

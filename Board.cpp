@@ -142,10 +142,6 @@ std::vector<ChildBoard> Board::getChildren(PlayerColor player, bool capture, siz
 {
 	fillPriority(player);
 
-	//EITHER
-	//set finished boards priority to higher
-	//
-
 	auto childrenPos = std::vector<MoveScore>();
 
 	for (int y = 0; y < BOARD_HEIGHT; y++)
@@ -155,7 +151,7 @@ std::vector<ChildBoard> Board::getChildren(PlayerColor player, bool capture, siz
 			if (_data[y][x] == empty)
 			{
 				int score = _priority[y][x];
-				if (score)
+				if (score > 0)
 				{
 					childrenPos.push_back(MoveScore(score, BoardPos(x, y)));
 				}
@@ -163,7 +159,8 @@ std::vector<ChildBoard> Board::getChildren(PlayerColor player, bool capture, siz
 		}
 	}
 
-	//shuffle (childrenPos.begin(), childrenPos.end(), std::default_random_engine(std::random_device{}()));
+	shuffle (childrenPos.begin(), childrenPos.end(), std::default_random_engine(std::random_device{}()));
+
 	//only shuffle is first?
 	//TODO use boost::qsort
 	struct Sorter
@@ -274,6 +271,10 @@ bool Board::checkFreeThree(int x, int y, int dirX, int dirY, BoardSquare enemy)
 	return false;
 }
 
+const int forbiddenZone = 4;
+const int middleX = (BOARD_WIDTH / 2);
+const int middleY = (BOARD_HEIGHT / 2);
+
 void Board::fillTaboo(bool limitBlack, bool doubleThree, PlayerColor player)
 {
 	BoardSquare enemy = (player == blackPlayer)? white : black;
@@ -290,9 +291,9 @@ void Board::fillTaboo(bool limitBlack, bool doubleThree, PlayerColor player)
 				}
 			}
 		else if (_turnNum == 2)
-			for (int y = 4; y < 15; y++)
+			for (int y = middleY - forbiddenZone; y <= middleY + forbiddenZone; y++)
 			{
-				for (int x = 4; x < 15; x++)
+				for (int x = middleX - forbiddenZone; x <= middleX + forbiddenZone; x++)
 				{
 					_priority[y][x] = -1;
 				}

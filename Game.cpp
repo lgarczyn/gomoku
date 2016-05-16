@@ -9,8 +9,8 @@
 using namespace std;
 
 const double timeMargin = 0.01;
-const int initialWidth = 40;
-const int deepWidth = 20;
+const int initialWidth = 30;
+const int deepWidth = 30;
 const int threadCount = 8;
 
 Game::Game(const Options& options) :
