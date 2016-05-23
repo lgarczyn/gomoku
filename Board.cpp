@@ -3,55 +3,10 @@
 //
 
 #include "Board.hpp"
+#include "Options.hpp"
 #include <algorithm>	// min max
 #include <random>       // std::default_random_engine
 #include <chrono>       // std::chrono::system_clock
-
-/*bool Board::isAlignedStoneDir(int x, int y, int dirX, int dirY, BoardSquare good, int size) const
-{
-	for (int i = 1 ; i < size ; ++i) {
-		x += dirX;
-		y += dirY;
-
-		if (x  < 0 || x >= BOARD_WIDTH || y < 0 || y >= BOARD_HEIGHT)
-			return (false);
-		if (_data[y][x] != good)
-			return (false);
-	}
-	return (true);
-}
-
-bool Board::isAlignedStonePos(int x, int y, int size) const
-{
-	BoardSquare c = _data[y][x];
-	if (c == empty) return false;
-	if (isAlignedStoneDir(x, y, -1, -1, c, size)) return (true);
-	if (isAlignedStoneDir(x, y, -1, 0, c, size)) return (true);
-	if (isAlignedStoneDir(x, y, -1, 1, c, size)) return (true);
-	if (isAlignedStoneDir(x, y, 0, -1, c, size)) return (true);
-	//if (isAlignedStoneDir(x, y, 0, 0, c, size)) return (true);
-	if (isAlignedStoneDir(x, y, 0, 1, c, size)) return (true);
-	if (isAlignedStoneDir(x, y, 1, -1, c, size)) return (true);
-	if (isAlignedStoneDir(x, y, 1, 0, c, size)) return (true);
-	if (isAlignedStoneDir(x, y, 1, 1, c, size)) return (true);
-	return false;
-
-
-
-
-
-}
-
-bool Board::isAlignedStone(int size) const
-{
-	for (int y = 0 ; y < BOARD_HEIGHT; ++y)
-		for (int x = 0 ; x < BOARD_WIDTH; ++x)
-			if (isAlignedStonePos(x, y, size))
-				return true;
-	return false;
-}*/
-
-
 
 inline bool Board::isAlignedStoneDir(int x, int y, int dirX, int dirY, BoardSquare color, int size) const
 {
@@ -100,29 +55,15 @@ bool Board::isAlignedStone(int size) const
 	for (int y = 0 ; y < BOARD_HEIGHT; ++y)
 		for (int x = 0 ; x < BOARD_WIDTH; ++x)
 			if (_data[y][x] != empty)
-				if (isAlignedStonePos(x, y, size))
-					return true;
+			if (isAlignedStonePos(x, y, size))
+				return true;
 	return false;
 }
 
 
-VictoryState  Board::isTerminal(bool considerCapture)
+/*VictoryState  Board::isTerminal(bool considerCapture)
 {
 	if (isAlignedStone(5))
-		return aligned;
-	if (considerCapture)
-	{
-		if (_capturedWhites >= captureVictoryPoints)
-			return whitesCaptured;
-		if (_capturedBlacks >= captureVictoryPoints)
-			return blacksCaptured;
-	}
-	return  novictory;
-}
-
-VictoryState  Board::isTerminal(BoardPos pos, bool considerCapture)
-{
-	if (isAlignedStonePos(pos.x, pos.y, 5))
 		return aligned;
 	if (considerCapture)
 	{
@@ -136,12 +77,53 @@ VictoryState  Board::isTerminal(BoardPos pos, bool considerCapture)
 		return staleMate;
 	}
 	return  novictory;
+}*/
+
+VictoryState  Board::calculateVictory(BoardPos pos, const Options& options)
+{
+	if (options.captureWin)
+	{
+		if (_capturedWhites >= captureVictoryPoints)
+			return VictoryState(blackPlayer, VictoryType::captured);
+		if (_capturedBlacks >= captureVictoryPoints)
+			return VictoryState(whitePlayer, VictoryType::captured);
+	}
+	if (_victoryFlag == -_turn && isAlignedStonePos(_alignementPos.x, _alignementPos.y, 5))
+	{
+		return VictoryState(_victoryFlag, aligned);
+	}
+	else
+	{
+		_victoryFlag = nullPlayer;
+	}
+
+	if (isAlignedStonePos(pos.x, pos.y, 5))
+	{
+		if (options.capture)
+		{
+			_victoryFlag = _turn;
+			_alignementPos = pos;
+		}
+		else
+		{
+			return VictoryState(_turn, aligned);
+		}
+	}
+
+	if (_turnNum - _capturedBlacks - _capturedWhites == BOARD_HEIGHT * BOARD_WIDTH)
+	{
+		return VictoryState(staleMate);
+	}
+	return  VictoryState(novictory);
 }
 
-std::vector<ChildBoard> Board::getChildren(PlayerColor player, bool capture, size_t count = -1)
+VictoryState Board::getVictory()
 {
-	fillPriority(player);
+	return (_victoryState);
+}
 
+std::vector<MoveScore> Board::getChildren(PlayerColor player, size_t count = -1)
+{
 	auto childrenPos = std::vector<MoveScore>();
 
 	for (int y = 0; y < BOARD_HEIGHT; y++)
@@ -174,16 +156,7 @@ std::vector<ChildBoard> Board::getChildren(PlayerColor player, bool capture, siz
 
 	sort(childrenPos.begin(), childrenPos.end(), Sorter());
 
-	auto children = std::vector<ChildBoard>();
-	for (auto move:childrenPos)
-	{
-		if (children.size() >= count)
-			break;
-		children.push_back(ChildBoard(
-				new Board(*this, move.pos, player, capture),
-				move.pos));
-	}
-	return (children);
+	return (childrenPos);
 }
 
 
@@ -286,8 +259,8 @@ void Board::fillTaboo(bool limitBlack, bool doubleThree, PlayerColor player)
 				for (int x = 0; x < BOARD_WIDTH; x++)
 				{
 					if (x != 9 || y != 9)
-						if (_data[y][x] == BoardSquare::empty)
-							_priority[y][x] = -1;
+					if (_data[y][x] == BoardSquare::empty)
+						_priority[y][x] = -1;
 				}
 			}
 		else if (_turnNum == 2)
@@ -374,15 +347,15 @@ void Board::fillCapturePriorityDir(int x, int y, int dirX, int dirY, BoardSquare
 	int endY = y + dirY * 3;
 
 	if (endX >= 0 && endX < BOARD_WIDTH && endY >= 0 && endY < BOARD_HEIGHT)
-		if (_data[y + dirY * 1][x + dirX * 1] == color &&
-			_data[y + dirY * 2][x + dirX * 2] == color &&
-			_data[endY][endX] == empty)
-		{
-			_priority[endY][endX] += capturePriority;
-		}
+	if (_data[y + dirY * 1][x + dirX * 1] == color &&
+		_data[y + dirY * 2][x + dirX * 2] == color &&
+		_data[endY][endX] == empty)
+	{
+		_priority[endY][endX] += capturePriority;
+	}
 };
 
-void Board::fillPriority(PlayerColor player)
+void Board::fillPriority(PlayerColor player, const Options& options)
 {
 	BoardSquare ally = (player == blackPlayer)? black : white;
 	for (int y = 0; y < BOARD_HEIGHT; y++)
@@ -405,57 +378,32 @@ void Board::fillPriority(PlayerColor player)
 				fillPriorityDir(x, y, 1, 0, color);//, bonus);
 				fillPriorityDir(x, y, 1, 1, color);//, bonus);
 
-				fillCapturePriorityDir(x, y, -1, -1, enemyColor);
-				fillCapturePriorityDir(x, y, -1, 0, enemyColor);
-				fillCapturePriorityDir(x, y, -1, 1, enemyColor);
-				fillCapturePriorityDir(x, y, 0, -1, enemyColor);
-				//fillCapturePriorityDir(x, y, 0, 0, enemyColor);
-				fillCapturePriorityDir(x, y, 0, 1, enemyColor);
-				fillCapturePriorityDir(x, y, 1, -1, enemyColor);
-				fillCapturePriorityDir(x, y, 1, 0, enemyColor);
-				fillCapturePriorityDir(x, y, 1, 1, enemyColor);
+				if (options.capture)
+				{
+					fillCapturePriorityDir(x, y, -1, -1, enemyColor);
+					fillCapturePriorityDir(x, y, -1, 0, enemyColor);
+					fillCapturePriorityDir(x, y, -1, 1, enemyColor);
+					fillCapturePriorityDir(x, y, 0, -1, enemyColor);
+					//fillCapturePriorityDir(x, y, 0, 0, enemyColor);
+					fillCapturePriorityDir(x, y, 0, 1, enemyColor);
+					fillCapturePriorityDir(x, y, 1, -1, enemyColor);
+					fillCapturePriorityDir(x, y, 1, 0, enemyColor);
+					fillCapturePriorityDir(x, y, 1, 1, enemyColor);
+				}
 			}
 		}
 	}
 }
 
-bool Board::isPosLegal(int x, int y, bool limitBlack, bool doubleThree, PlayerColor player)
-{
-	BoardSquare enemy = (player == blackPlayer)? white : black;
-
-	if (limitBlack)
-	{
-		if (_turnNum == 0)
-		{
-			if (y != 9 && x != 9)
-				return false;
-			else
-				return true;
-		}
-		else if (_turnNum == 2)
-		{
-			if (y >= 4 && y < 15 && x >= 4 && x < 15)
-				return false;
-			else
-				return true;
-		}
-	}
-	if (doubleThree)
-	{
-		int count = 0;
-		if (checkFreeThree(x, y, 1, 0, enemy)) count++;
-		if (checkFreeThree(x, y, 1, 1, enemy)) count++;
-		if (count >= 2) { return false; }
-		if (checkFreeThree(x, y, 0, 1, enemy)) count++;
-		if (count == 0) { return true; }
-		if (count >= 2) { return false; }
-		if (checkFreeThree(x, y, -1, 1, enemy)) count++;
-		if (count >= 2) { return false; }
-	}
-	return true;
-}
-
-Board::Board(): _data(), _priority(), _capturedWhites(), _capturedBlacks(), _turnNum()
+Board::Board(PlayerColor player):
+				_data(),
+				_priority(),
+				_capturedWhites(),
+				_capturedBlacks(),
+				_turnNum(),
+				_turn(player),
+				_victoryFlag(nullPlayer),
+				_alignementPos()
 {
 	_priority[9][9] = 1;
 }
@@ -466,14 +414,14 @@ Board::Board(const Board& board)
 	bzero(_priority, sizeof(_priority));
 }
 
-Board::Board(const Board& board, BoardPos move, PlayerColor player, bool capture) : Board(board)
+Board::Board(const Board& board, BoardPos move, PlayerColor player, const Options& options) : Board(board)
 {
 	if (player == PlayerColor::whitePlayer)
 		_data[move.y][move.x] = BoardSquare::white;
 	else
 		_data[move.y][move.x] = BoardSquare::black;
 
-	if (capture)
+	if (options.capture)
 	{
 		int captures = playCapture(move.x, move.y);
 		if (player == PlayerColor::whitePlayer)
@@ -481,7 +429,9 @@ Board::Board(const Board& board, BoardPos move, PlayerColor player, bool capture
 		else
 			_capturedWhites += 2 * captures;
 	}
+	_victoryState = calculateVictory(move, options);
 	_turnNum = board._turnNum + 1;
+	_turn = (PlayerColor) -(board._turn);
 }
 
 Board::~Board() { }

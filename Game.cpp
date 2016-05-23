@@ -19,7 +19,6 @@ Game::Game(const Options& options) :
 		_constDepth(5 + options.slowMode),
 		_timeTaken()
 {
-	_state = new Board();
 #ifdef ANALYZER_AVAILABLE
 	_analyzer = _options.brainDead ?
 			   (IAnalyzer*)new AnalyzerBrainDead() :
@@ -29,6 +28,7 @@ Game::Game(const Options& options) :
 #endif
 	_turn = PlayerColor::blackPlayer;
 	_depth = _constDepth;
+	_state = new Board(_turn);
 	_state->fillTaboo(_options.limitBlack, _options.doubleThree, _turn);
 	_previousState = nullptr;
 	_pool = new Pool(threadCount);
@@ -42,9 +42,10 @@ Game::~Game()
 	delete _previousState;
 }
 
-Score Game::negamax(Board* node, int negDepth, Score alpha, Score beta, PlayerColor player)
+Score Game::negamax(Board& node, int negDepth, Score alpha, Score beta, PlayerColor player)
 {
-	auto children = node->getChildren(player, _options.capture, deepWidth);
+	node.fillPriority(player, _options);
+	auto children = node.getChildren(player, deepWidth);
 
 	if (!children.size())
 		throw std::logic_error("GetChildren returned an empty array");
@@ -54,19 +55,19 @@ Score Game::negamax(Board* node, int negDepth, Score alpha, Score beta, PlayerCo
 	Score bestScore = ninfinity - 100;
 	for (i = 0; i < children.size(); i++)
 	{
-		Board* board = children[i].board;
-		BoardPos pos = children[i].move;
+		BoardPos pos = children[i].pos;
+		Board board = Board(node, pos, player, _options);
 
 		if (alpha <= beta && !isOverdue())
 		{
 			Score score;
-			if (board->isTerminal(pos, _options.captureWin))
+			if (board.getVictory().type)
 			{
-				score = pinfinity + negDepth;
+				score = (pinfinity + negDepth) * board.getVictory().victor;
 			}
 			else if (negDepth <= 1)
 			{
-				score = player * _analyzer->getScore(*board, _options.captureWin);
+				score = player * _analyzer->getScore(board, _options.captureWin);
 			}
 			else
 			{
@@ -75,7 +76,6 @@ Score Game::negamax(Board* node, int negDepth, Score alpha, Score beta, PlayerCo
 			bestScore = std::max(bestScore, score);
 			alpha = std::max(alpha, score);
 		}
-		delete board;
 	}
 
 	return bestScore;
@@ -101,13 +101,13 @@ MoveScore Game::negamax_thread(ThreadData data)
 
 	std::atomic<Score>* alpha = data.alpha;
 
-	if (board->isTerminal(_options.captureWin))
+	if (board->getVictory().type)
 	{
 		score = pinfinity + _depth;
 	}
 	else
 	{
-		score = -negamax(board, _depth - 1, ninfinity, -alpha->load(), -data.player);
+		score = -negamax(*board, _depth - 1, ninfinity, -alpha->load(), -data.player);
 	}
 
 	alpha->store(std::max(alpha->load(), score));
@@ -119,7 +119,7 @@ MoveScore Game::negamax_thread(ThreadData data)
 BoardPos Game::start_negamax(Board *node, PlayerColor player)
 {
 	std::atomic<Score> alpha(ninfinity);
-	std::vector<ChildBoard> children = node->getChildren(player, _options.capture, initialWidth);
+	std::vector<MoveScore> children = node->getChildren(player, initialWidth);
 
 	if (!children.size())
 		throw std::logic_error("GetChildren returned an empty array");
@@ -129,9 +129,11 @@ BoardPos Game::start_negamax(Board *node, PlayerColor player)
 	for (size_t i = 0; i < children.size(); i++)
 	{
 		threadData[i] =	ThreadData(
-					children[i],
-					&alpha,
-					player);
+				ChildBoard(
+						new Board(*node, children[i].pos, player, _options),
+						children[i].pos),
+				&alpha,
+				player);
 	}
 
 
@@ -208,13 +210,13 @@ bool Game::play(BoardPos pos)
 
 	delete _previousState;
 	_previousState = _state;
-	_state = new Board(*_previousState, pos, _turn, _options.capture);
+	_state = new Board(*_previousState, pos, _turn, _options);
 
 	_turn = -_turn;
 	_state->fillTaboo(_options.limitBlack, _options.doubleThree, _turn);
-	_state->fillPriority(_turn);
+	_state->fillPriority(_turn, _options);
 
-	return _state->isTerminal(pos, _options.captureWin);
+	return _state->getVictory().type;
 }
 
 bool Game::hasPosChanged(BoardPos pos) const

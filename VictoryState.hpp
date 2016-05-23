@@ -5,13 +5,22 @@
 #ifndef GOMOKU_VICTORYSTATE_HPP
 #define GOMOKU_VICTORYSTATE_HPP
 
-enum VictoryState
+enum VictoryType
 {
 	novictory = 0,
 	aligned = 1,
-	whitesCaptured = 2,
-	blacksCaptured = 3,
-	staleMate = 4,
+	captured = 2,
+	staleMate = 3,
+};
+
+struct VictoryState
+{
+	PlayerColor victor;
+	VictoryType type;
+
+	VictoryState(PlayerColor _victor, VictoryType _type):victor(_victor),type(_type){};
+	VictoryState(VictoryType _type):victor(nullPlayer),type(_type){};
+	VictoryState():victor(nullPlayer),type(novictory){};
 };
 
 #endif //GOMOKU_VICTORYSTATE_HPP

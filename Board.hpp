@@ -17,6 +17,7 @@ class Board;
 #include "VictoryState.hpp"
 #include "ChildBoard.hpp"
 #include "MoveScore.hpp"
+#include "Options.hpp"
 
 using BoardData = BoardSquare[BOARD_HEIGHT][BOARD_WIDTH];
 using BoardScore = short[BOARD_HEIGHT][BOARD_WIDTH];
@@ -25,20 +26,19 @@ class Board
 {
 	friend class AnalyzerBrainDead;
 public:
-	int id;
-	VictoryState isTerminal(bool considerCapture);
-	VictoryState  isTerminal(BoardPos pos, bool considerCapture);
-	bool isPosInterest(int x, int y, PlayerColor player) const;
-	std::vector<ChildBoard> getChildren(PlayerColor player, bool capture, size_t count);
-	Board();
+	Board(PlayerColor player);
 	Board(const Board& board);
-	Board(const Board& board, BoardPos move, PlayerColor player, bool capture);
+	Board(const Board& board, BoardPos move, PlayerColor player, const Options& options);
 	virtual ~Board();
 
+	//VictoryState isTerminal(bool considerCapture);
+
+	VictoryState	getVictory();
+	std::vector<MoveScore> getChildren(PlayerColor player, size_t count);
+
 	void 			fillTaboo(bool limitBlack, bool doubleThree, PlayerColor player);
-	void 			fillPriority(PlayerColor player);
+	void 			fillPriority(PlayerColor player, const Options& options);
 	MoveScore		getBestPriority() const;
-	bool 			isPosLegal(int x, int y, bool limitBlack, bool doubleThree, PlayerColor player);
 	bool			checkFreeThree(int x, int y, int dirX, int dirY, BoardSquare enemy);
 	int 			playCapture(int x, int y);
 	bool			isAlignedStone(int size) const;
@@ -61,6 +61,12 @@ private:
 	int				_capturedWhites;
 	int				_capturedBlacks;
 	int 			_turnNum;
+	PlayerColor 	_turn;
+	PlayerColor 	_victoryFlag;
+	BoardPos		_alignementPos;
+	VictoryState	_victoryState;
+
+	VictoryState	calculateVictory(BoardPos pos, const Options& options);
 
 	void 			fillPriorityDir(int x, int y, int dirX, int dirY, BoardSquare color);//, int bonus);
 	void 			fillCapturePriorityDir(int x, int y, int dirX, int dirY, BoardSquare color);
