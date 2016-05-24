@@ -9,14 +9,14 @@
 using namespace std;
 
 const double timeMargin = 0.01;
-const int initialWidth = 30;
-const int deepWidth = 30;
-const int threadCount = 8;
+const int initialWidth = 20;
+const int deepWidth = 20;
+const int threadCount = 1;
 
 Game::Game(const Options& options) :
 		_options(options),
-		_timeLimit(options.slowMode ? 10 : 0.5),
-		_constDepth(5 + options.slowMode),
+		_timeLimit(options.slowMode ? 10 : 5),
+		_constDepth(4 + options.slowMode),
 		_timeTaken()
 {
 #ifdef ANALYZER_AVAILABLE
@@ -55,26 +55,30 @@ Score Game::negamax(Board& node, int negDepth, Score alpha, Score beta, PlayerCo
 	Score bestScore = ninfinity - 100;
 	for (i = 0; i < children.size(); i++)
 	{
-		BoardPos pos = children[i].pos;
-		Board board = Board(node, pos, player, _options);
-
 		if (alpha <= beta && !isOverdue())
 		{
+			BoardPos pos = children[i].pos;
+			Board *board = new Board(node, pos, player, _options);
 			Score score;
-			if (board.getVictory().type)
+			if (board->getVictory().type)
 			{
-				score = (pinfinity + negDepth) * board.getVictory().victor;
+				score = (pinfinity + negDepth) * -board->getVictory().victor;
 			}
 			else if (negDepth <= 1)
 			{
-				score = player * _analyzer->getScore(board, _options.captureWin);
+				score = player * _analyzer->getScore(*board, _options.captureWin);
 			}
 			else
 			{
-				score = -negamax(board, negDepth - 1, -beta, -alpha, -player);
+				score = -negamax(*board, negDepth - 1, -beta, -alpha, -player);
 			}
 			bestScore = std::max(bestScore, score);
 			alpha = std::max(alpha, score);
+			delete board;
+		}
+		else
+		{
+			break;
 		}
 	}
 
@@ -103,7 +107,7 @@ MoveScore Game::negamax_thread(ThreadData data)
 
 	if (board->getVictory().type)
 	{
-		score = pinfinity + _depth;
+		score = (pinfinity + _depth) * -board->getVictory().victor;
 	}
 	else
 	{
@@ -176,13 +180,16 @@ bool Game::isOverdue() const
 	using namespace std;
 	auto current = std::chrono::high_resolution_clock::now();
 
-	return double(std::chrono::duration_cast<std::chrono::milliseconds>(current - _start).count()) > (_timeLimit - timeMargin) * 1000;
+	double difference = std::chrono::duration_cast<std::chrono::milliseconds>(current - _start).count();
+
+	return difference > (_timeLimit - timeMargin) * 1000;
 }
 
 double Game::getTimeDiff() const
 {
 	auto current = std::chrono::high_resolution_clock::now();
-	return double(std::chrono::duration_cast<std::chrono::milliseconds>(current - _start).count()) / 1000;
+	double difference = double(std::chrono::duration_cast<std::chrono::milliseconds>(current - _start).count()) / 1000;
+	return difference;
 }
 
 BoardPos Game::getNextMove()

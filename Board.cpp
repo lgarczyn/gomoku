@@ -3,10 +3,7 @@
 //
 
 #include "Board.hpp"
-#include "Options.hpp"
-#include <algorithm>	// min max
 #include <random>       // std::default_random_engine
-#include <chrono>       // std::chrono::system_clock
 
 inline bool Board::isAlignedStoneDir(int x, int y, int dirX, int dirY, BoardSquare color, int size) const
 {
@@ -88,13 +85,16 @@ VictoryState  Board::calculateVictory(BoardPos pos, const Options& options)
 		if (_capturedBlacks >= captureVictoryPoints)
 			return VictoryState(whitePlayer, VictoryType::captured);
 	}
-	if (_victoryFlag == -_turn && isAlignedStonePos(_alignementPos.x, _alignementPos.y, 5))
+	if (_victoryFlag == -_turn)
 	{
-		return VictoryState(_victoryFlag, aligned);
-	}
-	else
-	{
-		_victoryFlag = nullPlayer;
+		if (isAlignedStonePos(_alignementPos.x, _alignementPos.y, 5))
+		{
+			return VictoryState(_victoryFlag, aligned);
+		}
+		else
+		{
+			_victoryFlag = nullPlayer;
+		}
 	}
 
 	if (isAlignedStonePos(pos.x, pos.y, 5))
@@ -141,7 +141,7 @@ std::vector<MoveScore> Board::getChildren(PlayerColor player, size_t count = -1)
 		}
 	}
 
-	shuffle (childrenPos.begin(), childrenPos.end(), std::default_random_engine(std::random_device{}()));
+	//shuffle (childrenPos.begin(), childrenPos.end(), std::default_random_engine(std::random_device{}()));
 
 	//only shuffle is first?
 	//TODO use boost::qsort
@@ -363,7 +363,7 @@ void Board::fillPriority(PlayerColor player, const Options& options)
 		for (int x = 0; x < BOARD_WIDTH; x++)
 		{
 			BoardSquare color = _data[y][x];
-			int bonus = (ally != color);
+			//int bonus = (ally != color);
 			if (color != BoardSquare::empty)
 			{
 				BoardSquare enemyColor = (color == white) ? black : white;
