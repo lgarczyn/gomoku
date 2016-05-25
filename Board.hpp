@@ -34,7 +34,7 @@ public:
 	//VictoryState isTerminal(bool considerCapture);
 
 	VictoryState	getVictory();
-	std::vector<MoveScore> getChildren(PlayerColor player, size_t count);
+	std::vector<MoveScore> getChildren(PlayerColor player, int count);
 
 	void 			fillTaboo(bool limitBlack, bool doubleThree, PlayerColor player);
 	void 			fillPriority(PlayerColor player, const Options& options);

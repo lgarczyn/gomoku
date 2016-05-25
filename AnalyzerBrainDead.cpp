@@ -124,6 +124,14 @@ Score AnalyzerBrainDead::getScore(Board &board, bool considerCapture)
 		score += 1 << board._capturedBlacks / 2;
 		score -= 1 << board._capturedWhites / 2;
 	}
+	if (board._victoryFlag == whitePlayer)
+	{
+		score += pinfinity / 2;
+	}
+	else if (board._victoryFlag == blackPlayer)
+	{
+		score -= pinfinity / 2;
+	}
 
 	return score;
 }

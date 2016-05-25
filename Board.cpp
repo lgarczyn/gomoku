@@ -122,7 +122,7 @@ VictoryState Board::getVictory()
 	return (_victoryState);
 }
 
-std::vector<MoveScore> Board::getChildren(PlayerColor player, size_t count = -1)
+std::vector<MoveScore> Board::getChildren(PlayerColor player, int count = -1)
 {
 	auto childrenPos = std::vector<MoveScore>();
 
@@ -155,6 +155,9 @@ std::vector<MoveScore> Board::getChildren(PlayerColor player, size_t count = -1)
 	};
 
 	sort(childrenPos.begin(), childrenPos.end(), Sorter());
+
+	if (count >= 0)
+		childrenPos.resize(count);
 
 	return (childrenPos);
 }

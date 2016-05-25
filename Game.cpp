@@ -8,15 +8,15 @@
 
 using namespace std;
 
-const double timeMargin = 0.01;
+const double timeMargin = 0.002;
 const int initialWidth = 20;
 const int deepWidth = 20;
-const int threadCount = 1;
+const int threadCount = 8;
 
 Game::Game(const Options& options) :
 		_options(options),
-		_timeLimit(options.slowMode ? 10 : 5),
-		_constDepth(4 + options.slowMode),
+		_timeLimit(options.slowMode ? 10 : 0.5),
+		_constDepth(6 + options.slowMode),
 		_timeTaken()
 {
 #ifdef ANALYZER_AVAILABLE
@@ -62,7 +62,7 @@ Score Game::negamax(Board& node, int negDepth, Score alpha, Score beta, PlayerCo
 			Score score;
 			if (board->getVictory().type)
 			{
-				score = (pinfinity + negDepth) * -board->getVictory().victor;
+				score = (pinfinity + negDepth) * (board->getVictory().victor * player);
 			}
 			else if (negDepth <= 1)
 			{
@@ -107,7 +107,7 @@ MoveScore Game::negamax_thread(ThreadData data)
 
 	if (board->getVictory().type)
 	{
-		score = (pinfinity + _depth) * -board->getVictory().victor;
+		score = (pinfinity + _depth) * (board->getVictory().victor * data.player);
 	}
 	else
 	{
