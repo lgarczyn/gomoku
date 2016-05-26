@@ -1,3 +1,1 @@
 # gomoku
-
-TODO remove rand

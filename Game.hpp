@@ -16,6 +16,7 @@
 #include "Options.hpp"
 #include <atomic>
 #include <chrono>
+#include <random>
 
 template <typename Data, typename Value> class ThreadPool;
 
@@ -43,6 +44,7 @@ private:
 	typedef ThreadPool<ThreadData, MoveScore> Pool;
 
 	std::chrono::high_resolution_clock::time_point _start;
+	std::mt19937 _randomDevice;
 
 	Options	_options;
 	double	_timeLimit;

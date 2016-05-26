@@ -32,6 +32,9 @@ Game::Game(const Options& options) :
 	_state->fillTaboo(_options.limitBlack, _options.doubleThree, _turn);
 	_previousState = nullptr;
 	_pool = new Pool(threadCount);
+
+	std::random_device rd;
+	_randomDevice = std::mt19937(rd());
 }
 
 Game::~Game()
@@ -175,7 +178,9 @@ BoardPos Game::start_negamax(Board *node, PlayerColor player)
 			choice.push_back(bestMove);
 		}
 	}
-	return choice[rand() % choice.size()].pos;//TODO get fucking rid of rand
+
+	std::uniform_int_distribution<int> uni(0, choice.size() - 1);
+	return choice[uni(_randomDevice)].pos;//TODO get fucking rid of rand
 }
 
 
