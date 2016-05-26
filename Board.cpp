@@ -4,8 +4,9 @@
 
 #include "Board.hpp"
 #include <random>       // std::default_random_engine
+#include <algorithm>
 
-inline bool Board::isAlignedStoneDir(int x, int y, int dirX, int dirY, BoardSquare color, int size) const
+bool Board::isAlignedStoneDir(int x, int y, int dirX, int dirY, BoardSquare color, int size) const
 {
 	int ix = x + (size - 1) * -dirX;
 	int iy = y + (size - 1) * -dirY;
@@ -122,9 +123,9 @@ VictoryState Board::getVictory()
 	return (_victoryState);
 }
 
-std::vector<MoveScore> Board::getChildren(PlayerColor player, int count = -1)
+size_t Board::getChildren(MoveScore* buffer, size_t count)
 {
-	auto childrenPos = std::vector<MoveScore>();
+	MoveScore* bufferEnd = buffer;
 
 	for (int y = 0; y < BOARD_HEIGHT; y++)
 	{
@@ -135,15 +136,15 @@ std::vector<MoveScore> Board::getChildren(PlayerColor player, int count = -1)
 				int score = _priority[y][x];
 				if (score > 0)
 				{
-					childrenPos.push_back(MoveScore(score, BoardPos(x, y)));
+					*bufferEnd = MoveScore(score, BoardPos(x, y));
+					bufferEnd++;
 				}
 			}
 		}
 	}
 
-	//shuffle (childrenPos.begin(), childrenPos.end(), std::default_random_engine(std::random_device{}()));
+	//shuffle (children.begin(), children.end(), std::default_random_engine(std::random_device{}()));
 
-	//only shuffle is first?
 	//TODO use boost::qsort
 	struct Sorter
 	{
@@ -154,12 +155,13 @@ std::vector<MoveScore> Board::getChildren(PlayerColor player, int count = -1)
 		}
 	};
 
-	sort(childrenPos.begin(), childrenPos.end(), Sorter());
+	std::sort(buffer, bufferEnd, Sorter());
 
-	if (count >= 0)
-		childrenPos.resize(count);
+	size_t posCount = std::distance(buffer, bufferEnd);
 
-	return (childrenPos);
+	if (posCount < count)
+		return posCount;
+	return count;
 }
 
 
@@ -298,7 +300,7 @@ void Board::fillTaboo(bool limitBlack, bool doubleThree, PlayerColor player)
 }
 
 
-inline void Board::fillPriorityDir(int x, int y, int dirX, int dirY, BoardSquare color)//, int bonus)
+void Board::fillPriorityDir(int x, int y, int dirX, int dirY, BoardSquare color)//, int bonus)
 {
 	const int maxX = CLAMP(x + 5 * dirX, -1, BOARD_WIDTH);
 	const int maxY = CLAMP(y + 5 * dirY, -1, BOARD_HEIGHT);

@@ -11,11 +11,11 @@ using namespace std;
 const double timeMargin = 0.002;
 const int initialWidth = 20;
 const int deepWidth = 20;
-const int threadCount = 8;
+const int threadCount = 8;//TODO put back 8 threads and depth
 
 Game::Game(const Options& options) :
 		_options(options),
-		_timeLimit(options.slowMode ? 10 : 0.5),
+		_timeLimit(options.slowMode ? 10 : 5),//TODO fix timeout
 		_constDepth(6 + options.slowMode),
 		_timeTaken()
 {
@@ -44,16 +44,18 @@ Game::~Game()
 
 Score Game::negamax(Board& node, int negDepth, Score alpha, Score beta, PlayerColor player)
 {
-	node.fillPriority(player, _options);
-	auto children = node.getChildren(player, deepWidth);
+	MoveScore children[BOARD_HEIGHT * BOARD_WIDTH];
 
-	if (!children.size())
+	node.fillPriority(player, _options);
+	int count = node.getChildren(children, deepWidth);
+
+	if (!count)
 		throw std::logic_error("GetChildren returned an empty array");
 
 	//std::vector<Score> scores = std::vector<Score>(children.size());
 	size_t i;
 	Score bestScore = ninfinity - 100;
-	for (i = 0; i < children.size(); i++)
+	for (i = 0; i < count; i++)
 	{
 		if (alpha <= beta && !isOverdue())
 		{
@@ -123,14 +125,16 @@ MoveScore Game::negamax_thread(ThreadData data)
 BoardPos Game::start_negamax(Board *node, PlayerColor player)
 {
 	std::atomic<Score> alpha(ninfinity);
-	std::vector<MoveScore> children = node->getChildren(player, initialWidth);
+	MoveScore children[BOARD_HEIGHT * BOARD_WIDTH];
 
-	if (!children.size())
+	int count = node->getChildren(children, initialWidth);
+
+	if (!count)
 		throw std::logic_error("GetChildren returned an empty array");
 
-	std::vector<ThreadData> threadData(children.size());
+	std::vector<ThreadData> threadData(count);
 
-	for (size_t i = 0; i < children.size(); i++)
+	for (size_t i = 0; i < count; i++)
 	{
 		threadData[i] =	ThreadData(
 				ChildBoard(

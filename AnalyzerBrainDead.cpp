@@ -70,7 +70,7 @@ Score AnalyzerBrainDead::fillScore(Board &board)
 			BoardSquare color = board._data[y][x];
 			if (color != BoardSquare::empty)
 			{
-
+				Score squareScore = 0;
 				for (int dirX = -1; dirX <= 1; dirX++)
 				{
 					for (int dirY = -1; dirY <= 1; dirY++)
@@ -86,12 +86,12 @@ Score AnalyzerBrainDead::fillScore(Board &board)
 							int _x = x + dirX;
 							int _y = y + dirY;
 
-							while ((!dirX || _x != maxX) && (!dirY || _y != maxY))
+							while ((dirX == 0 || _x != maxX) && (dirY == 0 || _y != maxY))
 							{
 								BoardSquare square = board._data[_y][_x];
 								if (square == empty)
 								{
-									score += ((color == BoardSquare::white) ? value : -value);
+									squareScore += value;
 									emptyCount++;
 								}
 								else if (square == color)
@@ -105,10 +105,11 @@ Score AnalyzerBrainDead::fillScore(Board &board)
 								_x += dirX, _y+= dirY;
 							}
 							value >>= 2;
-							score += ((color == BoardSquare::white) ? value : -value) * emptyCount;
+							squareScore += value * emptyCount;
 						}
 					}
 				}
+				score += (color == BoardSquare::white) ? squareScore : -squareScore;
 			}
 		}
 	}
