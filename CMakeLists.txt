@@ -47,8 +47,6 @@ set(SOURCE_FILES
         NetworkManager.hpp
         Analyzer.cpp
         Analyzer.hpp
-        Trainer.cpp
-        Trainer.hpp
         MoveScore.cpp
         MoveScore.hpp
         BoardPos.cpp

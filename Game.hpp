@@ -16,6 +16,7 @@
 #include "Options.hpp"
 #include <atomic>
 #include <chrono>
+#include <random>
 
 template <typename Data, typename Value> class ThreadPool;
 
@@ -43,6 +44,7 @@ private:
 	typedef ThreadPool<ThreadData, MoveScore> Pool;
 
 	std::chrono::high_resolution_clock::time_point _start;
+	std::mt19937 _randomDevice;
 
 	Options	_options;
 	double	_timeLimit;
@@ -55,7 +57,7 @@ private:
 	IAnalyzer*	_analyzer;
 	PlayerColor	_turn;
 
-	Score negamax(Board* node, int depth, Score alpha, Score beta, PlayerColor player);
+	Score negamax(Board& node, int depth, Score alpha, Score beta, PlayerColor player);
 	MoveScore negamax_thread(ThreadData data);
 	BoardPos start_negamax(Board *node, PlayerColor player);
 

@@ -10,22 +10,19 @@ using namespace std;
 std::string getVictoryMessage(VictoryState v, PlayerColor turn)
 {
     std::string text;
-    std::string player = (turn == blackPlayer) ? "Black" : "White";
+    std::string player = (v.victor == blackPlayer) ? "Black" : "White";
     player += " player wins:\n";
 
-    switch (v)
+    switch (v.type)
     {
         case aligned:
             text = player + "  Five stones aligned";
             break;
-        case whitesCaptured:
-            text = player + "  Enough white stones captured";
-            break;
-        case blacksCaptured:
-            text = player + "  Enough black stones captured";
+        case captured:
+            text = player + "  Enough stones captured";
             break;
         case staleMate:
-            text = "  Stalemate";
+            text = "Stalemate";
         default:
             break;
     }
@@ -65,7 +62,7 @@ void game_page(GUIManager& win, Options &options)
                         if (g.play(pos))
                         {
                             hasWon = true;
-                            victory = g.getState()->isTerminal(options.capture);
+                            victory = g.getState()->getVictory();
                             text = getVictoryMessage(victory, (PlayerColor)-g.getTurn());
                         }
                         std::cout << "  Board score: " << g.getCurrentScore() << std::endl;
@@ -85,7 +82,7 @@ void game_page(GUIManager& win, Options &options)
             if (g.play())
             {
                 hasWon = true;
-                victory = g.getState()->isTerminal(options.capture);
+                victory = g.getState()->getVictory();
                 text = getVictoryMessage(victory, whitePlayer);
             }
             std::cout << "AI white:" << std::endl;
@@ -101,7 +98,7 @@ void game_page(GUIManager& win, Options &options)
             if (g.play())
             {
                 hasWon = true;
-                victory = g.getState()->isTerminal(options.capture);
+                victory = g.getState()->getVictory();
                 text = getVictoryMessage(victory, blackPlayer);
             }
             std::cout << "AI black:" << std::endl;
