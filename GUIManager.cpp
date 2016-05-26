@@ -78,7 +78,14 @@ void	GUIManager::drawBoard(Game& g, Options options, const std::string message)
 
 	BoardPos mousePos;
 	getMouseBoardPos(mousePos);
+
 	background.setPosition(0, 0);
+
+	if (b.isFlaggedFinal())
+		background.setColor(sf::Color(123, 255, 255));
+	else
+		background.setColor(sf::Color(255, 255, 255));
+
 	this->draw(background);
 
 	MoveScore bestPriority = b.getBestPriority();

@@ -88,7 +88,7 @@ VictoryState  Board::calculateVictory(BoardPos pos, const Options& options)
 	}
 	if (_victoryFlag == -_turn)
 	{
-		if (isAlignedStonePos(_alignementPos.x, _alignementPos.y, 5))
+		if (isAlignedStonePos(_alignmentPos.x, _alignmentPos.y, 5))
 		{
 			return VictoryState(_victoryFlag, aligned);
 		}
@@ -103,7 +103,7 @@ VictoryState  Board::calculateVictory(BoardPos pos, const Options& options)
 		if (options.capture)
 		{
 			_victoryFlag = _turn;
-			_alignementPos = pos;
+			_alignmentPos = pos;
 		}
 		else
 		{
@@ -408,7 +408,7 @@ Board::Board(PlayerColor player):
 				_turnNum(),
 				_turn(player),
 				_victoryFlag(nullPlayer),
-				_alignementPos()
+				_alignmentPos()
 {
 	_priority[9][9] = 1;
 }

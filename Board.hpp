@@ -54,6 +54,7 @@ public:
 	int 			getCapturedWhite() const {return (_capturedWhites);}
 	int 			getPriority(int x, int y) const {return _priority[y][x];}
 	int 			getPriority(BoardPos pos) const {return _priority[pos.y][pos.x];}
+	bool 			isFlaggedFinal() const { return _victoryFlag; };
 
 private:
 	BoardData		_data;
@@ -63,7 +64,7 @@ private:
 	int 			_turnNum;
 	PlayerColor 	_turn;
 	PlayerColor 	_victoryFlag;
-	BoardPos		_alignementPos;
+	BoardPos		_alignmentPos;
 	VictoryState	_victoryState;
 
 	VictoryState	calculateVictory(BoardPos pos, const Options& options);

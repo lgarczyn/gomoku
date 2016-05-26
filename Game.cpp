@@ -8,14 +8,14 @@
 
 using namespace std;
 
-const double timeMargin = 0.002;
+const double timeMargin = 0.005;
 const int initialWidth = 20;
 const int deepWidth = 20;
-const int threadCount = 8;//TODO put back 8 threads and depth
+const int threadCount = 8;
 
 Game::Game(const Options& options) :
 		_options(options),
-		_timeLimit(options.slowMode ? 10 : 5),//TODO fix timeout
+		_timeLimit(options.slowMode ? 10 : 0.5),
 		_constDepth(6 + options.slowMode),
 		_timeTaken()
 {
