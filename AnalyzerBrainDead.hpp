@@ -2,9 +2,9 @@
 // Created by Louis GARCZYNSKI on 3/30/16.
 //
 
-class IAnalyzerBrainDead;
-
 #pragma once
+
+class IAnalyzerBrainDead;
 
 #include "IAnalyzer.hpp"
 #include "BoardSquare.hpp"

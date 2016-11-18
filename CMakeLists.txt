@@ -5,8 +5,8 @@ set(Shark_DIR ~/.brew/Cellar/shark/3.0.0/lib/cmake/Shark)
 
 # Find the Shark libraries and includes
 # set Shark_DIR to the proper location of Shark
-find_package(Shark REQUIRED)
-include(${SHARK_USE_FILE})
+# find_package(Shark REQUIRED)
+# include(${SHARK_USE_FILE})
 
 include_directories("~/.brew/include")
 link_directories("~/.brew/lib")
@@ -43,10 +43,10 @@ set(SOURCE_FILES
         TextureManager.hpp
         VictoryState.hpp
         ChildBoard.hpp
-        NetworkManager.cpp
-        NetworkManager.hpp
-        Analyzer.cpp
-        Analyzer.hpp
+        #NetworkManager.cpp
+        #NetworkManager.hpp
+        #Analyzer.cpp
+        #Analyzer.hpp
         MoveScore.cpp
         MoveScore.hpp
         BoardPos.cpp

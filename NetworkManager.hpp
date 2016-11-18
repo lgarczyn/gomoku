@@ -3,7 +3,9 @@
 //
 
 
+/*
 #pragma once
+
 #include<shark/Models/FFNet.h> //the feed forward neural network
 
 typedef shark::FFNet<
@@ -19,5 +21,5 @@ public:
 	static bool write_network(const char* path, Network& network);
 	Network		get_variations(Network value);
 };
-
+*/
 

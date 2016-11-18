@@ -1,7 +1,7 @@
 //
 // Created by Louis GARCZYNSKI on 3/30/16.
 //
-
+/*
 #pragma once
 
 #include "Board.hpp"
@@ -41,3 +41,4 @@ public:
 	virtual ~Analyzer();
 	Score getScore(Board& board, bool considerCapture);
 };
+*/

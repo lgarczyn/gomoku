@@ -1,0 +1,3 @@
+/Users/lgarczyn/p/gomoku_42/CMakeFiles/edit_cache.dir
+/Users/lgarczyn/p/gomoku_42/CMakeFiles/rebuild_cache.dir
+/Users/lgarczyn/p/gomoku_42/CMakeFiles/gomoku.dir

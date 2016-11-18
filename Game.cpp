@@ -3,8 +3,10 @@
 //
 
 #include "Game.hpp"
-#include "Analyzer.hpp"
+#include "AnalyzerBrainDead.hpp"
 #include "ThreadPool.hpp"
+#include "Board.hpp"
+#include <boost/bind.hpp>
 
 using namespace std;
 
