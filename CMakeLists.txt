@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.4)
 project(gomoku)
 
-set(Shark_DIR ~/.brew/Cellar/shark/3.0.0/lib/cmake/Shark)
+#set(Shark_DIR ~/.brew/Cellar/shark/3.0.0/lib/cmake/Shark)
 
 # Find the Shark libraries and includes
 # set Shark_DIR to the proper location of Shark
@@ -14,7 +14,7 @@ link_libraries("sfml-system")
 link_libraries("sfml-graphics")
 link_libraries("sfml-window")
 link_libraries("boost_serialization")
-link_libraries("shark")
+#link_libraries("shark")
 
 
 set(CMAKE_CXX_FLAGS " -std=c++11 -ofast -ffast-math ${CMAKE_CXX_FLAGS}")
@@ -58,4 +58,4 @@ if(COMMAND cmake_policy)
 endif(COMMAND cmake_policy)
 
 add_executable(gomoku ${SOURCE_FILES})
-target_link_libraries(gomoku ${SHARK_LIBRARIES})
+#target_link_libraries(gomoku ${SHARK_LIBRARIES})
