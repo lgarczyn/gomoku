@@ -8,17 +8,12 @@
 
 //Declaration here for optimizaton purpose
 
-class BoarPos;
-
-class BoardPos
+struct BoardPos
 {
-public:
 	int x;
 	int y;
-	BoardPos(int _x, int _y): x(_x), y(_y) {};
-	BoardPos(): x(0), y(0) {};
-
-	static const BoardPos boardEnd;
+	constexpr BoardPos(int _x, int _y): x(_x), y(_y) {};
+	constexpr BoardPos(): x(0), y(0) {};
 
 	void operator++()
 	{
@@ -33,14 +28,17 @@ public:
 		}
 	}
 
-	bool operator==(const BoardPos& rhs) const
+    constexpr bool operator==(const BoardPos& rhs) const
 	{
 		return (x == rhs.x && y == rhs.y);
 	}
 
-	bool operator!=(const BoardPos& rhs) const
+    constexpr bool operator!=(const BoardPos& rhs) const
 	{
 		return !(rhs == *this);
 	}
-};
 
+    static constexpr BoardPos boardEnd(){
+        return BoardPos(0, BOARD_HEIGHT);
+    }
+};

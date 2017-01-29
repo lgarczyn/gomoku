@@ -53,7 +53,7 @@ shark::LabeledData<shark::RealVector, shark::RealVector> getRandomData(size_t co
 
 		Board *board = new Board();
 
-		for (BoardPos pos; pos != BoardPos::boardEnd; ++pos)
+		for (BoardPos pos; pos != BoardPos::boardEnd(); ++pos)
 		{
 			int r = distribution(engine);
 			if (r == 11)
@@ -63,7 +63,7 @@ shark::LabeledData<shark::RealVector, shark::RealVector> getRandomData(size_t co
 		}
 		//board.fillTaboo(false, true, PlayerColor::blackPlayer);
 
-		for (BoardPos pos; pos != BoardPos::boardEnd; ++pos)
+		for (BoardPos pos; pos != BoardPos::boardEnd(); ++pos)
 		{
 			inputs[i](pos.y * BOARD_HEIGHT + pos.x) = board->getCase(pos);
 		}
@@ -119,7 +119,7 @@ void Trainer::train()
 		for (int i = 0; i < 100; i++)
 		{
 			Board* board = new Board();
-			for (BoardPos pos; pos != BoardPos::boardEnd; ++pos)
+			for (BoardPos pos; pos != BoardPos::boardEnd(); ++pos)
 			{
 				int r = rand() % 10;
 				if (r == 0)
@@ -131,7 +131,7 @@ void Trainer::train()
 			shark::RealMatrix input(1, BOARD_HEIGHT * BOARD_WIDTH);
 			shark::RealMatrix output(1, 1);
 
-			for (BoardPos pos; pos != BoardPos::boardEnd; ++pos)
+			for (BoardPos pos; pos != BoardPos::boardEnd(); ++pos)
 			{
 				input.operator()(0, pos.y * BOARD_HEIGHT + pos.x) = board->getCase(pos);
 			}

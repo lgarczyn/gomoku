@@ -1,0 +1,6 @@
+.idea*
+.DS*
+CMAKECache/*
+CMAKEFiles/*
+cmake_*
+gomoku.cbp

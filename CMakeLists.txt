@@ -22,37 +22,13 @@ set(CMAKE_CXX_FLAGS " -std=c++11 -ofast -ffast-math ${CMAKE_CXX_FLAGS}")
 set(SOURCE_FILES
         main.cpp
         GUI.cpp
-        GUI.hpp
-        Board.cpp
-        Board.hpp
-        IAnalyzer.hpp
-        AnalyzerBrainDead.cpp
-        AnalyzerBrainDead.hpp
         Game.cpp
-        Game.hpp
         MTDF.cpp
-        MTDF.hpp
-        BoardPos.hpp
-        BoardSquare.hpp
         GUIManager.cpp
-        GUIManager.hpp
-        PlayerColor.hpp
         PlayerColor.cpp
-        Constants.hpp
         TextureManager.cpp
-        TextureManager.hpp
-        VictoryState.hpp
-        ChildBoard.hpp
-        #NetworkManager.cpp
-        #NetworkManager.hpp
-        #Analyzer.cpp
-        #Analyzer.hpp
         MoveScore.cpp
-        MoveScore.hpp
-        BoardPos.cpp
-        ThreadPool.hpp
-        ThreadData.hpp
-        Options.hpp)
+        BoardPos.cpp)
 if(COMMAND cmake_policy)
     cmake_policy(SET CMP0003 NEW)
 endif(COMMAND cmake_policy)

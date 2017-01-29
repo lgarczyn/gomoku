@@ -6,7 +6,84 @@
 #include <random>       // std::default_random_engine
 #include <algorithm>
 
-bool Board::isAlignedStoneDir(int x, int y, int dirX, int dirY, BoardSquare color, int size) const
+inline Score Board::fillScore()
+{
+	Score score = 0;
+	for (int y = 0; y < BOARD_HEIGHT; y++)
+	{
+		for (int x = 0; x < BOARD_WIDTH; x++)
+		{
+			BoardSquare color = _data[y][x];
+			if (color != BoardSquare::empty)
+			{
+				Score squareScore = 0;
+				for (int dirX = -1; dirX <= 1; dirX++)
+				{
+					for (int dirY = -1; dirY <= 1; dirY++)
+					{
+						if (dirX || dirY)
+						{
+							const int maxX = CLAMP(x + 5 * dirX, -1, BOARD_WIDTH);
+							const int maxY = CLAMP(y + 5 * dirY, -1, BOARD_HEIGHT);
+
+							int value = 1;
+							int emptyCount = 0;
+
+							int _x = x + dirX;
+							int _y = y + dirY;
+
+							while ((dirX == 0 || _x != maxX) && (dirY == 0 || _y != maxY))
+							{
+								BoardSquare square = _data[_y][_x];
+								if (square == empty)
+								{
+									squareScore += value;
+									emptyCount++;
+								}
+								else if (square == color)
+								{
+									value <<= 3;
+								}
+								else
+								{
+									break;
+								}
+								_x += dirX, _y+= dirY;
+							}
+							value >>= 2;
+							squareScore += value * emptyCount;
+						}
+					}
+				}
+				score += (color == BoardSquare::white) ? squareScore : -squareScore;
+			}
+		}
+	}
+	return score;
+}
+
+inline Score Board::getScore(bool considerCapture)
+{
+	Score score = fillScore();
+
+	if (considerCapture)
+	{
+		score += 1 << _capturedBlacks / 2;
+		score -= 1 << _capturedWhites / 2;
+	}
+	if (_victoryFlag == whitePlayer)
+	{
+		score += pinfinity / 2;
+	}
+	else if (_victoryFlag == blackPlayer)
+	{
+		score -= pinfinity / 2;
+	}
+
+	return score;
+}
+
+inline bool Board::isAlignedStoneDir(int x, int y, int dirX, int dirY, BoardSquare color, int size) const
 {
 	int ix = x + (size - 1) * -dirX;
 	int iy = y + (size - 1) * -dirY;
@@ -36,7 +113,7 @@ bool Board::isAlignedStoneDir(int x, int y, int dirX, int dirY, BoardSquare colo
 	return false;
 }
 
-bool Board::isAlignedStonePos(int x, int y, int size) const
+inline bool Board::isAlignedStonePos(int x, int y, int size) const
 {
 	BoardSquare c = _data[y][x];
 	if (c == empty) return false;
@@ -48,7 +125,7 @@ bool Board::isAlignedStonePos(int x, int y, int size) const
 	return false;
 }
 
-bool Board::isAlignedStone(int size) const
+inline bool Board::isAlignedStone(int size) const
 {
 	for (int y = 0 ; y < BOARD_HEIGHT; ++y)
 		for (int x = 0 ; x < BOARD_WIDTH; ++x)
@@ -77,7 +154,7 @@ bool Board::isAlignedStone(int size) const
 	return  novictory;
 }*/
 
-VictoryState  Board::calculateVictory(BoardPos pos, const Options& options)
+inline VictoryState  Board::calculateVictory(BoardPos pos, const Options& options)
 {
 	if (options.captureWin)
 	{
@@ -118,12 +195,12 @@ VictoryState  Board::calculateVictory(BoardPos pos, const Options& options)
 	return  VictoryState(novictory);
 }
 
-VictoryState Board::getVictory()
+inline VictoryState Board::getVictory()
 {
 	return (_victoryState);
 }
 
-size_t Board::getChildren(MoveScore* buffer, size_t count)
+inline size_t Board::getChildren(MoveScore* buffer, size_t count)
 {
 	MoveScore* bufferEnd = buffer;
 
@@ -165,7 +242,7 @@ size_t Board::getChildren(MoveScore* buffer, size_t count)
 }
 
 
-bool Board::playCaptureDir(int x, int y, int dirX, int dirY, BoardSquare good) {
+inline bool Board::playCaptureDir(int x, int y, int dirX, int dirY, BoardSquare good) {
 
 	BoardSquare bad = (good == BoardSquare::white ? BoardSquare::black : BoardSquare::white);
 
@@ -178,7 +255,7 @@ bool Board::playCaptureDir(int x, int y, int dirX, int dirY, BoardSquare good) {
 			&& _data[y + dirY*3][x + dirX*3] == good);
 }
 
-int Board::playCapture(int x, int y) {
+inline int Board::playCapture(int x, int y) {
 	BoardSquare c = _data[y][x];
 
 	int capCount = 0;
@@ -194,7 +271,7 @@ int Board::playCapture(int x, int y) {
 	return capCount;
 }
 
-bool Board::checkFreeThree(int x, int y, int dirX, int dirY, BoardSquare enemy)
+inline bool Board::checkFreeThree(int x, int y, int dirX, int dirY, BoardSquare enemy)
 {
 	int ix = x + 4 * -dirX;
 	int iy = y + 4 * -dirY;
@@ -249,11 +326,11 @@ bool Board::checkFreeThree(int x, int y, int dirX, int dirY, BoardSquare enemy)
 	return false;
 }
 
-const int forbiddenZone = 4;
-const int middleX = (BOARD_WIDTH / 2);
-const int middleY = (BOARD_HEIGHT / 2);
+constexpr int forbiddenZone = 4;
+constexpr int middleX = (BOARD_WIDTH / 2);
+constexpr int middleY = (BOARD_HEIGHT / 2);
 
-void Board::fillTaboo(bool limitBlack, bool doubleThree, PlayerColor player)
+inline void Board::fillTaboo(bool limitBlack, bool doubleThree, PlayerColor player)
 {
 	BoardSquare enemy = (player == blackPlayer)? white : black;
 	if (limitBlack)
@@ -300,7 +377,7 @@ void Board::fillTaboo(bool limitBlack, bool doubleThree, PlayerColor player)
 }
 
 
-void Board::fillPriorityDir(int x, int y, int dirX, int dirY, BoardSquare color)//, int bonus)
+inline void Board::fillPriorityDir(int x, int y, int dirX, int dirY, BoardSquare color)//, int bonus)
 {
 	const int maxX = CLAMP(x + 5 * dirX, -1, BOARD_WIDTH);
 	const int maxY = CLAMP(y + 5 * dirY, -1, BOARD_HEIGHT);
@@ -346,7 +423,7 @@ void Board::fillPriorityDir(int x, int y, int dirX, int dirY, BoardSquare color)
 	}
 };
 
-void Board::fillCapturePriorityDir(int x, int y, int dirX, int dirY, BoardSquare color)
+inline void Board::fillCapturePriorityDir(int x, int y, int dirX, int dirY, BoardSquare color)
 {
 	int endX = x + dirX * 3;
 	int endY = y + dirY * 3;
@@ -360,7 +437,7 @@ void Board::fillCapturePriorityDir(int x, int y, int dirX, int dirY, BoardSquare
 	}
 };
 
-void Board::fillPriority(PlayerColor player, const Options& options)
+inline void Board::fillPriority(PlayerColor player, const Options& options)
 {
 	BoardSquare ally = (player == blackPlayer)? black : white;
 	for (int y = 0; y < BOARD_HEIGHT; y++)
@@ -400,7 +477,7 @@ void Board::fillPriority(PlayerColor player, const Options& options)
 	}
 }
 
-Board::Board(PlayerColor player):
+inline Board::Board(PlayerColor player):
 				_data(),
 				_priority(),
 				_capturedWhites(),
@@ -413,13 +490,13 @@ Board::Board(PlayerColor player):
 	_priority[9][9] = 1;
 }
 
-Board::Board(const Board& board)
+inline Board::Board(const Board& board)
 {
 	*this = board;
 	bzero(_priority, sizeof(_priority));
 }
 
-Board::Board(const Board& board, BoardPos move, PlayerColor player, const Options& options) : Board(board)
+inline Board::Board(const Board& board, BoardPos move, PlayerColor player, const Options& options) : Board(board)
 {
 	if (player == PlayerColor::whitePlayer)
 		_data[move.y][move.x] = BoardSquare::white;
@@ -439,13 +516,13 @@ Board::Board(const Board& board, BoardPos move, PlayerColor player, const Option
 	_turn = (PlayerColor) -(board._turn);
 }
 
-Board::~Board() { }
+inline Board::~Board() { }
 
-MoveScore		Board::getBestPriority() const
+inline MoveScore Board::getBestPriority() const
 {
 	MoveScore best = MoveScore(-1, BoardPos());
 
-	for (BoardPos current; current != BoardPos::boardEnd; ++current)
+	for (BoardPos current; current != BoardPos::boardEnd(); ++current)
 	{
 		int p = getPriority(current);
 		if (p > best.score)

@@ -1,0 +1,2393 @@
+# 1 "/private/var/folders/zz/zyxvpxvq6csfxvn_n00014v000096r/T/compiler-file"
+# 1 "<built-in>" 1
+# 1 "<built-in>" 3
+#define __llvm__ 1
+#define __clang__ 1
+#define __clang_major__ 8
+#define __clang_minor__ 0
+#define __clang_patchlevel__ 0
+#define __clang_version__ "8.0.0 (clang-800.0.42.1)"
+#define __GNUC_MINOR__ 2
+#define __GNUC_PATCHLEVEL__ 1
+#define __GNUC__ 4
+#define __GXX_ABI_VERSION 1002
+#define __ATOMIC_RELAXED 0
+#define __ATOMIC_CONSUME 1
+#define __ATOMIC_ACQUIRE 2
+#define __ATOMIC_RELEASE 3
+#define __ATOMIC_ACQ_REL 4
+#define __ATOMIC_SEQ_CST 5
+#define __PRAGMA_REDEFINE_EXTNAME 1
+#define __VERSION__ "4.2.1 Compatible Apple LLVM 8.0.0 (clang-800.0.42.1)"
+#define __STRICT_ANSI__ 1
+#define __GXX_EXPERIMENTAL_CXX0X__ 1
+#define __cpp_rtti 199711
+#define __cpp_exceptions 199711
+#define __cpp_unicode_characters 200704
+#define __cpp_raw_strings 200710
+#define __cpp_unicode_literals 200710
+#define __cpp_user_defined_literals 200809
+#define __cpp_lambdas 200907
+#define __cpp_constexpr 200704
+#define __cpp_range_based_for 200907
+#define __cpp_static_assert 200410
+#define __cpp_decltype 200707
+#define __cpp_attributes 200809
+#define __cpp_rvalue_references 200610
+#define __cpp_variadic_templates 200704
+#define __cpp_initializer_lists 200806
+#define __cpp_delegating_constructors 200604
+#define __cpp_nsdmi 200809
+#define __cpp_inheriting_constructors 200802
+#define __cpp_ref_qualifiers 200710
+#define __cpp_alias_templates 200704
+#define __CONSTANT_CFSTRINGS__ 1
+#define __block __attribute__((__blocks__(byref)))
+#define __BLOCKS__ 1
+#define __EXCEPTIONS 1
+#define __GXX_RTTI 1
+#define __DEPRECATED 1
+#define __GNUG__ 4
+#define __GXX_WEAK__ 1
+#define __private_extern__ extern
+#define __FAST_MATH__ 1
+#define __ORDER_LITTLE_ENDIAN__ 1234
+#define __ORDER_BIG_ENDIAN__ 4321
+#define __ORDER_PDP_ENDIAN__ 3412
+#define __BYTE_ORDER__ __ORDER_LITTLE_ENDIAN__
+#define __LITTLE_ENDIAN__ 1
+#define _LP64 1
+#define __LP64__ 1
+#define __CHAR_BIT__ 8
+#define __SCHAR_MAX__ 127
+#define __SHRT_MAX__ 32767
+#define __INT_MAX__ 2147483647
+#define __LONG_MAX__ 9223372036854775807L
+#define __LONG_LONG_MAX__ 9223372036854775807LL
+#define __WCHAR_MAX__ 2147483647
+#define __INTMAX_MAX__ 9223372036854775807L
+#define __SIZE_MAX__ 18446744073709551615UL
+#define __UINTMAX_MAX__ 18446744073709551615UL
+#define __PTRDIFF_MAX__ 9223372036854775807L
+#define __INTPTR_MAX__ 9223372036854775807L
+#define __UINTPTR_MAX__ 18446744073709551615UL
+#define __SIZEOF_DOUBLE__ 8
+#define __SIZEOF_FLOAT__ 4
+#define __SIZEOF_INT__ 4
+#define __SIZEOF_LONG__ 8
+#define __SIZEOF_LONG_DOUBLE__ 16
+#define __SIZEOF_LONG_LONG__ 8
+#define __SIZEOF_POINTER__ 8
+#define __SIZEOF_SHORT__ 2
+#define __SIZEOF_PTRDIFF_T__ 8
+#define __SIZEOF_SIZE_T__ 8
+#define __SIZEOF_WCHAR_T__ 4
+#define __SIZEOF_WINT_T__ 4
+#define __SIZEOF_INT128__ 16
+#define __INTMAX_TYPE__ long int
+#define __INTMAX_FMTd__ "ld"
+#define __INTMAX_FMTi__ "li"
+#define __INTMAX_C_SUFFIX__ L
+#define __UINTMAX_TYPE__ long unsigned int
+#define __UINTMAX_FMTo__ "lo"
+#define __UINTMAX_FMTu__ "lu"
+#define __UINTMAX_FMTx__ "lx"
+#define __UINTMAX_FMTX__ "lX"
+#define __UINTMAX_C_SUFFIX__ UL
+#define __INTMAX_WIDTH__ 64
+#define __PTRDIFF_TYPE__ long int
+#define __PTRDIFF_FMTd__ "ld"
+#define __PTRDIFF_FMTi__ "li"
+#define __PTRDIFF_WIDTH__ 64
+#define __INTPTR_TYPE__ long int
+#define __INTPTR_FMTd__ "ld"
+#define __INTPTR_FMTi__ "li"
+#define __INTPTR_WIDTH__ 64
+#define __SIZE_TYPE__ long unsigned int
+#define __SIZE_FMTo__ "lo"
+#define __SIZE_FMTu__ "lu"
+#define __SIZE_FMTx__ "lx"
+#define __SIZE_FMTX__ "lX"
+#define __SIZE_WIDTH__ 64
+#define __WCHAR_TYPE__ int
+#define __WCHAR_WIDTH__ 32
+#define __WINT_TYPE__ int
+#define __WINT_WIDTH__ 32
+#define __SIG_ATOMIC_WIDTH__ 32
+#define __SIG_ATOMIC_MAX__ 2147483647
+#define __CHAR16_TYPE__ unsigned short
+#define __CHAR32_TYPE__ unsigned int
+#define __UINTMAX_WIDTH__ 64
+#define __UINTPTR_TYPE__ long unsigned int
+#define __UINTPTR_FMTo__ "lo"
+#define __UINTPTR_FMTu__ "lu"
+#define __UINTPTR_FMTx__ "lx"
+#define __UINTPTR_FMTX__ "lX"
+#define __UINTPTR_WIDTH__ 64
+#define __FLT_DENORM_MIN__ 1.40129846e-45F
+#define __FLT_HAS_DENORM__ 1
+#define __FLT_DIG__ 6
+#define __FLT_DECIMAL_DIG__ 9
+#define __FLT_EPSILON__ 1.19209290e-7F
+#define __FLT_HAS_INFINITY__ 1
+#define __FLT_HAS_QUIET_NAN__ 1
+#define __FLT_MANT_DIG__ 24
+#define __FLT_MAX_10_EXP__ 38
+#define __FLT_MAX_EXP__ 128
+#define __FLT_MAX__ 3.40282347e+38F
+#define __FLT_MIN_10_EXP__ (-37)
+#define __FLT_MIN_EXP__ (-125)
+#define __FLT_MIN__ 1.17549435e-38F
+#define __DBL_DENORM_MIN__ 4.9406564584124654e-324
+#define __DBL_HAS_DENORM__ 1
+#define __DBL_DIG__ 15
+#define __DBL_DECIMAL_DIG__ 17
+#define __DBL_EPSILON__ 2.2204460492503131e-16
+#define __DBL_HAS_INFINITY__ 1
+#define __DBL_HAS_QUIET_NAN__ 1
+#define __DBL_MANT_DIG__ 53
+#define __DBL_MAX_10_EXP__ 308
+#define __DBL_MAX_EXP__ 1024
+#define __DBL_MAX__ 1.7976931348623157e+308
+#define __DBL_MIN_10_EXP__ (-307)
+#define __DBL_MIN_EXP__ (-1021)
+#define __DBL_MIN__ 2.2250738585072014e-308
+#define __LDBL_DENORM_MIN__ 3.64519953188247460253e-4951L
+#define __LDBL_HAS_DENORM__ 1
+#define __LDBL_DIG__ 18
+#define __LDBL_DECIMAL_DIG__ 21
+#define __LDBL_EPSILON__ 1.08420217248550443401e-19L
+#define __LDBL_HAS_INFINITY__ 1
+#define __LDBL_HAS_QUIET_NAN__ 1
+#define __LDBL_MANT_DIG__ 64
+#define __LDBL_MAX_10_EXP__ 4932
+#define __LDBL_MAX_EXP__ 16384
+#define __LDBL_MAX__ 1.18973149535723176502e+4932L
+#define __LDBL_MIN_10_EXP__ (-4931)
+#define __LDBL_MIN_EXP__ (-16381)
+#define __LDBL_MIN__ 3.36210314311209350626e-4932L
+#define __POINTER_WIDTH__ 64
+#define __BIGGEST_ALIGNMENT__ 16
+#define __INT8_TYPE__ signed char
+#define __INT8_FMTd__ "hhd"
+#define __INT8_FMTi__ "hhi"
+#define __INT8_C_SUFFIX__ 
+#define __INT16_TYPE__ short
+#define __INT16_FMTd__ "hd"
+#define __INT16_FMTi__ "hi"
+#define __INT16_C_SUFFIX__ 
+#define __INT32_TYPE__ int
+#define __INT32_FMTd__ "d"
+#define __INT32_FMTi__ "i"
+#define __INT32_C_SUFFIX__ 
+#define __INT64_TYPE__ long long int
+#define __INT64_FMTd__ "lld"
+#define __INT64_FMTi__ "lli"
+#define __INT64_C_SUFFIX__ LL
+#define __UINT8_TYPE__ unsigned char
+#define __UINT8_FMTo__ "hho"
+#define __UINT8_FMTu__ "hhu"
+#define __UINT8_FMTx__ "hhx"
+#define __UINT8_FMTX__ "hhX"
+#define __UINT8_C_SUFFIX__ 
+#define __UINT8_MAX__ 255
+#define __INT8_MAX__ 127
+#define __UINT16_TYPE__ unsigned short
+#define __UINT16_FMTo__ "ho"
+#define __UINT16_FMTu__ "hu"
+#define __UINT16_FMTx__ "hx"
+#define __UINT16_FMTX__ "hX"
+#define __UINT16_C_SUFFIX__ 
+#define __UINT16_MAX__ 65535
+#define __INT16_MAX__ 32767
+#define __UINT32_TYPE__ unsigned int
+#define __UINT32_FMTo__ "o"
+#define __UINT32_FMTu__ "u"
+#define __UINT32_FMTx__ "x"
+#define __UINT32_FMTX__ "X"
+#define __UINT32_C_SUFFIX__ U
+#define __UINT32_MAX__ 4294967295U
+#define __INT32_MAX__ 2147483647
+#define __UINT64_TYPE__ long long unsigned int
+#define __UINT64_FMTo__ "llo"
+#define __UINT64_FMTu__ "llu"
+#define __UINT64_FMTx__ "llx"
+#define __UINT64_FMTX__ "llX"
+#define __UINT64_C_SUFFIX__ ULL
+#define __UINT64_MAX__ 18446744073709551615ULL
+#define __INT64_MAX__ 9223372036854775807LL
+#define __INT_LEAST8_TYPE__ signed char
+#define __INT_LEAST8_MAX__ 127
+#define __INT_LEAST8_FMTd__ "hhd"
+#define __INT_LEAST8_FMTi__ "hhi"
+#define __UINT_LEAST8_TYPE__ unsigned char
+#define __UINT_LEAST8_MAX__ 255
+#define __UINT_LEAST8_FMTo__ "hho"
+#define __UINT_LEAST8_FMTu__ "hhu"
+#define __UINT_LEAST8_FMTx__ "hhx"
+#define __UINT_LEAST8_FMTX__ "hhX"
+#define __INT_LEAST16_TYPE__ short
+#define __INT_LEAST16_MAX__ 32767
+#define __INT_LEAST16_FMTd__ "hd"
+#define __INT_LEAST16_FMTi__ "hi"
+#define __UINT_LEAST16_TYPE__ unsigned short
+#define __UINT_LEAST16_MAX__ 65535
+#define __UINT_LEAST16_FMTo__ "ho"
+#define __UINT_LEAST16_FMTu__ "hu"
+#define __UINT_LEAST16_FMTx__ "hx"
+#define __UINT_LEAST16_FMTX__ "hX"
+#define __INT_LEAST32_TYPE__ int
+#define __INT_LEAST32_MAX__ 2147483647
+#define __INT_LEAST32_FMTd__ "d"
+#define __INT_LEAST32_FMTi__ "i"
+#define __UINT_LEAST32_TYPE__ unsigned int
+#define __UINT_LEAST32_MAX__ 4294967295U
+#define __UINT_LEAST32_FMTo__ "o"
+#define __UINT_LEAST32_FMTu__ "u"
+#define __UINT_LEAST32_FMTx__ "x"
+#define __UINT_LEAST32_FMTX__ "X"
+#define __INT_LEAST64_TYPE__ long int
+#define __INT_LEAST64_MAX__ 9223372036854775807L
+#define __INT_LEAST64_FMTd__ "ld"
+#define __INT_LEAST64_FMTi__ "li"
+#define __UINT_LEAST64_TYPE__ long unsigned int
+#define __UINT_LEAST64_MAX__ 18446744073709551615UL
+#define __UINT_LEAST64_FMTo__ "lo"
+#define __UINT_LEAST64_FMTu__ "lu"
+#define __UINT_LEAST64_FMTx__ "lx"
+#define __UINT_LEAST64_FMTX__ "lX"
+#define __INT_FAST8_TYPE__ signed char
+#define __INT_FAST8_MAX__ 127
+#define __INT_FAST8_FMTd__ "hhd"
+#define __INT_FAST8_FMTi__ "hhi"
+#define __UINT_FAST8_TYPE__ unsigned char
+#define __UINT_FAST8_MAX__ 255
+#define __UINT_FAST8_FMTo__ "hho"
+#define __UINT_FAST8_FMTu__ "hhu"
+#define __UINT_FAST8_FMTx__ "hhx"
+#define __UINT_FAST8_FMTX__ "hhX"
+#define __INT_FAST16_TYPE__ short
+#define __INT_FAST16_MAX__ 32767
+#define __INT_FAST16_FMTd__ "hd"
+#define __INT_FAST16_FMTi__ "hi"
+#define __UINT_FAST16_TYPE__ unsigned short
+#define __UINT_FAST16_MAX__ 65535
+#define __UINT_FAST16_FMTo__ "ho"
+#define __UINT_FAST16_FMTu__ "hu"
+#define __UINT_FAST16_FMTx__ "hx"
+#define __UINT_FAST16_FMTX__ "hX"
+#define __INT_FAST32_TYPE__ int
+#define __INT_FAST32_MAX__ 2147483647
+#define __INT_FAST32_FMTd__ "d"
+#define __INT_FAST32_FMTi__ "i"
+#define __UINT_FAST32_TYPE__ unsigned int
+#define __UINT_FAST32_MAX__ 4294967295U
+#define __UINT_FAST32_FMTo__ "o"
+#define __UINT_FAST32_FMTu__ "u"
+#define __UINT_FAST32_FMTx__ "x"
+#define __UINT_FAST32_FMTX__ "X"
+#define __INT_FAST64_TYPE__ long int
+#define __INT_FAST64_MAX__ 9223372036854775807L
+#define __INT_FAST64_FMTd__ "ld"
+#define __INT_FAST64_FMTi__ "li"
+#define __UINT_FAST64_TYPE__ long unsigned int
+#define __UINT_FAST64_MAX__ 18446744073709551615UL
+#define __UINT_FAST64_FMTo__ "lo"
+#define __UINT_FAST64_FMTu__ "lu"
+#define __UINT_FAST64_FMTx__ "lx"
+#define __UINT_FAST64_FMTX__ "lX"
+#define __USER_LABEL_PREFIX__ _
+#define __FINITE_MATH_ONLY__ 1
+#define __GNUC_GNU_INLINE__ 1
+#define __GCC_ATOMIC_TEST_AND_SET_TRUEVAL 1
+#define __GCC_ATOMIC_BOOL_LOCK_FREE 2
+#define __GCC_ATOMIC_CHAR_LOCK_FREE 2
+#define __GCC_ATOMIC_CHAR16_T_LOCK_FREE 2
+#define __GCC_ATOMIC_CHAR32_T_LOCK_FREE 2
+#define __GCC_ATOMIC_WCHAR_T_LOCK_FREE 2
+#define __GCC_ATOMIC_SHORT_LOCK_FREE 2
+#define __GCC_ATOMIC_INT_LOCK_FREE 2
+#define __GCC_ATOMIC_LONG_LOCK_FREE 2
+#define __GCC_ATOMIC_LLONG_LOCK_FREE 2
+#define __GCC_ATOMIC_POINTER_LOCK_FREE 2
+#define __NO_INLINE__ 1
+#define __PIC__ 2
+#define __pic__ 2
+#define __FLT_EVAL_METHOD__ 0
+#define __FLT_RADIX__ 2
+#define __DECIMAL_DIG__ __LDBL_DECIMAL_DIG__
+#define __SSP__ 1
+#define __nonnull _Nonnull
+#define __null_unspecified _Null_unspecified
+#define __nullable _Nullable
+#define __amd64__ 1
+#define __amd64 1
+#define __x86_64 1
+#define __x86_64__ 1
+#define __core2 1
+#define __core2__ 1
+#define __tune_core2__ 1
+#define __REGISTER_PREFIX__ 
+#define __NO_MATH_INLINES 1
+#define __FXSR__ 1
+#define __GCC_HAVE_SYNC_COMPARE_AND_SWAP_16 1
+#define __SSSE3__ 1
+#define __SSE3__ 1
+#define __SSE2__ 1
+#define __SSE2_MATH__ 1
+#define __SSE__ 1
+#define __SSE_MATH__ 1
+#define __MMX__ 1
+#define __GCC_HAVE_SYNC_COMPARE_AND_SWAP_1 1
+#define __GCC_HAVE_SYNC_COMPARE_AND_SWAP_2 1
+#define __GCC_HAVE_SYNC_COMPARE_AND_SWAP_4 1
+#define __GCC_HAVE_SYNC_COMPARE_AND_SWAP_8 1
+#define __APPLE_CC__ 6000
+#define __APPLE__ 1
+#define OBJC_NEW_PROPERTIES 1
+#define __apple_build_version__ 8000042
+#define __weak __attribute__((objc_gc(weak)))
+#define __strong 
+#define __unsafe_unretained 
+#define __DYNAMIC__ 1
+#define __ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__ 101100
+#define __MACH__ 1
+#define __STDC__ 1
+#define __STDC_HOSTED__ 1
+#define __cplusplus 201103L
+#define __STDC_UTF_16__ 1
+#define __STDC_UTF_32__ 1
+
+# 1 "<command line>" 1
+#define ___CIDR_IGNORE_DEFINITIONS_START 1
+# 1 "<built-in>" 2
+# 1 "/private/var/folders/zz/zyxvpxvq6csfxvn_n00014v000096r/T/compiler-file" 2
+#define ___CIDR_IGNORE_DEFINITIONS_END 
+
+
+
+
+
+
+
+
+____CIDR_test_query_feature->cxx_constexpr=1
+
+
+
+
+____CIDR_test_query_feature->cxx_trailing_return=1
+
+
+
+
+
+
+____CIDR_test_query_feature->c_generic_selections=0
+
+
+
+
+____CIDR_test_query_feature->dataflow_sanitizer=0
+
+
+____CIDR_test_query_feature->attribute_unavailable_with_message=1
+
+
+
+
+____CIDR_test_query_feature->cxx_rvalue_references=1
+
+
+
+
+____CIDR_test_query_feature->attribute_deprecated_with_message=1
+
+
+
+
+____CIDR_test_query_feature->cxx_defaulted_functions=1
+
+
+
+
+____CIDR_test_query_feature->is_convertible_to=1
+
+
+
+
+____CIDR_test_query_feature->has_nothrow_constructor=1
+
+
+
+
+____CIDR_test_query_feature->ownership_returns=1
+
+
+
+
+____CIDR_test_query_feature->objc_subscripting=1
+
+
+
+
+____CIDR_test_query_feature->attribute_availability_with_message=1
+
+
+
+
+
+
+____CIDR_test_query_feature->objc_fixed_enum=0
+
+
+____CIDR_test_query_feature->is_pod=1
+
+
+
+
+____CIDR_test_query_feature->cxx_raw_string_literals=1
+
+
+
+
+
+
+____CIDR_test_query_feature->objc_class_property=0
+
+
+
+
+____CIDR_test_query_feature->c_atomic=0
+
+
+
+
+____CIDR_test_query_feature->cxx_runtime_array=0
+
+
+____CIDR_test_query_feature->attribute_ns_returns_not_retained=1
+
+
+
+
+____CIDR_test_query_feature->arc_cf_code_audited=1
+
+
+
+
+
+
+____CIDR_test_query_feature->cxx_binary_literals=0
+
+
+____CIDR_test_query_feature->cxx_reference_qualified_functions=1
+
+
+
+
+
+
+____CIDR_test_query_feature->cxx_generic_lambda=0
+
+
+
+
+____CIDR_test_query_feature->objc_generics=0
+
+
+____CIDR_test_query_feature->cxx_variadic_templates=1
+
+
+
+
+
+
+____CIDR_test_query_feature->c_static_assert=0
+
+
+____CIDR_test_query_feature->cxx_auto_type=1
+
+
+
+
+____CIDR_test_query_feature->cxx_noexcept=1
+
+
+
+
+____CIDR_test_query_feature->is_trivially_assignable=1
+
+
+
+
+____CIDR_test_query_feature->has_nothrow_assign=1
+
+
+
+
+____CIDR_test_query_feature->attribute_availability=1
+
+
+
+
+____CIDR_test_query_feature->cxx_nullptr=1
+
+
+
+
+
+
+____CIDR_test_query_feature->c_thread_local=0
+
+
+
+
+____CIDR_test_query_feature->objc_arc_weak=0
+
+
+
+
+____CIDR_test_query_feature->objc_default_synthesize_properties=0
+
+
+
+
+____CIDR_test_query_feature->objc_array_literals=0
+
+
+____CIDR_test_query_feature->cxx_decltype_incomplete_return_types=1
+
+
+
+
+
+
+____CIDR_test_query_feature->objc_boxed_expressions=0
+
+
+
+
+____CIDR_test_query_feature->cxx_decltype_auto=0
+
+
+____CIDR_test_query_feature->cxx_alignas=1
+
+
+
+
+____CIDR_test_query_feature->objc_nonfragile_abi=1
+
+
+
+
+____CIDR_test_query_feature->is_empty=1
+
+
+
+
+____CIDR_test_query_feature->underlying_type=1
+
+
+
+
+
+
+____CIDR_test_query_feature->thread_sanitizer=0
+
+
+____CIDR_test_query_feature->cxx_implicit_moves=1
+
+
+
+
+____CIDR_test_query_feature->cxx_thread_local=1
+
+
+
+
+____CIDR_test_query_feature->cxx_rtti=1
+
+
+
+
+____CIDR_test_query_feature->is_base_of=1
+
+
+
+
+____CIDR_test_query_feature->is_trivially_copyable=1
+
+
+
+
+____CIDR_test_query_feature->attribute_ns_returns_retained=1
+
+
+
+
+
+
+____CIDR_test_query_feature->cxx_init_captures=0
+
+
+
+
+____CIDR_test_query_feature->objc_generics_variance=0
+
+
+____CIDR_test_query_feature->cxx_access_control_sfinae=1
+
+
+
+
+____CIDR_test_query_feature->objc_bool=1
+
+
+
+
+____CIDR_test_query_feature->is_trivial=1
+
+
+
+
+
+
+____CIDR_test_query_feature->memory_sanitizer=0
+
+
+____CIDR_test_query_feature->cxx_unrestricted_unions=1
+
+
+
+
+____CIDR_test_query_feature->objc_property_explicit_atomic=1
+
+
+
+
+____CIDR_test_query_feature->cxx_explicit_conversions=1
+
+
+
+
+____CIDR_test_query_feature->attribute_ns_consumes_self=1
+
+
+
+
+____CIDR_test_query_feature->cxx_alias_templates=1
+
+
+
+
+____CIDR_test_query_feature->objc_weak_class=1
+
+
+
+
+
+
+____CIDR_test_query_feature->cxx_contextual_conversions=0
+
+
+____CIDR_test_query_feature->is_final=1
+
+
+
+
+____CIDR_test_query_feature->cxx_default_function_template_args=1
+
+
+
+
+
+
+____CIDR_test_query_feature->cxx_relaxed_constexpr=0
+
+
+____CIDR_test_query_feature->objc_protocol_qualifier_mangling=1
+
+
+
+
+____CIDR_test_query_feature->cxx_nonstatic_member_init=1
+
+
+
+
+
+
+____CIDR_test_query_feature->address_sanitizer=0
+
+
+
+
+____CIDR_test_query_feature->objc_arc=0
+
+
+____CIDR_test_query_feature->cxx_decltype=1
+
+
+
+
+
+
+____CIDR_test_query_feature->c_alignas=0
+
+
+____CIDR_test_query_feature->is_polymorphic=1
+
+
+
+
+
+
+____CIDR_test_query_feature->cxx_variable_templates=0
+
+
+
+
+____CIDR_test_query_feature->cxx_return_type_deduction=0
+
+
+____CIDR_test_query_feature->cxx_user_literals=1
+
+
+
+
+____CIDR_test_query_feature->ownership_holds=1
+
+
+
+
+____CIDR_test_query_feature->cxx_lambdas=1
+
+
+
+
+
+
+____CIDR_test_query_feature->objc_arr=0
+
+
+____CIDR_test_query_feature->is_class=1
+
+
+
+
+____CIDR_test_query_feature->has_trivial_assign=1
+
+
+
+
+____CIDR_test_query_feature->cxx_generalized_initializers=1
+
+
+
+
+____CIDR_test_query_feature->cxx_inline_namespaces=1
+
+
+
+
+
+
+____CIDR_test_query_feature->modules=0
+
+
+____CIDR_test_query_feature->attribute_ext_vector_type=1
+
+
+
+
+____CIDR_test_query_feature->cxx_unicode_literals=1
+
+
+
+
+
+
+____CIDR_test_query_feature->objc_instancetype=0
+
+
+____CIDR_test_query_feature->attribute_objc_method_family=1
+
+
+
+
+____CIDR_test_query_feature->cxx_static_assert=1
+
+
+
+
+
+
+____CIDR_test_query_feature->is_sealed=0
+
+
+____CIDR_test_query_feature->attribute_analyzer_noreturn=1
+
+
+
+
+____CIDR_test_query_feature->is_trivially_constructible=1
+
+
+
+
+____CIDR_test_query_feature->cxx_range_for=1
+
+
+
+
+____CIDR_test_query_feature->cxx_inheriting_constructors=1
+
+
+
+
+
+
+____CIDR_test_query_feature->objc_modules=0
+
+
+____CIDR_test_query_feature->attribute_cf_consumed=1
+
+
+
+
+____CIDR_test_query_feature->enumerator_attributes=1
+
+
+
+
+____CIDR_test_query_feature->has_trivial_copy=1
+
+
+
+
+____CIDR_test_query_feature->attribute_ns_consumed=1
+
+
+
+
+____CIDR_test_query_feature->cxx_atomic=1
+
+
+
+
+
+
+____CIDR_test_query_feature->cxx_aggregate_nsdmi=0
+
+
+____CIDR_test_query_feature->has_virtual_destructor=1
+
+
+
+
+____CIDR_test_query_feature->c_thread_safety_attributes=1
+
+
+
+
+____CIDR_test_query_feature->is_literal=1
+
+
+
+
+____CIDR_test_query_feature->attribute_unused_on_fields=1
+
+
+
+
+____CIDR_test_query_feature->cxx_exceptions=1
+
+
+
+
+____CIDR_test_query_feature->has_trivial_destructor=1
+
+
+
+
+____CIDR_test_query_feature->is_enum=1
+
+
+
+
+____CIDR_test_query_feature->is_standard_layout=1
+
+
+
+
+____CIDR_test_query_feature->cxx_local_type_template_args=1
+
+
+
+
+____CIDR_test_query_feature->blocks=1
+
+
+
+
+____CIDR_test_query_feature->has_trivial_constructor=1
+
+
+
+
+____CIDR_test_query_feature->nullability=1
+
+
+
+
+____CIDR_test_query_feature->is_abstract=1
+
+
+
+
+____CIDR_test_query_feature->attribute_cf_returns_not_retained=1
+
+
+
+
+____CIDR_test_query_feature->cxx_strong_enums=1
+
+
+
+
+____CIDR_test_query_feature->is_union=1
+
+
+
+
+____CIDR_test_query_feature->cxx_attributes=1
+
+
+
+
+
+
+____CIDR_test_query_feature->objc_dictionary_literals=0
+
+
+____CIDR_test_query_feature->attribute_objc_ivar_unused=1
+
+
+
+
+____CIDR_test_query_feature->has_nothrow_copy=1
+
+
+
+
+____CIDR_test_query_feature->attribute_cf_returns_retained=1
+
+
+
+
+____CIDR_test_query_feature->attribute_overloadable=1
+
+
+
+
+____CIDR_test_query_feature->cxx_delegating_constructors=1
+
+
+
+
+____CIDR_test_query_feature->tls=1
+
+
+
+
+____CIDR_test_query_feature->cxx_override_control=1
+
+
+
+
+____CIDR_test_query_feature->cxx_deleted_functions=1
+
+
+
+
+____CIDR_test_query_feature->ownership_takes=1
+
+
+
+
+
+
+____CIDR_test_query_extension->cxx_constexpr=1
+
+
+
+
+____CIDR_test_query_extension->cxx_trailing_return=1
+
+
+
+
+____CIDR_test_query_extension->c_generic_selections=1
+
+
+
+
+
+
+____CIDR_test_query_extension->dataflow_sanitizer=0
+
+
+____CIDR_test_query_extension->attribute_unavailable_with_message=1
+
+
+
+
+____CIDR_test_query_extension->cxx_rvalue_references=1
+
+
+
+
+____CIDR_test_query_extension->attribute_deprecated_with_message=1
+
+
+
+
+____CIDR_test_query_extension->cxx_defaulted_functions=1
+
+
+
+
+____CIDR_test_query_extension->is_convertible_to=1
+
+
+
+
+____CIDR_test_query_extension->has_nothrow_constructor=1
+
+
+
+
+____CIDR_test_query_extension->ownership_returns=1
+
+
+
+
+____CIDR_test_query_extension->objc_subscripting=1
+
+
+
+
+____CIDR_test_query_extension->attribute_availability_with_message=1
+
+
+
+
+
+
+____CIDR_test_query_extension->objc_fixed_enum=0
+
+
+____CIDR_test_query_extension->is_pod=1
+
+
+
+
+____CIDR_test_query_extension->cxx_raw_string_literals=1
+
+
+
+
+
+
+____CIDR_test_query_extension->objc_class_property=0
+
+
+____CIDR_test_query_extension->c_atomic=1
+
+
+
+
+
+
+____CIDR_test_query_extension->cxx_runtime_array=0
+
+
+____CIDR_test_query_extension->attribute_ns_returns_not_retained=1
+
+
+
+
+____CIDR_test_query_extension->arc_cf_code_audited=1
+
+
+
+
+____CIDR_test_query_extension->cxx_binary_literals=1
+
+
+
+
+____CIDR_test_query_extension->cxx_reference_qualified_functions=1
+
+
+
+
+
+
+____CIDR_test_query_extension->cxx_generic_lambda=0
+
+
+
+
+____CIDR_test_query_extension->objc_generics=0
+
+
+____CIDR_test_query_extension->cxx_variadic_templates=1
+
+
+
+
+____CIDR_test_query_extension->c_static_assert=1
+
+
+
+
+____CIDR_test_query_extension->cxx_auto_type=1
+
+
+
+
+____CIDR_test_query_extension->cxx_noexcept=1
+
+
+
+
+____CIDR_test_query_extension->is_trivially_assignable=1
+
+
+
+
+____CIDR_test_query_extension->has_nothrow_assign=1
+
+
+
+
+____CIDR_test_query_extension->attribute_availability=1
+
+
+
+
+____CIDR_test_query_extension->cxx_nullptr=1
+
+
+
+
+____CIDR_test_query_extension->c_thread_local=1
+
+
+
+
+
+
+____CIDR_test_query_extension->objc_arc_weak=0
+
+
+
+
+____CIDR_test_query_extension->objc_default_synthesize_properties=0
+
+
+
+
+____CIDR_test_query_extension->objc_array_literals=0
+
+
+____CIDR_test_query_extension->cxx_decltype_incomplete_return_types=1
+
+
+
+
+
+
+____CIDR_test_query_extension->objc_boxed_expressions=0
+
+
+
+
+____CIDR_test_query_extension->cxx_decltype_auto=0
+
+
+____CIDR_test_query_extension->cxx_alignas=1
+
+
+
+
+____CIDR_test_query_extension->objc_nonfragile_abi=1
+
+
+
+
+____CIDR_test_query_extension->is_empty=1
+
+
+
+
+____CIDR_test_query_extension->underlying_type=1
+
+
+
+
+
+
+____CIDR_test_query_extension->thread_sanitizer=0
+
+
+____CIDR_test_query_extension->cxx_implicit_moves=1
+
+
+
+
+____CIDR_test_query_extension->cxx_thread_local=1
+
+
+
+
+____CIDR_test_query_extension->cxx_rtti=1
+
+
+
+
+____CIDR_test_query_extension->is_base_of=1
+
+
+
+
+____CIDR_test_query_extension->is_trivially_copyable=1
+
+
+
+
+____CIDR_test_query_extension->attribute_ns_returns_retained=1
+
+
+
+
+____CIDR_test_query_extension->cxx_init_captures=1
+
+
+
+
+
+
+____CIDR_test_query_extension->objc_generics_variance=0
+
+
+____CIDR_test_query_extension->cxx_access_control_sfinae=1
+
+
+
+
+____CIDR_test_query_extension->objc_bool=1
+
+
+
+
+____CIDR_test_query_extension->is_trivial=1
+
+
+
+
+
+
+____CIDR_test_query_extension->memory_sanitizer=0
+
+
+____CIDR_test_query_extension->cxx_unrestricted_unions=1
+
+
+
+
+____CIDR_test_query_extension->objc_property_explicit_atomic=1
+
+
+
+
+____CIDR_test_query_extension->cxx_explicit_conversions=1
+
+
+
+
+____CIDR_test_query_extension->attribute_ns_consumes_self=1
+
+
+
+
+____CIDR_test_query_extension->cxx_alias_templates=1
+
+
+
+
+____CIDR_test_query_extension->objc_weak_class=1
+
+
+
+
+
+
+____CIDR_test_query_extension->cxx_contextual_conversions=0
+
+
+____CIDR_test_query_extension->is_final=1
+
+
+
+
+____CIDR_test_query_extension->cxx_default_function_template_args=1
+
+
+
+
+
+
+____CIDR_test_query_extension->cxx_relaxed_constexpr=0
+
+
+____CIDR_test_query_extension->objc_protocol_qualifier_mangling=1
+
+
+
+
+____CIDR_test_query_extension->cxx_nonstatic_member_init=1
+
+
+
+
+
+
+____CIDR_test_query_extension->address_sanitizer=0
+
+
+
+
+____CIDR_test_query_extension->objc_arc=0
+
+
+____CIDR_test_query_extension->cxx_decltype=1
+
+
+
+
+____CIDR_test_query_extension->c_alignas=1
+
+
+
+
+____CIDR_test_query_extension->is_polymorphic=1
+
+
+
+
+____CIDR_test_query_extension->cxx_variable_templates=1
+
+
+
+
+
+
+____CIDR_test_query_extension->cxx_return_type_deduction=0
+
+
+____CIDR_test_query_extension->cxx_user_literals=1
+
+
+
+
+____CIDR_test_query_extension->ownership_holds=1
+
+
+
+
+____CIDR_test_query_extension->cxx_lambdas=1
+
+
+
+
+
+
+____CIDR_test_query_extension->objc_arr=0
+
+
+____CIDR_test_query_extension->is_class=1
+
+
+
+
+____CIDR_test_query_extension->has_trivial_assign=1
+
+
+
+
+____CIDR_test_query_extension->cxx_generalized_initializers=1
+
+
+
+
+____CIDR_test_query_extension->cxx_inline_namespaces=1
+
+
+
+
+
+
+____CIDR_test_query_extension->modules=0
+
+
+____CIDR_test_query_extension->attribute_ext_vector_type=1
+
+
+
+
+____CIDR_test_query_extension->cxx_unicode_literals=1
+
+
+
+
+
+
+____CIDR_test_query_extension->objc_instancetype=0
+
+
+____CIDR_test_query_extension->attribute_objc_method_family=1
+
+
+
+
+____CIDR_test_query_extension->cxx_static_assert=1
+
+
+
+
+
+
+____CIDR_test_query_extension->is_sealed=0
+
+
+____CIDR_test_query_extension->attribute_analyzer_noreturn=1
+
+
+
+
+____CIDR_test_query_extension->is_trivially_constructible=1
+
+
+
+
+____CIDR_test_query_extension->cxx_range_for=1
+
+
+
+
+____CIDR_test_query_extension->cxx_inheriting_constructors=1
+
+
+
+
+
+
+____CIDR_test_query_extension->objc_modules=0
+
+
+____CIDR_test_query_extension->attribute_cf_consumed=1
+
+
+
+
+____CIDR_test_query_extension->enumerator_attributes=1
+
+
+
+
+____CIDR_test_query_extension->has_trivial_copy=1
+
+
+
+
+____CIDR_test_query_extension->attribute_ns_consumed=1
+
+
+
+
+____CIDR_test_query_extension->cxx_atomic=1
+
+
+
+
+
+
+____CIDR_test_query_extension->cxx_aggregate_nsdmi=0
+
+
+____CIDR_test_query_extension->has_virtual_destructor=1
+
+
+
+
+____CIDR_test_query_extension->c_thread_safety_attributes=1
+
+
+
+
+____CIDR_test_query_extension->is_literal=1
+
+
+
+
+____CIDR_test_query_extension->attribute_unused_on_fields=1
+
+
+
+
+____CIDR_test_query_extension->cxx_exceptions=1
+
+
+
+
+____CIDR_test_query_extension->has_trivial_destructor=1
+
+
+
+
+____CIDR_test_query_extension->is_enum=1
+
+
+
+
+____CIDR_test_query_extension->is_standard_layout=1
+
+
+
+
+____CIDR_test_query_extension->cxx_local_type_template_args=1
+
+
+
+
+____CIDR_test_query_extension->blocks=1
+
+
+
+
+____CIDR_test_query_extension->has_trivial_constructor=1
+
+
+
+
+____CIDR_test_query_extension->nullability=1
+
+
+
+
+____CIDR_test_query_extension->is_abstract=1
+
+
+
+
+____CIDR_test_query_extension->attribute_cf_returns_not_retained=1
+
+
+
+
+____CIDR_test_query_extension->cxx_strong_enums=1
+
+
+
+
+____CIDR_test_query_extension->is_union=1
+
+
+
+
+____CIDR_test_query_extension->cxx_attributes=1
+
+
+
+
+
+
+____CIDR_test_query_extension->objc_dictionary_literals=0
+
+
+____CIDR_test_query_extension->attribute_objc_ivar_unused=1
+
+
+
+
+____CIDR_test_query_extension->has_nothrow_copy=1
+
+
+
+
+____CIDR_test_query_extension->attribute_cf_returns_retained=1
+
+
+
+
+____CIDR_test_query_extension->attribute_overloadable=1
+
+
+
+
+____CIDR_test_query_extension->cxx_delegating_constructors=1
+
+
+
+
+____CIDR_test_query_extension->tls=1
+
+
+
+
+____CIDR_test_query_extension->cxx_override_control=1
+
+
+
+
+____CIDR_test_query_extension->cxx_deleted_functions=1
+
+
+
+
+____CIDR_test_query_extension->ownership_takes=1
+
+
+
+
+
+
+____CIDR_test_query_attribute->enable_if=1
+
+
+
+
+____CIDR_test_query_attribute->swift_error=1
+
+
+
+
+____CIDR_test_query_attribute->vectorcall=1
+
+
+
+
+____CIDR_test_query_attribute->ms_struct=1
+
+
+
+
+____CIDR_test_query_attribute->swift_private=1
+
+
+
+
+____CIDR_test_query_attribute->param_typestate=1
+
+
+
+
+____CIDR_test_query_attribute->unavailable=1
+
+
+
+
+____CIDR_test_query_attribute->deprecated=1
+
+
+
+
+
+
+____CIDR_test_query_attribute->upper=0
+
+
+____CIDR_test_query_attribute->objc_returns_inner_pointer=1
+
+
+
+
+____CIDR_test_query_attribute->type_visibility=1
+
+
+
+
+
+
+____CIDR_test_query_attribute->no_sanitize_undefined=0
+
+
+____CIDR_test_query_attribute->objc_bridge=1
+
+
+
+
+____CIDR_test_query_attribute->stdcall=1
+
+
+
+
+____CIDR_test_query_attribute->acquire_capability=1
+
+
+
+
+____CIDR_test_query_attribute->ns_returns_retained=1
+
+
+
+
+
+
+____CIDR_test_query_attribute->bnd_variable_size=0
+
+
+____CIDR_test_query_attribute->set_typestate=1
+
+
+
+
+____CIDR_test_query_attribute->objc_method_family=1
+
+
+
+
+____CIDR_test_query_attribute->objc_protocol_requires_explicit_implementation=1
+
+
+
+
+____CIDR_test_query_attribute->aligned=1
+
+
+
+
+____CIDR_test_query_attribute->may_alias=1
+
+
+
+
+____CIDR_test_query_attribute->ext_vector_type=1
+
+
+
+
+
+
+____CIDR_test_query_attribute->ms_hook_prologue=0
+
+
+____CIDR_test_query_attribute->ibaction=1
+
+
+
+
+
+
+____CIDR_test_query_attribute->lower=0
+
+
+
+
+____CIDR_test_query_attribute->alloc_size=0
+
+
+____CIDR_test_query_attribute->nothrow=1
+
+
+
+
+____CIDR_test_query_attribute->cdecl=1
+
+
+
+
+____CIDR_test_query_attribute->objc_requires_super=1
+
+
+
+
+
+
+____CIDR_test_query_attribute->stack_protect=0
+
+
+____CIDR_test_query_attribute->gnu_inline=1
+
+
+
+
+____CIDR_test_query_attribute->nocommon=1
+
+
+
+
+____CIDR_test_query_attribute->objc_arc_weak_reference_unavailable=1
+
+
+
+
+____CIDR_test_query_attribute->unused=1
+
+
+
+
+____CIDR_test_query_attribute->internal_linkage=1
+
+
+
+
+____CIDR_test_query_attribute->regparm=1
+
+
+
+
+____CIDR_test_query_attribute->shared=1
+
+
+
+
+
+
+____CIDR_test_query_attribute->designated_init=0
+
+
+____CIDR_test_query_attribute->type_tag_for_datatype=1
+
+
+
+
+____CIDR_test_query_attribute->objc_designated_initializer=1
+
+
+
+
+
+
+____CIDR_test_query_attribute->bnd_instrument=0
+
+
+____CIDR_test_query_attribute->availability=1
+
+
+
+
+____CIDR_test_query_attribute->hot=1
+
+
+
+
+____CIDR_test_query_attribute->nonnull=1
+
+
+
+
+____CIDR_test_query_attribute->weak=1
+
+
+
+
+
+
+____CIDR_test_query_attribute->gcc_struct=0
+
+
+
+
+____CIDR_test_query_attribute->interrupt_handler=0
+
+
+____CIDR_test_query_attribute->flag_enum=1
+
+
+
+
+____CIDR_test_query_attribute->objc_root_class=1
+
+
+
+
+
+
+____CIDR_test_query_attribute->ifunc=0
+
+
+____CIDR_test_query_attribute->tls_model=1
+
+
+
+
+____CIDR_test_query_attribute->assume_aligned=1
+
+
+
+
+____CIDR_test_query_attribute->format_arg=1
+
+
+
+
+____CIDR_test_query_attribute->malloc=1
+
+
+
+
+____CIDR_test_query_attribute->sentinel=1
+
+
+
+
+____CIDR_test_query_attribute->no_address_safety_analysis=1
+
+
+
+
+____CIDR_test_query_attribute->carries_dependency=1
+
+
+
+
+____CIDR_test_query_attribute->release_capability=1
+
+
+
+
+____CIDR_test_query_attribute->pointer_with_type_tag=1
+
+
+
+
+
+
+____CIDR_test_query_attribute->leaf=0
+
+
+____CIDR_test_query_attribute->ns_returns_not_retained=1
+
+
+
+
+____CIDR_test_query_attribute->swift_name=1
+
+
+
+
+____CIDR_test_query_attribute->release_shared_capability=1
+
+
+
+
+____CIDR_test_query_attribute->consumable=1
+
+
+
+
+____CIDR_test_query_attribute->fastcall=1
+
+
+
+
+____CIDR_test_query_attribute->no_sanitize_address=1
+
+
+
+
+
+
+____CIDR_test_query_attribute->force_align_arg_pointer=0
+
+
+
+
+____CIDR_test_query_attribute->reentrant=0
+
+
+____CIDR_test_query_attribute->transparent_union=1
+
+
+
+
+
+
+____CIDR_test_query_attribute->target_clones=0
+
+
+
+
+____CIDR_test_query_attribute->no_reorder=0
+
+
+____CIDR_test_query_attribute->warn_unused_result=1
+
+
+
+
+
+
+____CIDR_test_query_attribute->sseregparm=0
+
+
+____CIDR_test_query_attribute->section=1
+
+
+
+
+____CIDR_test_query_attribute->used=1
+
+
+
+
+____CIDR_test_query_attribute->try_acquire_shared_capability=1
+
+
+
+
+____CIDR_test_query_attribute->flatten=1
+
+
+
+
+____CIDR_test_query_attribute->mode=1
+
+
+
+
+____CIDR_test_query_attribute->iboutletcollection=1
+
+
+
+
+
+
+____CIDR_test_query_attribute->either=0
+
+
+____CIDR_test_query_attribute->sysv_abi=1
+
+
+
+
+
+
+____CIDR_test_query_attribute->optimize=0
+
+
+
+
+____CIDR_test_query_attribute->interrupt=0
+
+
+____CIDR_test_query_attribute->noinline=1
+
+
+
+
+
+
+____CIDR_test_query_attribute->warning=0
+
+
+
+
+____CIDR_test_query_attribute->dllexport=0
+
+
+
+
+____CIDR_test_query_attribute->externally_visible=0
+
+
+____CIDR_test_query_attribute->objc_requires_property_definitions=1
+
+
+
+
+____CIDR_test_query_attribute->visibility=1
+
+
+
+
+
+
+____CIDR_test_query_attribute->bnd_legacy=0
+
+
+
+
+____CIDR_test_query_attribute->scalar_storage_order=0
+
+
+
+
+____CIDR_test_query_attribute->wakeup=0
+
+
+____CIDR_test_query_attribute->format=1
+
+
+
+
+
+
+____CIDR_test_query_attribute->alloc_align=0
+
+
+____CIDR_test_query_attribute->constructor=1
+
+
+
+
+____CIDR_test_query_attribute->destructor=1
+
+
+
+
+____CIDR_test_query_attribute->no_instrument_function=1
+
+
+
+
+____CIDR_test_query_attribute->align_value=1
+
+
+
+
+
+
+____CIDR_test_query_attribute->dllimport=0
+
+
+____CIDR_test_query_attribute->cleanup=1
+
+
+
+
+____CIDR_test_query_attribute->try_acquire_capability=1
+
+
+
+
+____CIDR_test_query_attribute->no_sanitize_memory=1
+
+
+
+
+____CIDR_test_query_attribute->objc_runtime_name=1
+
+
+
+
+____CIDR_test_query_attribute->thiscall=1
+
+
+
+
+____CIDR_test_query_attribute->no_sanitize=1
+
+
+
+
+____CIDR_test_query_attribute->no_split_stack=1
+
+
+
+
+
+
+____CIDR_test_query_attribute->noclone=0
+
+
+____CIDR_test_query_attribute->acquire_shared_capability=1
+
+
+
+
+____CIDR_test_query_attribute->test_typestate=1
+
+
+
+
+____CIDR_test_query_attribute->const=1
+
+
+
+
+
+
+____CIDR_test_query_attribute->critical=0
+
+
+____CIDR_test_query_attribute->argument_with_type_tag=1
+
+
+
+
+
+
+____CIDR_test_query_attribute->selectany=0
+
+
+____CIDR_test_query_attribute->returns_nonnull=1
+
+
+
+
+____CIDR_test_query_attribute->cold=1
+
+
+
+
+
+
+____CIDR_test_query_attribute->error=0
+
+
+____CIDR_test_query_attribute->pure=1
+
+
+
+
+____CIDR_test_query_attribute->vector_size=1
+
+
+
+
+____CIDR_test_query_attribute->ms_abi=1
+
+
+
+
+____CIDR_test_query_attribute->noreturn=1
+
+
+
+
+____CIDR_test_query_attribute->returns_twice=1
+
+
+
+
+____CIDR_test_query_attribute->common=1
+
+
+
+
+
+
+____CIDR_test_query_attribute->noplt=0
+
+
+____CIDR_test_query_attribute->noduplicate=1
+
+
+
+
+____CIDR_test_query_attribute->alias=1
+
+
+
+
+
+
+____CIDR_test_query_attribute->ns_consumed_self=0
+
+
+____CIDR_test_query_attribute->packed=1
+
+
+
+
+____CIDR_test_query_attribute->amdgpu_num_vgpr=1
+
+
+
+
+____CIDR_test_query_attribute->always_inline=1
+
+
+
+
+____CIDR_test_query_attribute->return_typestate=1
+
+
+
+
+____CIDR_test_query_attribute->pcs=1
+
+
+
+
+____CIDR_test_query_attribute->callable_when=1
+
+
+
+
+____CIDR_test_query_attribute->no_sanitize_thread=1
+
+
+
+
+____CIDR_test_query_attribute->optnone=1
+
+
+
+
+____CIDR_test_query_attribute->objc_boxable=1
+
+
+
+
+____CIDR_test_query_attribute->iboutlet=1
+
+
+
+
+____CIDR_test_query_attribute->target=1
+
+
+
+
+
+
+____CIDR_test_query_attribute->no_icf=0
+
+
+____CIDR_test_query_attribute->objc_precise_lifetime=1
+
+
+
+
+____CIDR_test_query_attribute->ns_consumed=1
+
+
+
+
+
+
+____CIDR_test_query_attribute->artificial=0
+
+
+____CIDR_test_query_attribute->amdgpu_num_sgpr=1
+
+
+
+
+____CIDR_test_query_attribute->weakref=1
+
+
+
+
+
+
+____CIDR_test_query_attribute->callee_pop_aggregate_return=0
+
+
+____CIDR_test_query_attribute->overloadable=1

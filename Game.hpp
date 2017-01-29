@@ -8,7 +8,6 @@
 #include <ctime>
 #include "PlayerColor.hpp"
 #include "BoardPos.hpp"
-#include "IAnalyzer.hpp"
 #include "Constants.hpp"
 #include "MoveScore.hpp"
 #include "ChildBoard.hpp"
@@ -54,7 +53,6 @@ private:
 
 	Board*		_state;
 	Board*		_previousState;
-	IAnalyzer*	_analyzer;
 	PlayerColor	_turn;
 
 	Score negamax(Board& node, int depth, Score alpha, Score beta, PlayerColor player);

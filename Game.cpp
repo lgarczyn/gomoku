@@ -3,7 +3,6 @@
 //
 
 #include "Game.hpp"
-#include "AnalyzerBrainDead.hpp"
 #include "ThreadPool.hpp"
 #include "Board.hpp"
 #include <boost/bind.hpp>
@@ -11,7 +10,7 @@
 using namespace std;
 
 const double timeMargin = 0.005;
-const int initialWidth = 20;
+const int initialWidth = 40;
 const int deepWidth = 20;
 const int threadCount = 8;
 
@@ -21,13 +20,6 @@ Game::Game(const Options& options) :
 		_constDepth(6 + options.slowMode),
 		_timeTaken()
 {
-#ifdef ANALYZER_AVAILABLE
-	_analyzer = _options.brainDead ?
-			   (IAnalyzer*)new AnalyzerBrainDead() :
-			   (IAnalyzer*)new Analyzer();
-#else
-	_analyzer = new AnalyzerBrainDead();
-#endif
 	_turn = PlayerColor::blackPlayer;
 	_depth = _constDepth;
 	_state = new Board(_turn);
@@ -42,7 +34,6 @@ Game::Game(const Options& options) :
 Game::~Game()
 {
 	delete _pool;
-	delete _analyzer;
 	delete _state;
 	delete _previousState;
 }
@@ -73,7 +64,7 @@ Score Game::negamax(Board& node, int negDepth, Score alpha, Score beta, PlayerCo
 			}
 			else if (negDepth <= 1)
 			{
-				score = player * _analyzer->getScore(*board, _options.captureWin);
+				score = player * board->getScore(_options.captureWin);
 			}
 			else
 			{
@@ -216,7 +207,7 @@ BoardPos Game::getNextMove()
 
 Score Game::getCurrentScore() const
 {
-	return _analyzer->getScore(*_state, _options.captureWin);
+	return _state->getScore(_options.captureWin);
 }
 
 bool Game::play(BoardPos pos)

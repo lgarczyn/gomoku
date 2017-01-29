@@ -5,7 +5,6 @@
 
 #pragma once
 
-#include "IAnalyzer.hpp"
 
 #define ANALYZER_AVAILABLE
 #include<shark/Models/FFNet.h> //the feed forward neural network

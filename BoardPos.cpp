@@ -4,4 +4,3 @@
 
 #include "BoardPos.hpp"
 
-const BoardPos BoardPos::boardEnd = BoardPos(0, BOARD_HEIGHT);

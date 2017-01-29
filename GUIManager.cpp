@@ -90,7 +90,7 @@ void	GUIManager::drawBoard(Game& g, Options options, const std::string message)
 
 	MoveScore bestPriority = b.getBestPriority();
 
-	for (BoardPos pos = BoardPos(); pos != BoardPos::boardEnd; ++pos)
+	for (BoardPos pos = BoardPos(); pos != BoardPos::boardEnd(); ++pos)
 	{
 		c = b.getCase(pos);
 		int p = b.getPriority(pos);

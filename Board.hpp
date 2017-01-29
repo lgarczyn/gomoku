@@ -2,6 +2,9 @@
 // Created by Louis GARCZYNSKI on 3/30/16.
 //
 
+#ifndef BOARD_HPP
+# define BOARD_HPP
+
 class Board;
 
 #pragma once
@@ -9,7 +12,6 @@ class Board;
 #include <vector>
 #include <tuple>
 
-#include "AnalyzerBrainDead.hpp"
 #include "Constants.hpp"
 #include "BoardPos.hpp"
 #include "PlayerColor.hpp"
@@ -43,6 +45,9 @@ public:
 	int 			playCapture(int x, int y);
 	bool			isAlignedStone(int size) const;
 
+    Score           fillScore();
+    Score           getScore(bool considerCapture);
+
 //Declaration here for optimization
 
 	BoardData*		getData() { return &_data; }
@@ -75,9 +80,8 @@ private:
 	bool 			isAlignedStoneDir(int x, int y, int dirX, int dirY, BoardSquare good, int size) const;
 	bool		 	isAlignedStonePos(int x, int y, int size) const;
 	bool 			playCaptureDir(int x, int y, int dirX, int dirY, BoardSquare type);
-
-	friend class AnalyzerNrainDead;
-	friend class Analyzer;
 };
 
+#include "Board.cpp"
 
+#endif
