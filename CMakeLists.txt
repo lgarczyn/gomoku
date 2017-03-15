@@ -17,7 +17,7 @@ link_libraries("boost_serialization")
 #link_libraries("shark")
 
 
-set(CMAKE_CXX_FLAGS " -std=c++11 -ofast -ffast-math ${CMAKE_CXX_FLAGS}")
+set(CMAKE_CXX_FLAGS " -std=c++11 -Ofast -ffast-math ${CMAKE_CXX_FLAGS}")
 
 set(SOURCE_FILES
         main.cpp
