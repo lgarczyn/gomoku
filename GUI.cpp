@@ -37,7 +37,7 @@ void game_page(GUIManager& win, Options &options)
     VictoryState        victory;
     BoardPos            pos;
 
-    win.drawBoard(g, options, text);
+    win.drawBoard(g, options, text, NULL);
     while (1)
     {
         bool shouldWait = true;
@@ -66,7 +66,7 @@ void game_page(GUIManager& win, Options &options)
                             text = getVictoryMessage(victory, (PlayerColor)-g.getTurn());
                         }
                         std::cout << "  Board score: " << g.getCurrentScore() << std::endl;
-                        win.drawBoard(g, options, text);
+                        win.drawBoard(g, options, text, NULL);
                     }
                     break ;
                 default:
@@ -75,7 +75,10 @@ void game_page(GUIManager& win, Options &options)
         }
 
         if (g.isPlayerNext())
-            win.drawBoard(g, options, text);
+        {
+            BoardPos pos = g.getNextMove();
+            win.drawBoard(g, options, text, &pos);
+        }
 
         if (g.getTurn() == PlayerColor::whitePlayer && options.isWhiteAI && !hasWon)
         {
@@ -88,8 +91,9 @@ void game_page(GUIManager& win, Options &options)
             std::cout << "AI white:" << std::endl;
             std::cout << "  Board score: " << g.getCurrentScore() << std::endl;
             std::cout << "  Time taken: " << g.getTimeTaken() << std::endl;
+            std::cout << "  Move explored: " << g.getMovesExplored() << std::endl;
             if (text != "") std::cout << text << std::endl;
-            win.drawBoard(g, options, text);
+            win.drawBoard(g, options, text, NULL);
             shouldWait = false;
         }
 
@@ -104,8 +108,9 @@ void game_page(GUIManager& win, Options &options)
             std::cout << "AI black:" << std::endl;
             std::cout << "  Board score: " << g.getCurrentScore() << std::endl;
             std::cout << "  Time taken: " << g.getTimeTaken() << std::endl;
+            std::cout << "  Move explored: " << g.getMovesExplored() << std::endl;
             if (text != "") std::cout << text << std::endl;
-            win.drawBoard(g, options, text);
+            win.drawBoard(g, options, text, NULL);
             shouldWait = false;
         }
 

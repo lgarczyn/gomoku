@@ -8,7 +8,7 @@ link_libraries("sfml-graphics")
 link_libraries("sfml-window")
 
 
-set(CMAKE_CXX_FLAGS " -std=c++11 -ofast -ffast-math ${CMAKE_CXX_FLAGS}")
+set(CMAKE_CXX_FLAGS " -std=c++11 -ofast -ffast-math -march=native ${CMAKE_CXX_FLAGS}")
 
 set(SOURCE_FILES
         main.cpp

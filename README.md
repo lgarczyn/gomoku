@@ -24,4 +24,3 @@ cd ..
 * negamax, negamax_thread (and maybe start_negamax) should all be static
 * more documentation
 * remove boost dependency
-* 

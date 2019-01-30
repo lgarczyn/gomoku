@@ -3,8 +3,9 @@
 //
 
 #include "Board.hpp"
-#include <random>       // std::default_random_engine
+#include <random>
 #include <algorithm>
+#include <iostream>
 
 bool Board::isAlignedStoneDir(int x, int y, int dirX, int dirY, BoardSquare color, int size) const
 {
@@ -13,7 +14,6 @@ bool Board::isAlignedStoneDir(int x, int y, int dirX, int dirY, BoardSquare colo
 	int mx = x + size * dirX;
 	int my = y + size * dirY;
 
-	//TODO find better way (seriously tough)
 	while (ix < 0 || iy < 0 || ix >= BOARD_WIDTH || iy >= BOARD_HEIGHT)
 		ix += dirX, iy += dirY;
 	while (mx < -1 || my < -1 || mx > BOARD_WIDTH || my > BOARD_HEIGHT)
@@ -45,16 +45,6 @@ bool Board::isAlignedStonePos(int x, int y, int size) const
 	if (isAlignedStoneDir(x, y, 1, 1, c, size)) return true;
 	if (isAlignedStoneDir(x, y, 0, 1, c, size)) return true;
 	if (isAlignedStoneDir(x, y, -1, 1, c, size)) return true;
-	return false;
-}
-
-bool Board::isAlignedStone(int size) const
-{
-	for (int y = 0 ; y < BOARD_HEIGHT; ++y)
-		for (int x = 0 ; x < BOARD_WIDTH; ++x)
-			if (_data[y][x] != empty)
-			if (isAlignedStonePos(x, y, size))
-				return true;
 	return false;
 }
 
@@ -124,9 +114,6 @@ size_t Board::getChildren(MoveScore* buffer, size_t count)
 		}
 	}
 
-	//shuffle (children.begin(), children.end(), std::default_random_engine(std::random_device{}()));
-
-	//TODO use boost::qsort
 	struct Sorter
 	{
 		Sorter(){};
@@ -182,7 +169,6 @@ bool Board::checkFreeThree(int x, int y, int dirX, int dirY, BoardSquare enemy)
 	int mx = x + 5 * dirX;
 	int my = y + 5 * dirY;
 
-	//TODO find better way (seriously tough)
 	while (ix < 0 || iy < 0 || ix >= BOARD_WIDTH || iy >= BOARD_HEIGHT)
 		ix += dirX, iy += dirY;
 	while (mx < -1 || my < -1 || mx > BOARD_WIDTH || my > BOARD_HEIGHT)
@@ -349,20 +335,19 @@ void Board::fillPriority(PlayerColor player, const Options& options)
 		for (int x = 0; x < BOARD_WIDTH; x++)
 		{
 			BoardSquare color = _data[y][x];
-			//int bonus = (ally != color);
 			if (color != BoardSquare::empty)
 			{
 				BoardSquare enemyColor = (color == white) ? black : white;
 
-				fillPriorityDir(x, y, -1, -1, color);//, bonus);
-				fillPriorityDir(x, y, -1, 0, color);//, bonus);
-				fillPriorityDir(x, y, -1, 1, color);//, bonus);
-				fillPriorityDir(x, y, 0, -1, color);//, bonus);
-				//fillPriorityDir(x, y, 0, 0, color);//, bonus);
-				fillPriorityDir(x, y, 0, 1, color);//, bonus);
-				fillPriorityDir(x, y, 1, -1, color);//, bonus);
-				fillPriorityDir(x, y, 1, 0, color);//, bonus);
-				fillPriorityDir(x, y, 1, 1, color);//, bonus);
+				fillPriorityDir(x, y, -1, -1, color);
+				fillPriorityDir(x, y, -1, 0, color);
+				fillPriorityDir(x, y, -1, 1, color);
+				fillPriorityDir(x, y, 0, -1, color);
+				//fillPriorityDir(x, y, 0, 0, color);
+				fillPriorityDir(x, y, 0, 1, color);
+				fillPriorityDir(x, y, 1, -1, color);
+				fillPriorityDir(x, y, 1, 0, color);
+				fillPriorityDir(x, y, 1, 1, color);
 
 				if (options.capture)
 				{

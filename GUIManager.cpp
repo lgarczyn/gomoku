@@ -60,13 +60,14 @@ sf::Vector2f	GUIManager::getMouseScreenRatio()
 	return value;
 }
 
-void	GUIManager::drawBoard(Game& g, Options options, const std::string message)
+void	GUIManager::drawBoard(Game& g, Options options, const std::string message, BoardPos *bestMove)
 {
 	BoardSquare 		c;
 	sf::Sprite			highlight(_textures.highlight);
 	sf::Sprite			background(_textures.board);
 	sf::Sprite			sprite_black(_textures.stone_black);
 	sf::Sprite			sprite_white(_textures.stone_white);
+	sf::Sprite			sprite_preview_play(_textures.stone_preview_taboo);
 	sf::Sprite			sprite_preview(_textures.stone_preview);
 	sf::Sprite			sprite_preview_taboo(_textures.stone_preview_taboo);
 	sf::Sprite			sprite_preview_taboo_mouse(_textures.stone_preview_taboo);
@@ -117,7 +118,9 @@ void	GUIManager::drawBoard(Game& g, Options options, const std::string message)
 						text = &text_victory;
 						text->setFillColor(sf::Color(0, 0, 0));
 					}
-					if (pos == mousePos && !message.size() && isPlayerNext)
+					if (bestMove && *bestMove == pos)
+						sprite = &sprite_preview_play;
+					else if (pos == mousePos && !message.size() && isPlayerNext)
 						sprite = &sprite_preview;
 					else if (isPlayerNext && p == bestPriority.score && options.showTips) // pos == bestPriority)
 					{

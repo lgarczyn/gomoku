@@ -39,7 +39,6 @@ public:
 	MoveScore		getBestPriority() const;
 	bool			checkFreeThree(int x, int y, int dirX, int dirY, BoardSquare enemy);
 	int 			playCapture(int x, int y);
-	bool			isAlignedStone(int size) const;
 
 //Declaration here for optimization
 

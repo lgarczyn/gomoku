@@ -34,6 +34,7 @@ public:
 	bool isOverdue() const;
 	double getTimeDiff() const;
 	double getTimeTaken() const;
+	int getMovesExplored() const;
 	Score getCurrentScore() const;
 
 	Board *getState();
@@ -49,6 +50,7 @@ private:
 	Options	_options;
 	double	_timeLimit;
 	double	_timeTaken;
+	std::atomic<int>		_movesExplored;
 	int		_constDepth;
 	int		_depth;
 

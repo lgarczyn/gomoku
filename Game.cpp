@@ -64,6 +64,7 @@ Score Game::negamax(Board& node, int negDepth, Score alpha, Score beta, PlayerCo
 	{
 		if (alpha <= beta && !isOverdue())
 		{
+			_movesExplored++;
 			BoardPos pos = children[i].pos;
 			Board *board = new Board(node, pos, player, _options);
 			Score score;
@@ -151,6 +152,8 @@ BoardPos Game::start_negamax(Board *node, PlayerColor player)
 
 
 	std::function<MoveScore(ThreadData)> function = boost::bind(&Game::negamax_thread, this, _1);
+	_movesExplored = 0;
+
 #ifdef NON_THREADED
 	std::vector<MoveScore> result;
 	result.resize(threadData.size());
@@ -182,7 +185,7 @@ BoardPos Game::start_negamax(Board *node, PlayerColor player)
 	}
 
 	std::uniform_int_distribution<int> uni(0, choice.size() - 1);
-	return choice[uni(_randomDevice)].pos;//TODO get fucking rid of rand
+	return choice[uni(_randomDevice)].pos;
 }
 
 
@@ -247,6 +250,11 @@ bool Game::hasPosChanged(BoardPos pos) const
 double Game::getTimeTaken() const
 {
 	return _timeTaken;
+}
+
+int Game::getMovesExplored() const
+{
+	return _movesExplored;
 }
 
 bool Game::play()
