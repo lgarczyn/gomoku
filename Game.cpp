@@ -5,6 +5,8 @@
 #include "Game.hpp"
 #include "Analyzer.hpp"
 #include "ThreadPool.hpp"
+#include "Board.hpp"
+#include <boost/bind.hpp>
 
 using namespace std;
 
@@ -20,11 +22,11 @@ Game::Game(const Options& options) :
 		_timeTaken()
 {
 #ifdef ANALYZER_AVAILABLE
-	_analyzer = _options.brainDead ?
-			   (IAnalyzer*)new AnalyzerBrainDead() :
+	_analyzer = _options. ?
+			   (IAnalyzer*)new Analyzer() :
 			   (IAnalyzer*)new Analyzer();
 #else
-	_analyzer = new AnalyzerBrainDead();
+	_analyzer = new Analyzer();
 #endif
 	_turn = PlayerColor::blackPlayer;
 	_depth = _constDepth;

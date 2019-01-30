@@ -115,7 +115,7 @@ void	GUIManager::drawBoard(Game& g, Options options, const std::string message)
 					{
 						text_victory = sf::Text(std::to_string(p), _textures.font, 20);
 						text = &text_victory;
-						text->setColor(sf::Color(0, 0, 0));
+						text->setFillColor(sf::Color(0, 0, 0));
 					}
 					if (pos == mousePos && !message.size() && isPlayerNext)
 						sprite = &sprite_preview;
@@ -154,7 +154,7 @@ void	GUIManager::drawBoard(Game& g, Options options, const std::string message)
 		//draw priority
 		if (text != nullptr && options.showPriority)
 		{
-			text->setColor(sf::Color::White);
+			text->setFillColor(sf::Color::White);
 			sf::Vector2f textPos = sf::Vector2f(
 					screen_margin_x + board_offset_x + pos.x * cell_width,
 					screen_margin_y + board_offset_y + pos.y * cell_height);

@@ -186,7 +186,6 @@ void option_page(GUIManager& win, Options &options)
                         case 4: options.doubleThree = !options.doubleThree; break;
                         case 5: options.capture = !options.capture; break;
                         case 6: options.captureWin = !options.captureWin; break;
-                       // case 7: options.brainDead = !options.brainDead; break;
                     }
                     break;
                 default:

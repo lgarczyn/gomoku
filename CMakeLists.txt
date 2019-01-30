@@ -1,20 +1,11 @@
 cmake_minimum_required(VERSION 2.4)
 project(gomoku)
 
-set(Shark_DIR ~/.brew/Cellar/shark/3.0.0/lib/cmake/Shark)
-
-# Find the Shark libraries and includes
-# set Shark_DIR to the proper location of Shark
-find_package(Shark REQUIRED)
-include(${SHARK_USE_FILE})
-
 include_directories("~/.brew/include")
 link_directories("~/.brew/lib")
 link_libraries("sfml-system")
 link_libraries("sfml-graphics")
 link_libraries("sfml-window")
-link_libraries("boost_serialization")
-link_libraries("shark")
 
 
 set(CMAKE_CXX_FLAGS " -std=c++11 -ofast -ffast-math ${CMAKE_CXX_FLAGS}")
@@ -26,12 +17,10 @@ set(SOURCE_FILES
         Board.cpp
         Board.hpp
         IAnalyzer.hpp
-        AnalyzerBrainDead.cpp
-        AnalyzerBrainDead.hpp
+        Analyzer.cpp
+        Analyzer.hpp
         Game.cpp
         Game.hpp
-        MTDF.cpp
-        MTDF.hpp
         BoardPos.hpp
         BoardSquare.hpp
         GUIManager.cpp
@@ -43,10 +32,6 @@ set(SOURCE_FILES
         TextureManager.hpp
         VictoryState.hpp
         ChildBoard.hpp
-        NetworkManager.cpp
-        NetworkManager.hpp
-        Analyzer.cpp
-        Analyzer.hpp
         MoveScore.cpp
         MoveScore.hpp
         BoardPos.cpp

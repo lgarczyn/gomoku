@@ -2,14 +2,12 @@
 // Created by Louis GARCZYNSKI on 3/30/16.
 //
 
-class Board;
-
 #pragma once
 
 #include <vector>
 #include <tuple>
 
-#include "AnalyzerBrainDead.hpp"
+#include "Analyzer.hpp"
 #include "Constants.hpp"
 #include "BoardPos.hpp"
 #include "PlayerColor.hpp"
@@ -24,7 +22,7 @@ using BoardScore = short[BOARD_HEIGHT][BOARD_WIDTH];
 
 class Board
 {
-	friend class AnalyzerBrainDead;
+	friend class Analyzer;
 public:
 	Board(PlayerColor player);
 	Board(const Board& board);
