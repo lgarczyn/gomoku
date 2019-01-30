@@ -58,25 +58,6 @@ bool Board::isAlignedStone(int size) const
 	return false;
 }
 
-
-/*VictoryState  Board::isTerminal(bool considerCapture)
-{
-	if (isAlignedStone(5))
-		return aligned;
-	if (considerCapture)
-	{
-		if (_capturedWhites >= captureVictoryPoints)
-			return whitesCaptured;
-		if (_capturedBlacks >= captureVictoryPoints)
-			return blacksCaptured;
-	}
-	if (_turnNum - _capturedBlacks - _capturedWhites == BOARD_HEIGHT * BOARD_WIDTH)
-	{
-		return staleMate;
-	}
-	return  novictory;
-}*/
-
 VictoryState  Board::calculateVictory(BoardPos pos, const Options& options)
 {
 	if (options.captureWin)

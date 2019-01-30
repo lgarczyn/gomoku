@@ -9,14 +9,3 @@ int main()
 
 	return (1);
 }
-
-//trainer
-/*
-#include "Trainer.hpp"
-int main()
-{
-	Trainer trainer;
-
-	trainer.train();
-}
-*/

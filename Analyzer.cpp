@@ -8,58 +8,6 @@
 Analyzer::Analyzer() { }
 Analyzer::~Analyzer() { }
 
-/*inline void Analyzer::fillScoreDir(Board &board, int x, int y, int dirX, int dirY, BoardSquare color)
-{
-	const int maxX = CLAMP(x + 5 * dirX, -1, BOARD_WIDTH);
-	const int maxY = CLAMP(y + 5 * dirY, -1, BOARD_HEIGHT);
-
-	int value = 1;
-	int emptyCount = 0;
-
-	x += dirX, y+= dirY;
-	while ((!dirX || x != maxX) && (!dirY || y != maxY))
-	{
-		BoardSquare square = board._data[y][x];
-		if (square == empty)
-		{
-			emptyCount++;
-		}
-		else if (square == color)
-		{
-			value <<= 2;
-		}
-		else
-		{
-			break;
-		}
-		x += dirX, y+= dirY;
-	}
-	_score += ((color == BoardSquare::white) ? value : -value) * emptyCount;
-};
-
-void Analyzer::fillScore(Board &board)
-{
-	for (int y = 0; y < BOARD_HEIGHT; y++)
-	{
-		for (int x = 0; x < BOARD_WIDTH; x++)
-		{
-			BoardSquare color = board._data[y][x];
-			if (color != BoardSquare::empty)
-			{
-				fillScoreDir(board, x, y, -1, -1, color);
-				fillScoreDir(board, x, y, -1, 0, color);
-				fillScoreDir(board, x, y, -1, 1, color);
-				fillScoreDir(board, x, y, 0, -1, color);
-				//fillScoreDir(board, x, y, 0, 0, color);
-				fillScoreDir(board, x, y, 0, 1, color);
-				fillScoreDir(board, x, y, 1, -1, color);
-				fillScoreDir(board, x, y, 1, 0, color);
-				fillScoreDir(board, x, y, 1, 1, color);
-			}
-		}
-	}
-}*/
-
 Score Analyzer::fillScore(Board &board)
 {
 	Score score = 0;
