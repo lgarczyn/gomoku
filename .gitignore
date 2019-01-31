@@ -2,4 +2,4 @@
 *.o
 build
 gomoku
-
+.vscode
