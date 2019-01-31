@@ -60,13 +60,14 @@ sf::Vector2f	GUIManager::getMouseScreenRatio()
 	return value;
 }
 
-void	GUIManager::drawBoard(Game& g, Options options, const std::string message)
+void	GUIManager::drawBoard(Game& g, Options options, const std::string message, BoardPos *bestMove)
 {
 	BoardSquare 		c;
 	sf::Sprite			highlight(_textures.highlight);
 	sf::Sprite			background(_textures.board);
 	sf::Sprite			sprite_black(_textures.stone_black);
 	sf::Sprite			sprite_white(_textures.stone_white);
+	sf::Sprite			sprite_preview_play(_textures.stone_preview_taboo);
 	sf::Sprite			sprite_preview(_textures.stone_preview);
 	sf::Sprite			sprite_preview_taboo(_textures.stone_preview_taboo);
 	sf::Sprite			sprite_preview_taboo_mouse(_textures.stone_preview_taboo);
@@ -96,7 +97,6 @@ void	GUIManager::drawBoard(Game& g, Options options, const std::string message)
 		int p = b.getPriority(pos);
 		bool isHighlighted = g.hasPosChanged(pos);
 
-		//check if piece of priority text is needed
 		sf::Sprite* sprite = nullptr;
 		sf::Text* text = nullptr;
 		switch (c)
@@ -115,9 +115,11 @@ void	GUIManager::drawBoard(Game& g, Options options, const std::string message)
 					{
 						text_victory = sf::Text(std::to_string(p), _textures.font, 20);
 						text = &text_victory;
-						text->setColor(sf::Color(0, 0, 0));
+						text->setFillColor(sf::Color(0, 0, 0));
 					}
-					if (pos == mousePos && !message.size() && isPlayerNext)
+					if (bestMove && *bestMove == pos)
+						sprite = &sprite_suggestion;
+					else if (pos == mousePos && !message.size() && isPlayerNext)
 						sprite = &sprite_preview;
 					else if (isPlayerNext && p == bestPriority.score && options.showTips) // pos == bestPriority)
 					{
@@ -154,7 +156,7 @@ void	GUIManager::drawBoard(Game& g, Options options, const std::string message)
 		//draw priority
 		if (text != nullptr && options.showPriority)
 		{
-			text->setColor(sf::Color::White);
+			text->setFillColor(sf::Color::White);
 			sf::Vector2f textPos = sf::Vector2f(
 					screen_margin_x + board_offset_x + pos.x * cell_width,
 					screen_margin_y + board_offset_y + pos.y * cell_height);

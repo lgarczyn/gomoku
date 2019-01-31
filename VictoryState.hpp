@@ -2,8 +2,7 @@
 // Created by Eric DELANGHE on 4/2/16.
 //
 
-#ifndef GOMOKU_VICTORYSTATE_HPP
-#define GOMOKU_VICTORYSTATE_HPP
+#pragma once
 
 enum VictoryType
 {
@@ -22,5 +21,3 @@ struct VictoryState
 	VictoryState(VictoryType _type):victor(nullPlayer),type(_type){};
 	VictoryState():victor(nullPlayer),type(novictory){};
 };
-
-#endif //GOMOKU_VICTORYSTATE_HPP

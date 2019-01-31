@@ -2,16 +2,12 @@
 // Created by Louis GARCZYNSKI on 3/30/16.
 //
 
-#ifndef BOARD_HPP
-# define BOARD_HPP
-
-class Board;
-
 #pragma once
 
 #include <vector>
 #include <tuple>
 
+#include "Analyzer.hpp"
 #include "Constants.hpp"
 #include "BoardPos.hpp"
 #include "PlayerColor.hpp"
@@ -26,29 +22,22 @@ using BoardScore = short[BOARD_HEIGHT][BOARD_WIDTH];
 
 class Board
 {
-	friend class AnalyzerBrainDead;
+	friend class Analyzer;
 public:
 	Board(PlayerColor player);
 	Board(const Board& board);
 	Board(const Board& board, BoardPos move, PlayerColor player, const Options& options);
 	virtual ~Board();
 
-	//VictoryState isTerminal(bool considerCapture);
-
 	VictoryState	getVictory();
 	size_t			getChildren(MoveScore* buffer, size_t count);
+	Score			getScore(bool considerCapture);
 
 	void 			fillTaboo(bool limitBlack, bool doubleThree, PlayerColor player);
 	void 			fillPriority(PlayerColor player, const Options& options);
 	MoveScore		getBestPriority() const;
 	bool			checkFreeThree(int x, int y, int dirX, int dirY, BoardSquare enemy);
 	int 			playCapture(int x, int y);
-	bool			isAlignedStone(int size) const;
-
-    Score           fillScore();
-    Score           getScore(bool considerCapture);
-
-//Declaration here for optimization
 
 	BoardData*		getData() { return &_data; }
 	BoardSquare		getCase(BoardPos pos) const { return (_data[pos.y][pos.x]); }
@@ -74,14 +63,15 @@ private:
 
 	VictoryState	calculateVictory(BoardPos pos, const Options& options);
 
-	void 			fillPriorityDir(int x, int y, int dirX, int dirY, BoardSquare color);//, int bonus);
+	void 			fillPriorityDir(int x, int y, int dirX, int dirY, BoardSquare color);
 	void 			fillCapturePriorityDir(int x, int y, int dirX, int dirY, BoardSquare color);
 
 	bool 			isAlignedStoneDir(int x, int y, int dirX, int dirY, BoardSquare good, int size) const;
 	bool		 	isAlignedStonePos(int x, int y, int size) const;
 	bool 			playCaptureDir(int x, int y, int dirX, int dirY, BoardSquare type);
+
+	friend class AnalyzerNrainDead;
+	friend class Analyzer;
 };
 
-#include "Board.cpp"
 
-#endif

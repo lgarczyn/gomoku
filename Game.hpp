@@ -33,6 +33,7 @@ public:
 	bool isOverdue() const;
 	double getTimeDiff() const;
 	double getTimeTaken() const;
+	int getMovesExplored() const;
 	Score getCurrentScore() const;
 
 	Board *getState();
@@ -45,11 +46,12 @@ private:
 	std::chrono::high_resolution_clock::time_point _start;
 	std::mt19937 _randomDevice;
 
-	Options	_options;
-	double	_timeLimit;
-	double	_timeTaken;
-	int		_constDepth;
-	int		_depth;
+	Options				_options;
+	double				_timeLimit;
+	double				_timeTaken;
+	std::atomic<int>	_movesExplored;
+	int					_constDepth;
+	int					_depth;
 
 	Board*		_state;
 	Board*		_previousState;

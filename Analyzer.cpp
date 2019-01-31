@@ -3,44 +3,80 @@
 //
 
 #include "Analyzer.hpp"
-
-Analyzer::Analyzer()
+#include "Board.hpp"
+Score Analyzer::fillScore(Board &board)
 {
-	inputs = shark::RealMatrix(1, BOARD_HEIGHT * BOARD_WIDTH + 2);
-	outputs = shark::RealMatrix(1, 1);
-
-	NetworkManager::setup_network(network);
-	if (!NetworkManager::read_network("networks/gomoku.model", network))
-	{
-		std::cerr << "Could not read neural network";
-		exit(1);
-	}
-
-	state = network.createState();
-}
-
-Analyzer::~Analyzer()
-{
-	//delete allocated brain
-}
-
-Score Analyzer::getScore(Board& board, bool considerCapture)
-{
-	int k = 0;
+	Score score = 0;
 	for (int y = 0; y < BOARD_HEIGHT; y++)
 	{
 		for (int x = 0; x < BOARD_WIDTH; x++)
 		{
-			inputs.operator()(0, k++) = board.getCase(x, y);
+			BoardSquare color = board._data[y][x];
+			if (color != BoardSquare::empty)
+			{
+				Score squareScore = 0;
+				for (int dirX = -1; dirX <= 1; dirX++)
+				{
+					for (int dirY = -1; dirY <= 1; dirY++)
+					{
+						if (dirX || dirY)
+						{
+							const int maxX = CLAMP(x + 5 * dirX, -1, BOARD_WIDTH);
+							const int maxY = CLAMP(y + 5 * dirY, -1, BOARD_HEIGHT);
+
+							int value = 1;
+							int emptyCount = 0;
+
+							int _x = x + dirX;
+							int _y = y + dirY;
+
+							while ((dirX == 0 || _x != maxX) && (dirY == 0 || _y != maxY))
+							{
+								BoardSquare square = board._data[_y][_x];
+								if (square == empty)
+								{
+									squareScore += value;
+									emptyCount++;
+								}
+								else if (square == color)
+								{
+									value <<= 3;
+								}
+								else
+								{
+									break;
+								}
+								_x += dirX, _y+= dirY;
+							}
+							value >>= 2;
+							squareScore += value * emptyCount;
+						}
+					}
+				}
+				score += (color == BoardSquare::white) ? squareScore : -squareScore;
+			}
 		}
 	}
-	inputs(0, k) = considerCapture ? board.getCapturedWhite() : 0;
-	inputs(0, ++k) = considerCapture ? board.getCapturedBlack() : 0;
+	return score;
+}
 
-	//TODO include captured whites and blacks
-	network.eval(inputs, outputs, *state);
+Score Analyzer::getScore(Board &board, bool considerCapture)
+{
+	Score score = fillScore(board);
 
-	network.operator()(shark::RealVector(BOARD_HEIGHT * BOARD_WIDTH + 2)).operator()(0);
+	if (considerCapture)
+	{
+		score += 1 << board._capturedBlacks / 2;
+		score -= 1 << board._capturedWhites / 2;
+	}
+	if (board._victoryFlag == whitePlayer)
+	{
+		score += pinfinity / 2;
+	}
+	else if (board._victoryFlag == blackPlayer)
+	{
+		score -= pinfinity / 2;
+	}
 
-	return (outputs.operator()(0, 0));
+	return score;
 }

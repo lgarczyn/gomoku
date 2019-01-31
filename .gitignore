@@ -4,3 +4,6 @@ CMAKECache/*
 CMAKEFiles/*
 cmake_*
 gomoku.cbp
+build
+gomoku
+.vscode
