@@ -98,6 +98,7 @@ void	GUIManager::drawBoard(Game& g, Options options, const std::string message, 
 		bool isHighlighted = g.hasPosChanged(pos);
 
 		//check if piece of priority text is needed
+		//Jesus Eric you comments make no sense in hell
 		sf::Sprite* sprite = nullptr;
 		sf::Text* text = nullptr;
 		switch (c)
@@ -119,7 +120,7 @@ void	GUIManager::drawBoard(Game& g, Options options, const std::string message, 
 						text->setFillColor(sf::Color(0, 0, 0));
 					}
 					if (bestMove && *bestMove == pos)
-						sprite = &sprite_preview_play;
+						sprite = &sprite_suggestion;
 					else if (pos == mousePos && !message.size() && isPlayerNext)
 						sprite = &sprite_preview;
 					else if (isPlayerNext && p == bestPriority.score && options.showTips) // pos == bestPriority)
