@@ -154,7 +154,7 @@ void	GUIManager::drawBoard(Game& g, Options options, const std::string message, 
 			this->draw(*sprite);
 		}
 		//draw priority
-		if (text != nullptr && options.showPriority)
+		if (text != nullptr && options.showTipsDebug)
 		{
 			text->setFillColor(sf::Color::White);
 			sf::Vector2f textPos = sf::Vector2f(
@@ -252,13 +252,16 @@ void 		GUIManager::drawMenu()
 	this->draw(lrtext);
 }
 
-void 		GUIManager::drawOptions(std::vector<std::pair<std::string, bool>> options)
+void 		GUIManager::drawOptions(Options options)
 {
-	sf::RectangleShape	rect(sf::Vector2f(_w, _h / options.size()));
+	auto optionVector = options.as_array();
+
+	size_t				len = optionVector.size();
+	sf::RectangleShape	rect(sf::Vector2f(_w, _h / len));
 	sf::Text			text;
 
 	int i = 0;
-	for (auto pair:options)
+	for (auto pair:optionVector)
 	{
 		if (pair.second)
 			rect.setFillColor(sf::Color(100, 160, 100));
@@ -266,7 +269,7 @@ void 		GUIManager::drawOptions(std::vector<std::pair<std::string, bool>> options
 			rect.setFillColor(sf::Color(160, 100, 100));
 		text = sf::Text(pair.first, _textures.font, 70);
 
-		auto pos = sf::Vector2f(_w / 2., (float)_h / options.size() * (i + 0.5));
+		auto pos = sf::Vector2f(_w / 2., (float)_h / len * (i + 0.5));
 		centerOnPos(rect, pos.x, pos.y);
 		centerOnPos(text, pos.x, pos.y);
 		this->draw(rect);

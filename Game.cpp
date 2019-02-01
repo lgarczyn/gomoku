@@ -85,7 +85,7 @@ Score Game::negamax(Board& node, int negDepth, Score alpha, Score beta, PlayerCo
 	return bestScore;
 }
 
-MoveScore Game::negamax_thread(ThreadData data)
+MoveScore Game::negamaxThread(ThreadData data)
 {
 	Score score;
 
@@ -120,7 +120,7 @@ MoveScore Game::negamax_thread(ThreadData data)
 	return (MoveScore(score, pos));
 }
 
-BoardPos Game::start_negamax(Board *node, PlayerColor player)
+BoardPos Game::startNegamax(Board *node, PlayerColor player)
 {
 	std::atomic<Score> alpha(ninfinity);
 	MoveScore children[BOARD_HEIGHT * BOARD_WIDTH];
@@ -143,10 +143,10 @@ BoardPos Game::start_negamax(Board *node, PlayerColor player)
 	}
 
 
-	std::function<MoveScore(ThreadData)> function = boost::bind(&Game::negamax_thread, this, _1);
+	std::function<MoveScore(ThreadData)> function = boost::bind(&Game::negamaxThread, this, _1);
 	_movesExplored = 0;
 
-#ifdef NON_THREADED
+#ifdef NONThreadED
 	std::vector<MoveScore> result;
 	result.resize(threadData.size());
 	for (size_t i = 0; i < threadData.size(); i++)
@@ -202,7 +202,7 @@ BoardPos Game::getNextMove()
 {
 	_start = std::chrono::high_resolution_clock::now();
 
-	BoardPos pos = start_negamax(_state, _turn);
+	BoardPos pos = startNegamax(_state, _turn);
 
 	_timeTaken = getTimeDiff();
 

@@ -29,7 +29,7 @@ public:
 	bool			getMouseBoardPos(BoardPos& pos);
 	sf::Vector2f	getMouseScreenRatio();
 	void			drawBoard(Game& g, Options options, const std::string message, BoardPos *bestMove);
-	void 			drawOptions(std::vector<std::pair<std::string, bool>> options);
+	void 			drawOptions(Options options);
 	void 			drawMenu();
 private:
 	static const int screen_width = 1140;

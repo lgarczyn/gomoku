@@ -58,8 +58,8 @@ private:
 	PlayerColor	_turn;
 
 	Score negamax(Board& node, int depth, Score alpha, Score beta, PlayerColor player);
-	MoveScore negamax_thread(ThreadData data);
-	BoardPos start_negamax(Board *node, PlayerColor player);
+	MoveScore negamaxThread(ThreadData data);
+	BoardPos startNegamax(Board *node, PlayerColor player);
 
 	Pool *_pool;
 };

@@ -29,7 +29,7 @@ std::string getVictoryMessage(VictoryState v)
 	return (text);
 }
 
-void game_page(GUIManager& win, Options &options)
+void gamePage(GUIManager& win, Options &options)
 {
 	Game g(options);
 	bool hasWon = false;
@@ -80,12 +80,12 @@ void game_page(GUIManager& win, Options &options)
 
 		if (g.isPlayerNext())
 		{
-			if (updateSuggestion)
+			if (updateSuggestion && options.showSolution)
 			{
-				//updateSuggestion = false;
+				updateSuggestion = false;
 				suggestion = g.getNextMove();
 			}
-			win.drawBoard(g, options, text, &suggestion);
+			win.drawBoard(g, options, text, options.showSolution ? &suggestion : NULL);
 		}
 
 		if (g.getTurn() == PlayerColor::whitePlayer && options.isWhiteAI && !hasWon)
@@ -132,7 +132,7 @@ void game_page(GUIManager& win, Options &options)
 	}
 }
 
-GUIManager::MenuButton menu_page(GUIManager& win)
+GUIManager::MenuButton menuPage(GUIManager& win)
 {
 	while (1)
 	{
@@ -160,23 +160,10 @@ GUIManager::MenuButton menu_page(GUIManager& win)
 	}
 }
 
-std::vector<std::pair<std::string, bool>> getOptionsData(Options &options)
-{
-	return std::vector<std::pair<std::string, bool>>({
-							   std::pair<std::string, bool>("Show player tips", options.showTips),
-							   std::pair<std::string, bool>("Show square priority", options.showPriority),
-							   std::pair<std::string, bool>("Activate deep search", options.slowMode),
-							   std::pair<std::string, bool>("Limit black starting moves", options.limitBlack),
-							   std::pair<std::string, bool>("Block double free-threes", options.doubleThree),
-							   std::pair<std::string, bool>("Allow capture", options.capture),
-							   std::pair<std::string, bool>("Allow win by capture", options.captureWin),
-					   });
-}
-
-void option_page(GUIManager& win, Options &options)
+void optionPage(GUIManager& win, Options &options)
 {
 	int     pos;
-	auto    optionsVector = getOptionsData(options);
+	auto    optionsVector = options.as_array();
 
 	while (1)
 	{
@@ -195,29 +182,20 @@ void option_page(GUIManager& win, Options &options)
 				case sf::Event::MouseButtonPressed:
 					pos = win.getMouseScreenRatio().y * optionsVector.size();
 
-					switch (pos)
-					{
-						case 0: options.showTips = !options.showTips; break;
-						case 1: options.showPriority = !options.showPriority; break;
-						case 2: options.slowMode = !options.slowMode; break;
-						case 3: options.limitBlack = !options.limitBlack; break;
-						case 4: options.doubleThree = !options.doubleThree; break;
-						case 5: options.capture = !options.capture; break;
-						case 6: options.captureWin = !options.captureWin; break;
-					}
+					if (pos < optionsVector.size())
+						optionsVector[pos].second = !optionsVector[pos].second;
 					break;
 				default:
 					break;
 			}
 		}
-		optionsVector = getOptionsData(options);
-		win.drawOptions(optionsVector);
+		win.drawOptions(options);
 		win.display();
 		usleep(200);
 	}
 }
 
-void GUI::start_loop()
+void GUI::startLoop()
 {
 	Options       options;
 	GUIManager          win;
@@ -225,25 +203,25 @@ void GUI::start_loop()
 	srand(time(NULL));
 	while (1)
 	{
-		switch (menu_page(win))
+		switch (menuPage(win))
 		{
 			case GUIManager::ButtonAIVersusAI:
 				options.isBlackAI = true;
 				options.isWhiteAI = true;
-				game_page(win, options);
+				gamePage(win, options);
 				break;
 			case GUIManager::ButtonPlayerVersusAI:
 				options.isBlackAI = false;
 				options.isWhiteAI = true;
-				game_page(win, options);
+				gamePage(win, options);
 				break;
 			case GUIManager::ButtonPlayerVersusPlayer:
 				options.isBlackAI = false;
 				options.isWhiteAI = false;
-				game_page(win, options);
+				gamePage(win, options);
 				break;
 			case GUIManager::ButtonOptions:
-				option_page(win, options);
+				optionPage(win, options);
 				break;
 		}
 	}

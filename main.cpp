@@ -5,7 +5,7 @@ int main()
 {
 	GUI gui;
 
-	gui.start_loop();
+	gui.startLoop();
 
 	return (1);
 }
