@@ -1,5 +1,11 @@
 # Gomoku
 
+## Concept
+
+An AI and game interface to play Gomoku, a game played on a Go board, somewhat similar to a more complex version of connect-4.
+
+![Subject](gomoku.pdf)
+
 ## Dependencies
 
 sfml
