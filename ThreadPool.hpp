@@ -10,7 +10,7 @@
 #include <atomic>
 #include <iostream>
 #include <condition_variable>
-
+#include <functional>
 
 template <typename Data, typename Value>
 class ThreadPool

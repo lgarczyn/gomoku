@@ -6,6 +6,7 @@ link_directories("~/.brew/lib")
 link_libraries("sfml-system")
 link_libraries("sfml-graphics")
 link_libraries("sfml-window")
+link_libraries("pthread")
 
 
 set(CMAKE_CXX_FLAGS " -std=c++11 -ofast -ffast-math -march=native ${CMAKE_CXX_FLAGS}")

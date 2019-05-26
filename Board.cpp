@@ -6,6 +6,7 @@
 #include <random>
 #include <algorithm>
 #include <iostream>
+#include <string.h>
 
 Score Board::getScore(bool considerCapture)
 {
